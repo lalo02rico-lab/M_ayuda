@@ -1,0 +1,130 @@
+:root {
+  --vino: #7B1E3D;
+  --dorado: #B48954;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+/* HEADER */
+header {
+  background: #fff;
+  border-bottom: 3px solid var(--vino);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+.header-container img {
+  height: 60px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: var(--vino);
+}
+
+.btn-acceso {
+  background: var(--vino);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 4px;
+}
+
+/* HERO TITLE */
+.hero {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.hero h1 {
+  font-size: 56px;
+  font-weight: bold;
+  color: var(--vino);
+  margin: 0;
+}
+
+/* CARDS */
+.servicios {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin: 40px;
+}
+
+.card {
+  text-align: center;
+  width: 280px;
+}
+
+.card-title {
+  background: var(--vino);
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.card img {
+  width: 220px;
+  margin-top: 10px;
+  transform: rotate(-3deg);
+  transition: transform 0.3s;
+}
+
+.card img:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* FOOTER */
+footer {
+  background: var(--dorado);
+  text-align: center;
+  padding: 14px;
+  margin-top: 50px;
+  color: #fff;
+  font-size: 14px;
+  position: relative;
+}
+
+footer {
+  background-color: #7B1E3D;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* ocupa todo el espacio disponible */
+}
