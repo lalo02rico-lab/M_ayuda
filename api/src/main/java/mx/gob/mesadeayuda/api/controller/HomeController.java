@@ -12,15 +12,24 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        // Devuelve el archivo templates/login.html (cuando lo tengamos)
-        return "login";
-    }
+   //@GetMapping("/login")
+    //public String login(){
+      //  return "login"; // buscará templates/login.html
+    //}
+
 
     @GetMapping("/menu")
     public String menu() {
         // Devuelve el archivo templates/menu.html (cuando lo hagamos)
         return "menu";
     }
-}
+    @GetMapping("/organigrama")
+    public String organigrama() {
+        return "organigrama"; // busca templates/organigrama.html
+    }
+    //@GetMapping("/directorio")
+    //public String directorio() {
+      //  return "directorio"; // templates/directorio.html
+    }
+
+

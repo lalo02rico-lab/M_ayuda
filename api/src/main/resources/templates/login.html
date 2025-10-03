@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Mesa de Ayuda</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<div class="login-container">
+
+    <div class="login-left">
+        <h2>¡BIENVENIDO!</h2>
+    </div>
+
+    <div class="login-right">
+        <img src="/img/logo_gobierno.png" alt="Gobierno" class="logo-edomex">
+
+        <h1>Iniciar Sesión</h1>
+
+        <form action="/login" method="post" class="form-login" >
+
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" required>
+
+            <label for="password">Contraseña:</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
+
+            <label for="rol">Rol:</label>
+            <select name="rol" required>
+                <option value="Administrador">Administrador</option>
+                <option value="Tecnico">Técnico</option>
+                <option value="Servidor Publico">Servidor Público</option>
+
+            </select>
+
+
+            <div class="decoracion"></div>
+
+            <button type="submit"  class="btn-login">Ingresar al sistema</button>
+        </form>
+        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+        <footer>
+            <p>Desarrollado por la Dirección de Sistemas y Tecnologías de la Información</p>
+        </footer>
+    </div>
+</div>
+
+<script>
+    function togglePassword(){
+      const pass = document.getElementById("password");
+      pass.type = pass.type === "password" ? "text" : "password";
+    }
+</script>
+</body>
+</html>

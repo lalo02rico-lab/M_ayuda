@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Directorio - Mesa de Ayuda</title>
+  <link rel="stylesheet" href="/css/directorio.css">
+</head>
+<body>
+<!-- HEADER -->
+<header>
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+    <nav>
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/organigrama">Organigrama</a></li>
+        <li><a href="/directorio" class="activo">Directorio</a></li>
+        <li><a href="#">Manuales</a></li>
+        <li><a href="#">Preguntas</a></li>
+        <li><a href="#">Solicitud de Soporte</a></li>
+        <li><a href="/login" class="btn-acceso">Acceso</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- TÍTULO -->
+<section class="hero">
+  <h1>DIRECTORIO</h1>
+</section>
+
+<!-- TABLA -->
+<main class="contenedor-tabla">
+  <!-- FORMULARIO para filtros -->
+  <form method="get" th:action="@{/directorio}">
+    <table>
+      <thead>
+      <tr>
+        <th>Dependencia<br>
+          <input type="text" name="dependencia" th:value="${dependencia}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
+        </th>
+        <th>Profesión<br>
+          <input type="text" name="profesion" th:value="${profesion}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
+        </th>
+        <th>Nombre<br>
+          <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
+        </th>
+        <th>Cargo<br>
+          <input type="text" name="cargo" th:value="${cargo}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="registro : ${pagina.content}">
+        <td th:text="${registro.dependencia}"></td>
+        <td th:text="${registro.profesion}"></td>
+        <td th:text="${registro.nombre}"></td>
+        <td th:text="${registro.cargo}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+
+  <div style="margin-top:10px;">
+    <button type="submit" class="btn-buscar">Buscar</button>
+    <a href="/directorio" class="btn-limpiar">Limpiar filtros</a>
+  </div>
+  </form>
+
+  <!-- PAGINACIÓN dinámica -->
+  <div class="paginacion">
+    <span th:if="${pagina.number > 0}">
+      <a th:href="@{|/directorio?page=${pagina.number-1}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}">«</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(pagina.number > 2 ? pagina.number-2 : 0, (pagina.number+2) < pagina.totalPages-1 ? (pagina.number+2) : pagina.totalPages-1)}">
+      <a th:href="@{|/directorio?page=${i}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}"
+         th:text="${i+1}"
+         th:classappend="${i == pagina.number} ? 'activo' : ''"></a>
+    </span>
+
+    <span th:if="${pagina.number < pagina.totalPages-1}">
+      <a th:href="@{|/directorio?page=${pagina.number+1}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}">»</a>
+    </span>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+</footer>
+</body>
+</html>
