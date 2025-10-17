@@ -1,0 +1,84 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: #f8f8f8;
+}
+
+/* HEADER */
+header {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 40px;
+}
+.header-container img {
+  height: 50px;
+}
+.header-container nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+.header-container nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+.btn-acceso {
+  background: #7B1E3D;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* TÍTULO */
+.titulo {
+  text-align: center;
+  margin-top: 60px;
+  color: #777;
+  font-size: 2rem;
+}
+
+/* CATEGORÍAS */
+.categorias {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 900px;
+  margin: 50px auto;
+}
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card h3 {
+  color: #7B1E3D;
+  margin-bottom: 10px;
+}
+.card p {
+  color: #333;
+}
+
+/* FOOTER */
+footer {
+  background: #7B1E3D;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+}
+
+/* HEADER */
+header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+}
+.header-container img {
+    height: 50px;
+}
+.header-container nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+.header-container nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+.btn-acceso {
+    background: #7B1E3D;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/* MAIN */
+main {
+    display: flex;
+    margin: 40px;
+    gap: 30px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+.user-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+.menu ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    color: #333;
+    cursor: pointer;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+    background: #eee;
+    padding: 30px;
+    border-radius: 10px;
+}
+.fecha {
+    color: #888;
+}
+.ticket-info p {
+    margin: 5px 0;
+}
+.descripcion {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+.btn-asumir {
+    margin-top: 20px;
+    background-color: #7B1E3D;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #7B1E3D;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

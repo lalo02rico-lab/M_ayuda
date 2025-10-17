@@ -34,7 +34,7 @@ public class LoginController {
     // Procesar el login
     @PostMapping("/login")
     public String procesarLogin(
-            @RequestParam String correo, // <<-- CAMBIADO: Recibe 'correo' en lugar de 'username'
+            @RequestParam String correo, // <<-- CAMBIADO: Recibe 'correo'
             @RequestParam String password,
             @RequestParam String rol,
             Model model) {

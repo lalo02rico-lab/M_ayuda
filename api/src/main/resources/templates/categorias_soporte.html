@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías de Soporte</title>
+    <link rel="stylesheet" href="/css/categorias.css">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+        <nav>
+            <ul>
+                <li><a href="#">Organigrama</a></li>
+                <li><a href="#">Directorio</a></li>
+                <li><a href="#">Manuales</a></li>
+                <li><a href="#">Preguntas</a></li>
+                <li><a href="/solicitud_soporte">Solicitud de Soporte</a></li>
+            </ul>
+        </nav>
+        <a href="/login" class="btn-acceso">Acceso</a>
+    </div>
+</header>
+
+<main>
+    <h2 class="titulo">SOLICITUD DE SOPORTE</h2>
+
+    <div class="categorias">
+        <a th:href="@{/categoria/Ofimática}" class="card">
+            <h3>OFIMÁTICA</h3>
+            <p>Atención a incidencias relacionadas con el uso de herramientas de oficina.</p>
+        </a>
+
+        <a th:href="@{/categoria/Correo}" class="card">
+            <h3>CORREO</h3>
+            <p>Recuperación de contraseñas, recepción de mensajes, solución de acceso o bloqueo.</p>
+        </a>
+
+        <a th:href="@{/categoria/Resguardo}" class="card">
+            <h3>RESGUARDO</h3>
+            <p>Gestión y control de los equipos de cómputo y dispositivos asignados al personal.</p>
+        </a>
+
+        <a th:href="@{/categoria/Técnico}" class="card">
+            <h3>TÉCNICO</h3>
+            <p>Atención a incidencias relacionadas con fallas de hardware, software o conectividad.</p>
+        </a>
+    </div>
+</main>
+
+<footer>
+    <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
+</body>
+</html>

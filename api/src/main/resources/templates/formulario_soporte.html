@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="'Soporte ' + ${tipo}">Formulario de Soporte</title>
+  <link rel="stylesheet" href="/css/formulario.css">
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+    <nav>
+      <ul>
+        <li><a href="#">Organigrama</a></li>
+        <li><a href="#">Directorio</a></li>
+        <li><a href="#">Manuales</a></li>
+        <li><a href="#">Preguntas</a></li>
+        <li><a href="/solicitud_soporte">Solicitud de Soporte</a></li>
+      </ul>
+    </nav>
+    <a href="/login" class="btn-acceso">Acceso</a>
+  </div>
+</header>
+
+<main>
+  <section class="formulario">
+    <h2 th:text="'SOPORTE ' + ${tipo}"></h2>
+    <h3>BIENVENIDO</h3>
+
+    <form action="/ticket_generado" method="post">
+      <input type="hidden" name="nombre" th:value="${nombre}">
+      <input type="hidden" name="departamento" th:value="${departamento}">
+      <input type="hidden" name="tipo" th:value="${tipo}">
+
+      <label for="descripcion">Descripción del problema:</label>
+      <textarea id="descripcion" name="descripcion" required></textarea>
+
+      <label for="fechaHora">Fecha y hora:</label>
+      <input type="datetime-local" id="fechaHora" name="fechaHora" required>
+
+      <div class="botones">
+        <a href="/solicitud_soporte" class="btn-cancelar">Cancelar</a>
+        <button type="submit" class="btn-enviar">Solicitar soporte</button>
+      </div>
+    </form>
+
+  </section>
+</main>
+
+<footer>
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
+</body>
+</html>

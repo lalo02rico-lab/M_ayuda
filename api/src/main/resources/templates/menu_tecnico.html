@@ -1,11 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Técnico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Técnico - Mesa de Ayuda</title>
+  <link rel="stylesheet" href="/css/tecnico.css">
 </head>
 <body>
-<h1>Bienvenido, <span th:text="${usuario.nombreUsuario}"></span></h1>
-<p>Rol: <span th:text="${usuario.rol.nombre}"></span></p>
+
+<!-- Header institucional -->
+<header>
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+    <nav>
+      <ul>
+        <li><a href="#">Organigrama</a></li>
+        <li><a href="#">Directorio</a></li>
+        <li><a href="#">Manuales</a></li>
+        <li><a href="#">Preguntas</a></li>
+        <li><a href="#">Solicitud de Soporte</a></li>
+      </ul>
+    </nav>
+    <a href="/logout" class="btn-acceso">Acceso</a>
+  </div>
+</header>
+
+<!-- Contenedor principal -->
+<main>
+  <aside class="sidebar">
+    <div class="user-section">
+      <img src="/img/logo_usuario.png" alt="Usuario" class="user-icon">
+      <p>USUARIO</p>
+    </div>
+    <nav class="menu">
+      <ul>
+        <li>Sin asumir</li>
+        <li>Pendientes</li>
+        <li>En proceso</li>
+        <li>Historial</li>
+      </ul>
+    </nav>
+  </aside>
+
+  <section class="content">
+    <p class="fecha">24 oct, 10:38</p>
+    <h2>Soporte</h2>
+
+    <div class="ticket-info">
+      <p><strong>Departamento:</strong> Control de pagos</p>
+      <p><strong>Categoría:</strong> Incidencia informática</p>
+      <p><strong>Prioridad:</strong> Alta</p>
+      <p><strong>Solicitante:</strong> Jose Acuña</p>
+    </div>
+
+    <div class="descripcion">
+      <p><strong>DESCRIPCIÓN DEL PROBLEMA:</strong></p>
+      <p>No se puede trabajar con office porque ya está vencida la licencia.</p>
+    </div>
+
+    <button class="btn-asumir">Asumir</button>
+  </section>
+</main>
+
+<footer>
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
 </body>
 </html>
