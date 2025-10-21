@@ -1,11 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Administrador - Mesa de Ayuda</title>
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-<h1>Bienvenido, <span th:text="${usuario.nombreUsuario}"></span></h1>
-<p>Rol: <span th:text="${usuario.rol.nombre}"></span></p>
+
+<!-- ======= ENCABEZADO ======= -->
+<header class="top-bar">
+  <div class="logo-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+  </div>
+
+  <div class="access-container">
+    <a href="/login" class="btn-acceso">Cerrar sesión</a>
+  </div>
+</header>
+
+<!-- ======= CONTENIDO PRINCIPAL ======= -->
+<main class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <img src="/img/logo_usuario.png" class="icono-usuario">
+
+    <h3>ADMINISTRADOR</h3>
+
+    <ul class="menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="/admin/gestion-servicios">Gestión de servicios</a></li>
+      <li><a href="#">Contraseñas y VPN</a></li>
+      <li><a href="#">Manuales</a></li>
+    </ul>
+  </aside>
+
+  <!-- PANEL PRINCIPAL -->
+  <section class="panel-principal">
+
+    <h1>Bienvenido al sistema !</h1>
+
+    <div class="grid-contenido">
+
+      <div class="tarjeta">
+        <img src="/img/Proceso.png">
+      </div>
+
+      <div class="tarjeta">
+        <img src="/img/Abierto.png">
+      </div>
+
+      <div class="tarjeta">
+        <img src="/img/cerrado.png">
+      </div>
+
+      <div class="tarjeta">
+        <img src="/img/asigando.png">
+      </div>
+
+    </div>
+
+    <div class="tarjeta-tickets">
+      <p>Nuevos tickets</p>
+      <h2 th:text="${nuevos}">0</h2>
+      <a href="/admin/tickets" class="btn-revisar">Revisar</a>
+    </div>
+
+  </section>
+</main>
+
+
+<!-- ======= FOOTER ======= -->
+<footer class="footer">
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
 </body>
 </html>

@@ -1,123 +1,147 @@
-:root{
-  --vino:#7B1E3D;
-  --dorado:#B48954;
-  --gris:#f9f9f9;
+/* === General === */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 
-*{ box-sizing:border-box; margin:0; padding:0; font-family:Arial, sans-serif; }
-
-body{
-  background:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+.login-container {
+    display: flex;
+    width: 90%;
+    max-width: 1100px;
+    margin: 5% auto;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.login-container{
-  display:flex;
-  width:90%;
-  max-width:1100px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.1);
-  overflow:hidden;
+/* === Panel Izquierdo === */
+.login-left {
+    flex: 1;
+    background-image: url('/img/degradado.png'); /* tu imagen aquí */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Panel izquierdo */
-.login-left{
-  flex:1;
-  background:var(--vino);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#fff;
-  font-size:28px;
-  font-weight:bold;
-  padding:20px;
-
-   background-image: url("/img/degradado.png"); /* tu imagen */
-    background-repeat: repeat;    /* se repite en mosaico */
-    background-size: auto;        /* usa el tamaño original */
-    background-position: center;  /* centrado */
+.login-left .overlay {
+    background: rgba(123, 30, 61, 0.9); /* tono vino */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Panel derecho */
-.login-right{
-  flex:1.5;
-  padding:40px;
-  position:relative;
+.login-left h2 {
+    color: #fff;
+    font-size: 2.8rem;
+    font-weight: bold;
+    text-align: center;
 }
 
-.logo-edomex{
-  position:absolute;
-  top:20px;
-  right:20px;
-  height:50px;
+/* === Panel Derecho === */
+.login-right {
+    flex: 1.2;
+    padding: 50px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.login-right h1{
-  margin-top:40px;
-  margin-bottom:30px;
-  font-size:26px;
-  color:#222;
+.logo-edomex {
+    width: 200px;
+    display: block;
+    margin-left: auto;
 }
 
-.form-login label{
-  display:block;
-  margin-bottom:6px;
-  font-weight:bold;
-  color:#333;
+h1 {
+    color: #000;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
 }
 
-.form-login input,
-.form-login select{
-  width:100%;
-  padding:12px;
-  margin-bottom:18px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:15px;
+label {
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+    color: #333;
 }
 
-.password-wrapper{
-  position:relative;
-}
-.password-wrapper input{ padding-right:40px; }
-.toggle-password{
-  position:absolute;
-  top:50%; right:10px;
-  transform:translateY(-50%);
-  cursor:pointer;
-  font-size:18px;
-}
-
-/* Línea dorada decorativa */
-.decoracion{
-  height:10px;
-  background:var(--dorado);
-  border-radius:5px;
-  margin:18px 0 26px 0;
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-/* Botón */
-.btn-login{
-  width:100%;
-  background:var(--vino);
-  color:#fff;
-  border:none;
-  padding:14px;
-  font-size:16px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
+input:focus, select:focus {
+    border-color: #7B1E3D;
 }
-.btn-login:hover{ background:#5e152e; }
 
-/* Footer */
-footer{
-  margin-top:40px;
-  text-align:center;
-  font-size:14px;
-  color:#555;
+.password-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 35%;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* === Botón === */
+.btn-login {
+    width: 100%;
+    background-color: #7B1E3D;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 25px;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #5e152e;
+}
+
+/* === Línea decorativa === */
+.decorative-line {
+    width: 100%;
+    height: 5px;
+    background: repeating-linear-gradient(
+        90deg,
+        #b48954,
+        #b48954 20px,
+        transparent 20px,
+        transparent 40px
+    );
+    margin: 25px 0;
+}
+
+/* === Footer === */
+footer {
+    font-size: 0.85rem;
+    color: #555;
+    text-align: center;
+}
+
+/* === Error === */
+.error-msg {
+    color: red;
+    text-align: center;
+    font-weight: 500;
 }

@@ -1,0 +1,142 @@
+:root {
+    --vino: #7B1E3D;
+    --dorado: #C49A67;
+    --gris: #e6e6e6;
+    --panel: #EBEBEB;
+    --texto: #222;
+}
+
+/* GENERAL */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+}
+
+/* HEADER */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: white;
+}
+
+.header-container img {
+    height: 60px;
+}
+
+.btn-logout {
+    background: var(--dorado);
+    padding: 8px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.gold-line {
+    height: 5px;
+    background: var(--dorado);
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+    padding: 30px;
+    gap: 25px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #dcdcdc;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+}
+
+.user-card img {
+    width: 80px;
+}
+
+.username {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.sidebar li {
+    padding: 20px 0;
+    border-bottom: 2px solid #bfbfbf;
+    color: #555;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+}
+
+.content h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--vino);
+    margin-bottom: 20px;
+}
+
+/* PANEL */
+.panel {
+    background: var(--panel);
+    padding: 30px;
+    border-radius: 18px;
+}
+
+/* TARJETA */
+.card {
+    background: white;
+    border: 1px solid #cfcfcf;
+    padding: 22px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card:hover {
+    background: #f3f3f3;
+}
+
+.titulo-area {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* BOTÓN */
+.btn-open {
+    background: var(--dorado);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-open:hover {
+    background: #9f784b;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 12px;
+    margin-top: 40px;
+    background: var(--vino);
+    color: white;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tickets asignados</title>
+    <link rel="stylesheet" th:href="@{/css/tec.css}">
+</head>
+
+<body>
+
+<!-- HEADER (solo cerrar sesión como en la imagen) -->
+<header class="header">
+    <div class="header-container">
+        <img th:src="@{/img/logo_gobierno.png}" alt="Logo">
+        <nav class="menu">
+            <a href="/logout" class="btn-logout">Cerrar sesión</a>
+        </nav>
+    </div>
+    <div class="gold-line"></div>
+</header>
+
+<!-- LAYOUT -->
+<main class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="user-card">
+            <img th:src="@{/img/logo_usuario.png}">
+            <p class="username">TÉCNICO</p>
+        </div>
+
+        <ul>
+            <li>Estado del ticket</li>
+            <li>Manuales</li>
+            <li>Historial</li>
+        </ul>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <section class="content">
+
+        <h2>Tickets asignados</h2>
+
+        <div class="panel">
+
+            <!-- TARJETAS DE TICKETS -->
+            <div class="card" th:each="t : ${tickets}">
+
+                <div class="card-info">
+                    <p class="titulo-area" th:text="${t.preSolicitud.departamento.nombreDepartamento}"></p>
+                </div>
+
+                <a class="btn-open"
+                   th:href="@{'/tecnico/detalle/' + ${t.idTicket} + '?idTecnico=' + ${idTecnico}}">
+                    Ver detalles
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    ©2025 - Subdirección de desarrollo Tecnológico
+</footer>
+
+</body>
+</html>

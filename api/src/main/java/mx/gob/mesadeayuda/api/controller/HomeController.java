@@ -8,28 +8,23 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        // Devuelve el archivo templates/index.html
-        return "index";
+        return "index"; // Página principal (index.html)
     }
 
-   //@GetMapping("/login")
-    //public String login(){
-      //  return "login"; // buscará templates/login.html
-    //}
-
-
-    @GetMapping("/menu")
-    public String menu() {
-        // Devuelve el archivo templates/menu.html (cuando lo hagamos)
-        return "menu";
-    }
     @GetMapping("/organigrama")
     public String organigrama() {
-        return "organigrama"; // busca templates/organigrama.html
-    }
-    //@GetMapping("/directorio")
-    //public String directorio() {
-      //  return "directorio"; // templates/directorio.html
+        return "organigrama"; // Carga organigrama.html desde templates
     }
 
 
+
+    @GetMapping("/manuales")
+    public String manuales() {
+        return "manuales"; // Carga manuales.html
+    }
+
+    @GetMapping("/preguntas")
+    public String preguntas() {
+        return "preguntas"; // Carga preguntas.html
+    }
+}

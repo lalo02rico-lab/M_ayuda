@@ -1,65 +1,73 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Técnico - Mesa de Ayuda</title>
-  <link rel="stylesheet" href="/css/tecnico.css">
+  <title>Panel del Técnico</title>
+  <link rel="stylesheet" th:href="@{/css/tecnico.css}">
 </head>
+
 <body>
 
-<!-- Header institucional -->
-<header>
+<!-- HEADER -->
+<header class="header">
   <div class="header-container">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-    <nav>
-      <ul>
-        <li><a href="#">Organigrama</a></li>
-        <li><a href="#">Directorio</a></li>
-        <li><a href="#">Manuales</a></li>
-        <li><a href="#">Preguntas</a></li>
-        <li><a href="#">Solicitud de Soporte</a></li>
-      </ul>
+    <img th:src="@{/img/logo_gobierno.png}" alt="Gobierno">
+    <nav class="menu">
+      <a href="#">Directorio</a>
+      <a href="#">Manuales</a>
+      <a href="/logout" class="btn-logout">Cerrar sesión</a>
     </nav>
-    <a href="/logout" class="btn-acceso">Acceso</a>
   </div>
 </header>
 
-<!-- Contenedor principal -->
-<main>
+<!-- LÍNEA DORADA -->
+<div class="gold-line"></div>
+
+<main class="layout">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="user-section">
-      <img src="/img/logo_usuario.png" alt="Usuario" class="user-icon">
-      <p>USUARIO</p>
+    <div class="user-card">
+      <img th:src="@{/img/logo_usuario.png}" alt="Tecnico">
+      <h2 th:text="${nombreTecnico}">USUARIO</h2>
     </div>
-    <nav class="menu">
-      <ul>
-        <li>Sin asumir</li>
-        <li>Pendientes</li>
-        <li>En proceso</li>
-        <li>Historial</li>
-      </ul>
-    </nav>
+
+    <ul>
+      <li>
+        <a th:href="@{'/tecnico/estado?idTecnico=' + ${idTecnico}}">
+          Estado del ticket
+        </a>
+      </li>
+
+      <li><a href="#">Historial</a></li>
+      <li><a href="#">Manual del técnico</a></li>
+    </ul>
   </aside>
 
+  <!-- CONTENIDO -->
   <section class="content">
-    <p class="fecha">24 oct, 10:38</p>
-    <h2>Soporte</h2>
+    <div class="content-box">
 
-    <div class="ticket-info">
-      <p><strong>Departamento:</strong> Control de pagos</p>
-      <p><strong>Categoría:</strong> Incidencia informática</p>
-      <p><strong>Prioridad:</strong> Alta</p>
-      <p><strong>Solicitante:</strong> Jose Acuña</p>
+      <h1>¡Bienvenido!</h1>
+
+      <!-- CONTENEDOR DE ICONOS -->
+      <div class="icon-grid">
+        <img src="/img/icono1.png" alt="">
+        <img src="/img/icono2.png" alt="">
+        <img src="/img/icono3.png" alt="">
+        <img src="/img/icono4.png" alt="">
+        <img src="/img/icono5.png" alt="">
+        <img src="/img/icono6.png" alt="">
+      </div>
+
+      <a class="btn-ver"
+         th:href="@{'/tecnico/tickets?idTecnico=' + ${idTecnico}}">
+        Revisar mis tickets
+      </a>
+
     </div>
-
-    <div class="descripcion">
-      <p><strong>DESCRIPCIÓN DEL PROBLEMA:</strong></p>
-      <p>No se puede trabajar con office porque ya está vencida la licencia.</p>
-    </div>
-
-    <button class="btn-asumir">Asumir</button>
   </section>
+
 </main>
 
 <footer>

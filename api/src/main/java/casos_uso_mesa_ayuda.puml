@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F9F5F3
+  BorderColor #7B1E3D
+  FontColor #7B1E3D
+}
+
+actor "Administrador" as admin
+actor "Técnico" as tecnico
+actor "Servidor Público" as usuario
+
+rectangle "Sistema Mesa de Ayuda" #FDF8F6 {
+  usecase "Registrar solicitud de soporte" as UC1
+  usecase "Consultar estado de ticket" as UC2
+  usecase "Asignar ticket a técnico" as UC3
+  usecase "Actualizar estado del ticket" as UC4
+  usecase "Cerrar ticket" as UC5
+  usecase "Gestionar usuarios y roles" as UC6
+  usecase "Gestionar departamentos" as UC7
+  usecase "Responder encuesta de servicio" as UC8
+  usecase "Consultar directorio y manuales" as UC9
+}
+
+usuario --> UC1
+usuario --> UC2
+usuario --> UC8
+usuario --> UC9
+tecnico --> UC2
+tecnico --> UC4
+tecnico --> UC5
+admin --> UC3
+admin --> UC6
+admin --> UC7
+@enduml

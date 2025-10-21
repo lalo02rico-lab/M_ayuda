@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estado del Ticket</title>
+    <link rel="stylesheet" th:href="@{/css/tecnico_estado.css}">
+</head>
+<body>
+
+<h2>Estado de mis Tickets</h2>
+
+<div class="estado-container">
+
+    <table class="estado-tabla">
+        <thead>
+        <tr>
+            <th>Folio</th>
+            <th>Solicitante</th>
+            <th>Área</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="t : ${tickets}">
+            <td th:text="${t.idTicket}"></td>
+            <td th:text="${t.preSolicitud.nombre}"></td>
+            <td th:text="${t.preSolicitud.departamento.nombreDepartamento}"></td>
+            <td th:text="${#dates.format(t.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+
+            <td>
+    <span th:switch="${t.idEstado}">
+        <span th:case="3">Asumido</span>
+        <span th:case="4">Pendiente</span>
+        <span th:case="5">Finalizado</span>
+        <span th:case="*">Desconocido</span>
+    </span>
+            </td>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<a th:href="@{'/tecnico/menu?idTecnico=' + ${idTecnico}}" class="btn-volver">⬅ Volver</a>
+
+</body>
+</html>

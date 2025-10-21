@@ -3,33 +3,34 @@ package mx.gob.mesadeayuda.api.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "USUARIOS")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_usuario;
+    @Column(name = "ID_USUARIO")
+    private Long idUsuario;
 
-    @Column(name = "nombre_usuario")
+    @Column(name = "NOMBRE_USUARIO", length = 100)
     private String nombreUsuario;
 
-    @Column(name = "correo", unique = true, length = 100) // <<-- ¡Añadido!
+    @Column(name = "CORREO", length = 100, unique = true)
     private String correo;
 
-    @Column(name = "contrasena")
+    @Column(name = "CONTRASENA", length = 100)
     private String contrasena;
 
     @ManyToOne
-    @JoinColumn(name = "id_rol", referencedColumnName = "id_rol")
+    @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL")
     private Rol rol;
 
-    // Getters y Setters
-    public Long getId_usuario() {
-        return id_usuario;
+    // --- Getters y Setters ---
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombreUsuario() {
@@ -40,11 +41,11 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getCorreo() { // <<-- ¡Añadido!
+    public String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) { // <<-- ¡Añadido!
+    public void setCorreo(String correo) {
         this.correo = correo;
     }
 

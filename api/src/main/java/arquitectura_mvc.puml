@@ -1,0 +1,48 @@
+@startuml
+' =====================================================
+'  DIAGRAMA MVC – ESTRUCTURA DE CAPAS DEL SISTEMA
+' =====================================================
+skinparam backgroundColor #FFFFFF
+skinparam classBorderColor #B48954
+skinparam classBackgroundColor #F9F5F3
+skinparam arrowColor #7B1E3D
+
+package "Controller" #FFF5F1 {
+  class SoporteController {
+    +solicitarSoporte()
+    +guardarTicket()
+    +verTickets()
+  }
+}
+
+package "Repository" #F4ECE6 {
+  interface UsuarioRepository
+  interface RolRepository
+  interface TicketRepository
+  interface CatDepartamentoRepository
+  interface PreSolicitudRepository
+  interface DirectorioRepository
+}
+
+package "Model" #F9F5F3 {
+  class Usuario
+  class Rol
+  class Ticket
+  class CatDepartamento
+  class PreSolicitud
+  class Directorio
+}
+
+SoporteController --> UsuarioRepository
+SoporteController --> TicketRepository
+SoporteController --> CatDepartamentoRepository
+SoporteController --> PreSolicitudRepository
+SoporteController --> DirectorioRepository
+
+UsuarioRepository --> Usuario
+RolRepository --> Rol
+TicketRepository --> Ticket
+CatDepartamentoRepository --> CatDepartamento
+PreSolicitudRepository --> PreSolicitud
+DirectorioRepository --> Directorio
+@enduml

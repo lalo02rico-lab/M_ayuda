@@ -1,0 +1,251 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+/* ====== ENCABEZADO ====== */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 5px 40px;
+    border-bottom: 2px solid #b48954;
+    height: 85px;
+}
+
+.topbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar .logo img {
+    width: 70px;
+    height: auto;
+}
+
+.topbar h1 {
+    font-size: 14px;
+    color: #7b1e3d;
+    margin: 0;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.menu a:hover {
+    color: #7b1e3d;
+}
+
+.menu a.logout {
+    background-color: #7b1e3d;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+/* ====== LAYOUT GENERAL ====== */
+main {
+    display: flex;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 240px;
+    background: #f4f4f4;
+    padding: 25px 20px;
+    min-height: calc(100vh - 85px);
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+}
+
+.sidebar .admin-avatar {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.sidebar .admin-avatar img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+.sidebar .admin-avatar h2 {
+    font-size: 14px;
+    color: #7b1e3d;
+    margin-top: 8px;
+    font-weight: 700;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* ====== CONTENIDO PRINCIPAL ====== */
+.content {
+    flex: 1;
+    padding: 30px 40px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header-section h2 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.search-input {
+    padding: 6px 10px;
+    width: 220px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* ====== TABLA ====== */
+.table-container {
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+.tickets-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.tickets-table th, .tickets-table td {
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.tickets-table th {
+    background-color: #7b1e3d;
+    color: #fff;
+    font-weight: 600;
+}
+
+.tickets-table tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.tickets-table td {
+    color: #333;
+}
+
+/* ====== SELECT Y BOTONES ====== */
+.select-tecnico {
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    width: 130px;
+}
+
+.btn-asignar {
+    background-color: #7b1e3d;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.3s;
+}
+
+.btn-asignar:hover {
+    background-color: #9b3c59;
+}
+
+/* ====== MENSAJE VACÍO ====== */
+.no-tickets {
+    text-align: center;
+    margin-top: 40px;
+    color: #7b1e3d;
+    font-size: 16px;
+}
+
+/* ====== REGRESAR ====== */
+.back {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn-volver {
+    color: #7b1e3d;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+/* ================================
+   NIVEL DE ATENCIÓN (COLORES)
+================================ */
+
+.nivel {
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+/* BAJO (Verde) */
+.nivel-bajo {
+    background: #4CAF50;
+}
+
+/* MEDIO (Dorado) */
+.nivel-medio {
+    background: #B48954;
+}
+
+/* ALTO (Vino) */
+.nivel-alto {
+    background: #7B1E3D;
+}
+
+/* ====== FOOTER ====== */
+footer {
+    text-align: center;
+    background: #7b1e3d;
+    color: #fff;
+    padding: 6px 0;
+    font-size: 12px;
+}

@@ -1,0 +1,291 @@
+/* GENERAL */
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #F4F4F4;
+}
+
+/* HEADER */
+.header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.logo-gob {
+    height: 55px;
+}
+
+.logo-edomex {
+    height: 45px;
+}
+
+.btn-logout {
+    background: #B48954;
+    color: #FFFFFF;
+    padding: 10px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+}
+
+/* LAYOUT PRINCIPAL */
+.layout {
+    max-width: 1200px;
+    margin: 25px auto 0 auto;
+    display: flex;
+    gap: 25px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 280px;
+    background: #E2E2E2;
+    border-radius: 16px;
+    padding: 30px 25px;
+}
+
+.user-block {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.user-img {
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+.user-block h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #777;
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.side-menu a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.side-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: #555;
+}
+
+.side-menu a.active {
+    font-weight: 700;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+}
+
+.titulo {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* CONTENEDOR CENTRAL */
+.panel-container {
+    display: flex;
+    gap: 35px;
+}
+
+/* BOTONES CATEGORÍA */
+.categorias {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 35px;
+}
+
+.cat-btn {
+    width: 200px;
+    padding: 14px 10px;
+    font-size: 16px;
+    background: #FFFFFF;
+    border: 2px solid #B48954;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.cat-btn.activo {
+    background: #B48954;
+    color: #FFFFFF;
+}
+
+/* PANEL DERECHO */
+.panel-datos {
+    flex: 1;
+    background: #DADADA;
+    border-radius: 16px;
+    padding: 25px 28px;
+}
+
+/* SELECT ÁREA */
+#areaSelect {
+    width: 100%;
+    max-width: 420px;
+    padding: 10px 40px 10px 45px;
+    border-radius: 10px;
+    border: 1px solid #B3B3B3;
+    font-size: 14px;
+    background: #F5F5F5;
+    margin-bottom: 20px;
+}
+
+/* LISTA */
+.lista {
+    margin-top: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #B48954;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+
+.nombre {
+    width: 270px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.correo {
+    width: 260px;
+    font-size: 13px;
+}
+
+.extra {
+    width: 90px;
+    font-size: 13px;
+    text-align: right;
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.btn-accion {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* PANEL EDICIÓN */
+.panel-editar {
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 20px;
+    border: 1px solid #7B1E3D;
+}
+
+.panel-editar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.panel-editar input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #CCCCCC;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-guardar {
+    background: #7B1E3D;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-cancelar {
+    background: #B48954;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.oculto {
+    display: none;
+}
+
+/* BOTÓN DESCARGAR */
+.download-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-descargar {
+    background: #7B1E3D;
+    color: #FFFFFF;
+    padding: 12px 26px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+ background: none;
+   border-top: 3px solid var(--dorado);
+   text-align: center;
+   padding: 10px;
+   color: #333;
+   font-size: 14px;
+}

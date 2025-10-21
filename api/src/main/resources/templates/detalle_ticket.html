@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Ticket</title>
+    <link rel="stylesheet" th:href="@{/css/detalle.css}">
+</head>
+
+<body>
+
+<!-- HEADER SOLO CON CERRAR SESIÓN -->
+<header class="header">
+    <div class="header-container">
+        <img th:src="@{/img/logo_gobierno.png}">
+        <a href="/logout" class="btn-acceso">Cerrar sesión</a>
+    </div>
+    <div class="gold-line"></div>
+</header>
+
+<!-- CUERPO -->
+<main class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="user-card">
+            <img th:src="@{/img/logo_usuario.png}">
+            <p class="username">USUARIO</p>
+        </div>
+
+        <ul>
+            <li>Estado del ticket</li>
+            <li>Manuales</li>
+
+            <!-- BOTÓN VOLVER -->
+            <li>
+                <a href="javascript:history.back()" class="volver-link">← Volver</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <section class="content">
+
+        <!-- FECHA -->
+        <p class="fecha">
+            <span th:text="${#dates.format(ticket.fechaHora, 'dd MMM, HH:mm')}"></span>
+        </p>
+
+        <h2>Soporte</h2>
+
+        <!-- PANEL -->
+        <div class="panel">
+
+            <!-- DATOS -->
+            <div class="datos">
+
+                <p><span class="label">Solicitante:</span>
+                    <span class="value" th:text="${ticket.preSolicitud.nombre}"></span>
+                </p>
+
+                <p><span class="label">ID Ticket:</span>
+                    <span class="value" th:text="${ticket.idTicket}"></span>
+                </p>
+
+                <p><span class="label">Fecha:</span>
+                    <span class="value" th:text="${#dates.format(ticket.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
+                </p>
+            </div>
+
+            <!-- DESCRIPCIÓN -->
+            <div class="descripcion-box">
+                <p class="titulo-desc">DESCRIPCIÓN DEL PROBLEMA :</p>
+                <p class="descripcion" th:text="${ticket.descripcion}"></p>
+            </div>
+
+            <!-- MOSTRAR IMAGEN SI EXISTE -->
+            <div th:if="${ticket.rutaImagen != null}" style="margin-top:20px;">
+                <p><strong>Imagen adjunta:</strong></p>
+
+                <!-- 🔥 ESTA ES LA RUTA CORRECTA -->
+                <img th:src="@{'/' + ${ticket.rutaImagen.replaceAll('\\\\','/')}}"
+                     style="max-width: 350px; border-radius: 10px; border: 1px solid #ccc;">
+            </div>
+
+            <!-- ESTADO -->
+            <p><span class="label">Estado actual:</span>
+                <span class="value" th:switch="${ticket.idEstado}">
+                    <span th:case="1">Nuevo</span>
+                    <span th:case="2">Asignado</span>
+                    <span th:case="3">Asumido / En proceso</span>
+                    <span th:case="4">Pendiente</span>
+                    <span th:case="5">Finalizado</span>
+                </span>
+            </p>
+
+            <!-- BOTONES -->
+            <div class="acciones">
+
+                <form action="/tecnico/asumir" method="post">
+                    <input type="hidden" name="idTicket" th:value="${ticket.idTicket}">
+                    <input type="hidden" name="idTecnico" th:value="${idTecnico}">
+                    <button type="submit" class="btn verde">Asumir</button>
+                </form>
+
+                <form action="/tecnico/pendiente" method="post">
+                    <input type="hidden" name="idTicket" th:value="${ticket.idTicket}">
+                    <input type="hidden" name="idTecnico" th:value="${idTecnico}">
+                    <button type="submit" class="btn dorado">Pendiente</button>
+                </form>
+
+                <form action="/tecnico/finalizar" method="post">
+                    <input type="hidden" name="idTicket" th:value="${ticket.idTicket}">
+                    <input type="hidden" name="idTecnico" th:value="${idTecnico}">
+                    <button type="submit" class="btn vino">Finalizado</button>
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    ©2025 - Subdirección de desarrollo Tecnológico
+</footer>
+
+</body>
+</html>

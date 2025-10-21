@@ -1,0 +1,53 @@
+.estado-container {
+    width: 90%;
+    margin: 20px auto;
+}
+
+.estado-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.estado-tabla th {
+    background: #7B1E3D;
+    color: white;
+    padding: 12px;
+}
+
+.estado-tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.estado-nuevo {
+    color: blue;
+    font-weight: bold;
+}
+
+.estado-asignado {
+    color: purple;
+    font-weight: bold;
+}
+
+.estado-proceso {
+    color: orange;
+    font-weight: bold;
+}
+
+.estado-finalizado {
+    color: green;
+    font-weight: bold;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin: 20px;
+    padding: 8px 15px;
+    background: #7B1E3D;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}

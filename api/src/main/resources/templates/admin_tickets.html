@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Asignación de Tickets</title>
+  <link rel="stylesheet" th:href="@{/css/admin_tickets.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">
+    <img th:src="@{/img/logo_gobierno.png}" alt="Logo Edomex">
+  </div>
+  <nav class="menu">
+    <a href="#">Organigrama</a>
+    <a href="#">Directorio</a>
+    <a href="#">Manuales</a>
+    <a href="#">Preguntas</a>
+    <a href="#">Solicitud de Soporte</a>
+    <a href="/logout" class="logout">Cerrar sesión</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="admin-avatar">
+      <img th:src="@{/img/logo_usuario.png}" alt="Admin">
+      <h2>ADMINISTRADOR</h2>
+    </div>
+
+    <ul>
+      <li><a href="/admin/menu">Dashboard</a></li>
+      <li><a href="#">Gestión de servicios</a></li>
+      <li><a href="#">Gestor de contraseñas y VPN</a></li>
+      <li><a href="#">Manuales</a></li>
+      <li><a href="#">Reportes globales</a></li>
+      <li><a href="#">Alertas críticas</a></li>
+      <li><a href="#">Configuración del sistema</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="content">
+
+    <div class="header-section">
+      <h2>Asignación de tickets</h2>
+      <input type="text" placeholder=" Buscar..." class="search-input">
+    </div>
+
+    <!-- TABLA DE TICKETS -->
+    <div class="table-container" th:if="${!#lists.isEmpty(tickets)}">
+      <table class="tickets-table">
+
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Área</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+
+          <!-- 🔥 NUEVO -->
+          <th>Nivel</th>
+
+          <th>Técnico</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="t : ${tickets}">
+
+          <!-- Nombre del solicitante -->
+          <td th:text="${t.preSolicitud.nombre}"></td>
+
+          <!-- Departamento -->
+          <td th:text="${t.preSolicitud.departamento.nombreDepartamento}"></td>
+
+          <!-- Descripción -->
+          <td th:text="${t.descripcion}"></td>
+
+          <!-- Fecha -->
+          <td th:text="${#dates.format(t.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+
+          <!-- 🔥 NIVEL DE ATENCIÓN CON ESTILOS -->
+          <td>
+            <span class="nivel"
+                  th:classappend=" ${t.nivelAtencion == 'BAJO' ? 'nivel-bajo' :
+                                   (t.nivelAtencion == 'MEDIO' ? 'nivel-medio' : 'nivel-alto')} "
+                  th:text="${t.nivelAtencion}">
+            </span>
+          </td>
+
+          <!-- Selección de técnico -->
+          <td>
+            <form action="/admin/asignar" method="post">
+              <select name="idTecnico" class="form-select" required>
+                <option value="">Seleccionar</option>
+
+                <option th:each="tec : ${tecnicos}"
+                        th:value="${tec.idUsuario}"
+                        th:text="${tec.nombreUsuario}">
+                </option>
+              </select>
+          </td>
+
+          <!-- Estado -->
+          <td>
+            <span th:switch="${t.idEstado}">
+                <span th:case="1">Nuevo</span>
+                <span th:case="2">Asignado</span>
+                <span th:case="3">En proceso</span>
+                <span th:case="4">Pendiente</span>
+                <span th:case="5">Finalizado</span>
+            </span>
+          </td>
+
+          <!-- Botón asignar -->
+          <td>
+            <input type="hidden" name="idTicket" th:value="${t.idTicket}">
+            <button type="submit" class="btn-asignar">Asignar</button>
+            </form>
+          </td>
+
+        </tr>
+
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- NO HAY TICKETS -->
+    <div th:if="${#lists.isEmpty(tickets)}" class="no-tickets">
+      <p>No hay tickets nuevos para asignar.</p>
+    </div>
+
+    <div class="back">
+      <a href="/admin/menu" class="btn-volver">⬅ Regresar al Panel</a>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
+</body>
+</html>

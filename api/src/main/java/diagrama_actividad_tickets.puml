@@ -1,0 +1,35 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam activity {
+  StartColor #7B1E3D
+  EndColor #7B1E3D
+  BackgroundColor #F9F5F3
+  BorderColor #B48954
+  FontColor #7B1E3D
+}
+
+start
+:Servidor Público entra al módulo "Solicitud de Soporte";
+:Llena formulario (nombre, descripción, departamento);
+:Presiona "Guardar Datos";
+:Sistema genera Ticket con estado "Pendiente";
+:Ticket se envía al Administrador;
+
+if (Administrador disponible?) then (Sí)
+  :Administrador inicia sesión;
+  :Consulta tickets pendientes;
+  :Asigna técnico responsable;
+  :Cambia estado a "En proceso";
+  :Ticket aparece en el menú del Técnico;
+  :Técnico inicia sesión;
+  :Visualiza ticket asignado;
+  :Atiende solicitud / agrega comentarios;
+  :Actualiza estado del ticket a "Resuelto";
+  :Cierra ticket;
+  :Administrador verifica cierre;
+else (No)
+  :Ticket permanece en espera;
+endif
+
+stop
+@enduml

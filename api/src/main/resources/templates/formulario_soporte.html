@@ -2,56 +2,49 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="'Soporte ' + ${tipo}">Formulario de Soporte</title>
+  <title th:text="'Soporte ' + ${tipo.nombre}">Soporte Técnico</title>
   <link rel="stylesheet" href="/css/formulario.css">
 </head>
 <body>
 
 <header>
-  <div class="header-container">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+  <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-    <nav>
-      <ul>
-        <li><a href="#">Organigrama</a></li>
-        <li><a href="#">Directorio</a></li>
-        <li><a href="#">Manuales</a></li>
-        <li><a href="#">Preguntas</a></li>
-        <li><a href="/solicitud_soporte">Solicitud de Soporte</a></li>
-      </ul>
-    </nav>
-    <a href="/login" class="btn-acceso">Acceso</a>
-  </div>
 </header>
 
 <main>
-  <section class="formulario">
-    <h2 th:text="'SOPORTE ' + ${tipo}"></h2>
-    <h3>BIENVENIDO</h3>
+  <div class="formulario-container">
+    <h1 th:text="'SOPORTE ' + ${tipo.nombre}">SOPORTE TÉCNICO</h1>
+    <h2>BIENVENIDO</h2>
 
-    <form action="/ticket_generado" method="post">
-      <input type="hidden" name="nombre" th:value="${nombre}">
-      <input type="hidden" name="departamento" th:value="${departamento}">
-      <input type="hidden" name="tipo" th:value="${tipo}">
+    <p><strong>Nombre:</strong> <span th:text="${pre.nombre}">Servidor Público</span></p>
+    <p><strong>Departamento / Área:</strong> <span th:text="${pre.departamento.nombreDepartamento}">Área perteneciente</span></p>
+
+    <form th:action="@{/soporte/guardar_ticket}"
+          method="post"
+          class="formulario"
+          enctype="multipart/form-data">
+
+      <input type="hidden" name="idPre" th:value="${pre.idPre}">
+      <input type="hidden" name="idTipo" th:value="${tipo.idTipo}">
 
       <label for="descripcion">Descripción del problema:</label>
-      <textarea id="descripcion" name="descripcion" required></textarea>
+      <textarea id="descripcion" name="descripcion"
+                placeholder="Describe brevemente el problema..." required></textarea>
 
-      <label for="fechaHora">Fecha y hora:</label>
-      <input type="datetime-local" id="fechaHora" name="fechaHora" required>
+      <!-- INPUT DE IMAGEN -->
+      <label>Adjuntar evidencia (opcional):</label>
+      <input type="file" name="archivo" accept="image/*">
 
-      <div class="botones">
-        <a href="/solicitud_soporte" class="btn-cancelar">Cancelar</a>
-        <button type="submit" class="btn-enviar">Solicitar soporte</button>
-      </div>
+      <button type="submit" class="btn-solicitar">Solicitar soporte</button>
+      <a href="/soporte/categorias" class="btn-cancelar">Cancelar</a>
     </form>
 
-  </section>
+  </div>
 </main>
 
 <footer>
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
 </body>

@@ -52,6 +52,18 @@ nav ul li a.activo {
   padding: 6px 14px;
   border-radius: 4px;
 }
+btn-solicitud {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0;              /* No padding para que no parezca botón */
+  border: none;            /* Quita líneas o bordes */
+}
+
+.btn-solicitud:hover {
+  color: var(--vino);       /* Para que se ponga vino como los demás links */
+  text-decoration: none;    /* Sin subrayado al pasar el mouse */
+}
 
 /* Hero title */
 .hero {
@@ -110,9 +122,12 @@ nav ul li a.activo {
 
 /* Footer */
 footer {
-  background-color: #7B1E3D;
-  color: white;
-  padding: 10px;
-  font-size: 14px;
+ background: none;
+   border-top: 3px solid var(--dorado);
+   text-align: center;
+   padding: 10px;
+   color: #333;
+   font-size: 14px;
+}
 
 }

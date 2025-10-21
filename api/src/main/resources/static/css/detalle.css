@@ -1,0 +1,168 @@
+:root {
+    --vino: #7B1E3D;
+    --verde: #3D7B3F;
+    --dorado: #C49A67;
+    --gris: #E0E0E0;
+    --gris-panel: #EBEBEB;
+    --texto: #333;
+}
+
+/* GENERAL */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #FAFAFA;
+}
+
+/* HEADER */
+.header-container {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+}
+
+.header-container img {
+    height: 60px;
+}
+
+.btn-acceso {
+    background: var(--dorado);
+    padding: 8px 20px;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.gold-line {
+    height: 5px;
+    background: var(--dorado);
+}
+
+/* LAYOUT */
+.layout {
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #DCDCDC;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+}
+
+.user-card img {
+    width: 90px;
+}
+
+.username {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.sidebar ul {
+    padding: 0;
+    list-style: none;
+    margin-top: 25px;
+}
+
+.sidebar li {
+    padding: 18px 0;
+    border-bottom: 2px solid #BFBFBF;
+    color: #444;
+}
+
+.volver-link {
+    text-decoration: none;
+    color: var(--vino);
+    font-weight: bold;
+}
+
+/* CONTENIDO */
+.content {
+    flex: 1;
+}
+
+.fecha {
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.content h2 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* PANEL */
+.panel {
+    background: var(--gris-panel);
+    padding: 35px;
+    border-radius: 20px;
+}
+
+/* DATOS */
+.datos p {
+    margin: 12px 0;
+    font-size: 15px;
+}
+
+.label {
+    color: #777;
+    margin-right: 10px;
+}
+
+.value {
+    font-weight: bold;
+    color: #222;
+}
+
+/* DESCRIPCIÓN */
+.descripcion-box {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+.titulo-desc {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* BOTONES */
+.acciones {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.verde { background: var(--verde); }
+.dorado { background: var(--dorado); }
+.vino   { background: var(--vino); }
+
+/* FOOTER */
+footer {
+ background: none;
+   border-top: 3px solid var(--dorado);
+   text-align: center;
+   padding: 10px;
+   color: #333;
+   font-size: 14px;
+}

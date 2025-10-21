@@ -2,94 +2,159 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Directorio - Mesa de Ayuda</title>
+  <title>Directorio</title>
   <link rel="stylesheet" href="/css/directorio.css">
 </head>
-<body>
-<!-- HEADER -->
-<header>
-  <div class="header-container">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-    <nav>
-      <ul>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/organigrama">Organigrama</a></li>
-        <li><a href="/directorio" class="activo">Directorio</a></li>
-        <li><a href="#">Manuales</a></li>
-        <li><a href="#">Preguntas</a></li>
-        <li><a href="#">Solicitud de Soporte</a></li>
-        <li><a href="/login" class="btn-acceso">Acceso</a></li>
-      </ul>
+<body>
+
+<!-- 🔹 ENCABEZADO INSTITUCIONAL -->
+<header class="header">
+  <div class="top-bar">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México" class="logo-gem">
+
+    <nav class="menu">
+      <li><a href="/">Inicio</a></li>
+      <a th:href="@{/organigrama}">Organigrama</a>
+      <a th:href="@{/directorio}" class="activo">Directorio</a>
+      <a th:href="@{/manuales}">Manuales</a>
+      <a th:href="@{/preguntas}">Preguntas</a>
+      <a href="/soporte/solicitud" class="btn-solicitud">Solicitud de Soporte</a>
+      <a th:href="@{/login}" class="btn-acceso">Acceso</a>
     </nav>
   </div>
 </header>
 
-<!-- TÍTULO -->
-<section class="hero">
+<!-- 🔹 CONTENIDO -->
+<main class="contenedor">
   <h1>DIRECTORIO</h1>
-</section>
 
-<!-- TABLA -->
-<main class="contenedor-tabla">
-  <!-- FORMULARIO para filtros -->
-  <form method="get" th:action="@{/directorio}">
+  <!-- Mensaje de actualización -->
+  <div th:if="${mensaje != null}" class="alert-success" th:text="${mensaje}"></div>
+
+  <!-- 🔍 FILTRO GENERAL -->
+  <form th:action="@{/directorio}" method="get" class="buscador-general">
+    <input type="text" name="filtro" placeholder="Buscar por cualquier campo..." th:value="${filtro}">
+    <button type="submit" class="btn-buscar">Buscar</button>
+    <a th:href="@{/directorio}" class="btn-limpiar">Limpiar</a>
+  </form>
+
+  <div class="tabla-container">
     <table>
       <thead>
       <tr>
-        <th>Dependencia<br>
-          <input type="text" name="dependencia" th:value="${dependencia}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
-        </th>
-        <th>Profesión<br>
-          <input type="text" name="profesion" th:value="${profesion}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
-        </th>
-        <th>Nombre<br>
-          <input type="text" name="nombre" th:value="${nombre}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
-        </th>
-        <th>Cargo<br>
-          <input type="text" name="cargo" th:value="${cargo}" placeholder="Buscar..." onkeypress="if(event.key === 'Enter'){this.form.submit();}">
-        </th>
+        <th>Dependencia</th>
+        <th>Profesión</th>
+        <th>Nombre</th>
+        <th>Cargo</th>
+        <th>Acciones</th>
       </tr>
       </thead>
-      <tbody>
-      <tr th:each="registro : ${pagina.content}">
-        <td th:text="${registro.dependencia}"></td>
-        <td th:text="${registro.profesion}"></td>
-        <td th:text="${registro.nombre}"></td>
-        <td th:text="${registro.cargo}"></td>
+
+      <tbody id="tablaDirectorio">
+      <tr th:each="c : ${contactos}">
+        <td th:text="${c.dependencia}">Secretaría General de Gobierno</td>
+        <td th:text="${c.profesion}">Licenciado en Derecho</td>
+        <td th:text="${c.nombre}">Juan Pérez</td>
+        <td th:text="${c.cargo}">Director General</td>
+        <td>
+          <button class="btn-editar" type="button"
+                  th:onclick="'abrirModal(' + ${c.idDirectorio} + ')'" >
+
+          Editar
+          </button>
+        </td>
+
+
       </tr>
       </tbody>
     </table>
-
-
-  <div style="margin-top:10px;">
-    <button type="submit" class="btn-buscar">Buscar</button>
-    <a href="/directorio" class="btn-limpiar">Limpiar filtros</a>
   </div>
-  </form>
 
-  <!-- PAGINACIÓN dinámica -->
+  <!--  PAGINACIÓN DINÁMICA -->
   <div class="paginacion">
-    <span th:if="${pagina.number > 0}">
-      <a th:href="@{|/directorio?page=${pagina.number-1}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}">«</a>
-    </span>
+    <a th:if="${currentPage > 0}"
+       th:href="@{'/directorio'(page=${currentPage - 1}, filtro=${filtro})}"
+       class="nav">&laquo;</a>
 
-    <span th:each="i : ${#numbers.sequence(pagina.number > 2 ? pagina.number-2 : 0, (pagina.number+2) < pagina.totalPages-1 ? (pagina.number+2) : pagina.totalPages-1)}">
-      <a th:href="@{|/directorio?page=${i}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}"
-         th:text="${i+1}"
-         th:classappend="${i == pagina.number} ? 'activo' : ''"></a>
-    </span>
+    <a th:each="i : ${#numbers.sequence(startPage, endPage)}"
+       th:href="@{'/directorio'(page=${i}, filtro=${filtro})}"
+       th:classappend="${i == currentPage} ? 'activo' : ''"
+       th:text="${i + 1}">1</a>
 
-    <span th:if="${pagina.number < pagina.totalPages-1}">
-      <a th:href="@{|/directorio?page=${pagina.number+1}&size=${pagina.size}&dependencia=${dependencia}&profesion=${profesion}&nombre=${nombre}&cargo=${cargo}|}">»</a>
-    </span>
+    <a th:if="${currentPage + 1 < totalPages}"
+       th:href="@{'/directorio'(page=${currentPage + 1}, filtro=${filtro})}"
+       class="nav">&raquo;</a>
   </div>
 </main>
 
-<!-- FOOTER -->
-<footer>
-  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+<!--  PIE DE PÁGINA -->
+<footer class="footer">
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
 </footer>
+
+
+<!-- 🔒 Modal de autorización -->
+<div id="modalAuth" class="modal">
+  <div class="modal-content">
+    <h2>Autorización requerida</h2>
+    <p>Ingrese las credenciales del administrador</p>
+
+    <input type="email" id="adminCorreo" placeholder="Correo del administrador">
+    <input type="password" id="adminPass" placeholder="Contraseña">
+
+    <p id="errorMsg" class="error"></p>
+
+    <div class="modal-buttons">
+      <button onclick="validarAdmin()" class="btn-guardar">Continuar</button>
+      <button onclick="cerrarModal()" class="btn-cancelar">Cancelar</button>
+    </div>
+
+    <!-- Guarda el ID temporalmente -->
+    <input type="hidden" id="idTemp">
+  </div>
+</div>
+
+<script>
+  function abrirModal(id) {
+      document.getElementById("modalAuth").style.display = "block";
+      document.getElementById("idTemp").value = id;
+  }
+
+  function cerrarModal() {
+      document.getElementById("modalAuth").style.display = "none";
+      document.getElementById("adminCorreo").value = "";
+      document.getElementById("adminPass").value = "";
+      document.getElementById("errorMsg").innerText = "";
+  }
+
+  // 🔥 VALIDAR CREDENCIALES EN SPRING
+  function validarAdmin() {
+      let correo = document.getElementById("adminCorreo").value;
+      let pass = document.getElementById("adminPass").value;
+      let id = document.getElementById("idTemp").value;
+
+      fetch('/validar-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              correo: correo,
+              contrasena: pass
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+
+          if (data.autorizado === true) {
+              window.location.href = "/directorio/editar/" + id;
+          } else {
+              document.getElementById("errorMsg").innerText = "Credenciales incorrectas";
+          }
+
+      });
+  }
+</script>
+
+
 </body>
 </html>

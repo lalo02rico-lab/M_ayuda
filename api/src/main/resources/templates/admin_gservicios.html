@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Servicios</title>
+  <link rel="stylesheet" href="/css/admin_Gservicios.css">
+</head>
+
+<body>
+
+<!-- ============= HEADER COMO EN LA IMAGEN ============= -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <img src="/img/logo_gobierno.png" class="logo-gob">
+
+    </div>
+
+    <div class="header-right">
+      <a href="/logout" class="btn-logout">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============= CONTENIDO PRINCIPAL ============= -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="user-block">
+      <img src="/img/logo_usuario.png" class="user-img">
+      <h2>ADMINISTRADOR</h2>
+    </div>
+
+    <nav class="side-menu">
+      <a href="/admin/menu">Dashboard</a>
+      <a href="/admin/gestion-servicios" class="active">Gestión de servicios</a>
+      <a href="#">Contraseñas y VPN</a>
+      <a href="#">Manuales</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <h1 class="titulo">Gestión de servicios</h1>
+
+    <div class="panel-container">
+
+      <!-- BOTONES DE CATEGORÍA -->
+      <div class="categorias">
+        <a th:href="@{'/admin/gestion-servicios'(categoria='resguardos')}">
+          <button class="cat-btn"
+                  th:classappend="${categoria=='resguardos'} ? 'activo' : ''">
+            Resguardos
+          </button>
+        </a>
+
+        <a th:href="@{'/admin/gestion-servicios'(categoria='correos')}">
+          <button class="cat-btn"
+                  th:classappend="${categoria=='correos'} ? 'activo' : ''">
+            Correos
+          </button>
+        </a>
+
+        <button class="cat-btn">Licencias</button>
+        <button class="cat-btn">Extensiones</button>
+        <button class="cat-btn">Inventarios</button>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="panel-datos">
+
+        <!-- SELECT DEPARTAMENTOS -->
+        <form method="get" th:action="@{'/admin/gestion-servicios'}" id="filtroForm">
+          <input type="hidden" name="categoria" value="correos">
+
+          <select id="areaSelect" name="area"
+                  onchange="document.getElementById('filtroForm').submit()">
+            <option value="">Departamentos</option>
+
+            <th:block th:each="a : ${areas}">
+              <option th:value="${a}"
+                      th:text="${a}"
+                      th:selected="${a==areaSeleccionada}">
+              </option>
+            </th:block>
+          </select>
+        </form>
+
+        <!-- LISTA DE REGISTROS -->
+        <div class="lista">
+
+          <div class="item" th:each="d : ${datos}">
+            <span class="nombre" th:text="${d.nombreCompleto}"></span>
+            <span class="correo" th:text="${d.correo}"></span>
+            <span class="extra" th:text="${d.extension}"></span>
+
+            <div class="acciones">
+              <button type="button" class="btn-accion"
+                      th:attr="
+                        data-id=${d.id},
+                        data-nombre=${d.nombreCompleto},
+                        data-correo=${d.correo},
+                        data-extension=${d.extension},
+                        data-puesto=${d.puesto},
+                        data-area=${d.area}
+                      "
+                      onclick="abrirEditor(this)">
+                ✏️
+              </button>
+
+              <form th:action="@{'/admin/correos/eliminar/' + ${d.id}}"
+                    method="post"
+                    onsubmit="return confirm('¿Eliminar registro?');">
+                <button class="btn-accion delete">🗑️</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PANEL EDICIÓN -->
+        <div id="panel-editar" class="panel-editar oculto">
+          <h3>Editar registro</h3>
+
+          <form method="post" action="/admin/correos/actualizar">
+
+            <input type="hidden" id="edit-id" name="id">
+
+            <label>Nombre completo</label>
+            <input type="text" id="edit-nombre" name="nombreCompleto">
+
+            <label>Correo</label>
+            <input type="email" id="edit-correo" name="correo">
+
+            <label>Extensión</label>
+            <input type="text" id="edit-extension" name="extension">
+
+            <label>Puesto</label>
+            <input type="text" id="edit-puesto" name="puesto">
+
+            <label>Área</label>
+            <input type="text" id="edit-area" name="area">
+
+            <div class="edit-buttons">
+              <button type="submit" class="btn-guardar">Guardar cambios</button>
+              <button type="button" class="btn-cancelar" onclick="cerrarEditor()">Cancelar</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTÓN DESCARGAR -->
+    <div class="download-container">
+      <a href="/admin/correos/exportar-todo">
+        <button class="btn-descargar">Descargar</button>
+      </a>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-bar"></div>
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
+
+<script>
+  function abrirEditor(btn) {
+    document.getElementById("panel-editar").classList.remove("oculto");
+
+    document.getElementById("edit-id").value = btn.dataset.id;
+    document.getElementById("edit-nombre").value = btn.dataset.nombre;
+    document.getElementById("edit-correo").value = btn.dataset.correo;
+    document.getElementById("edit-extension").value = btn.dataset.extension;
+    document.getElementById("edit-puesto").value = btn.dataset.puesto;
+    document.getElementById("edit-area").value = btn.dataset.area;
+
+    document.getElementById("panel-editar").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function cerrarEditor() {
+    document.getElementById("panel-editar").classList.add("oculto");
+  }
+</script>
+
+</body>
+</html>

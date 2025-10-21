@@ -2,46 +2,41 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Generado</title>
   <link rel="stylesheet" href="/css/ticket.css">
 </head>
 <body>
 
 <header>
-  <div class="header-container">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+  <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-    <nav>
-      <ul>
-        <li><a href="#">Organigrama</a></li>
-        <li><a href="#">Directorio</a></li>
-        <li><a href="#">Manuales</a></li>
-        <li><a href="#">Preguntas</a></li>
-        <li><a href="/solicitud_soporte">Solicitud de Soporte</a></li>
-      </ul>
-    </nav>
-    <a href="/login" class="btn-acceso">Acceso</a>
-  </div>
 </header>
 
 <main>
-  <section class="ticket">
-    <p><strong>Fecha/Hora:</strong> <span th:text="${fechaHora}">Dia/mes/año, hora.</span></p>
-    <p><strong>Nombre:</strong> <span th:text="${nombre}">Servidor Público</span></p>
-    <p><strong>Departamento:</strong> <span th:text="${departamento}">Área perteneciente</span></p>
-    <p><strong>Descripción del soporte:</strong> <span th:text="${descripcion}">Descripción del problema que tenga</span></p>
+  <div class="ticket-container">
+    <h1>🎫 Ticket Generado Correctamente</h1>
+    <p><strong>Nombre:</strong> <span th:text="${pre.nombre}"></span></p>
+    <p><strong>Departamento:</strong> <span th:text="${pre.departamento.nombreDepartamento}"></span></p>
+    <p><strong>Categoría:</strong> <span th:text="${tipo.nombre}"></span></p>
+    <p><strong>Descripción:</strong> <span th:text="${ticket.descripcion}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${#dates.format(ticket.fechaHora, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Estado:</strong> NUEVO</p>
 
-    <div class="decoracion"></div>
+    <a th:href="@{'/soporte/pdf/' + ${ticket.idTicket}}"
+       class="btn-solicitar"
+       style="display:block; margin-top:20px; text-align:center;">
+      📄 Descargar ticket en PDF
+    </a>
 
-    <form action="/solicitud_soporte">
-      <button class="btn-cerrar">CERRAR</button>
-    </form>
-  </section>
+
+
+    <a href="/" class="btn-cerrar">Cerrar</a>
+
+  </div>
 </main>
 
 <footer>
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
 </body>

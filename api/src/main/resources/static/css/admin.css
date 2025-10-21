@@ -1,0 +1,195 @@
+/* ============================
+   GENERAL
+=============================== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #f3f3f3;
+    font-family: "Poppins", sans-serif;
+    color: #333;
+}
+
+/* ============================
+   HEADER
+=============================== */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 15px 50px;
+    border-bottom: 2px solid #ddd;
+}
+
+.logo-container img {
+    height: 65px;
+}
+
+.btn-acceso {
+    background: #B48954;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-acceso:hover {
+    background: #8a6e3e;
+}
+
+/* ============================
+   LAYOUT PRINCIPAL
+=============================== */
+.layout {
+    display: flex;
+    gap: 30px;
+    padding: 40px;
+}
+
+/* ============================
+   SIDEBAR
+=============================== */
+.sidebar {
+    width: 22%;
+    background: #e4e4e4;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.icono-usuario {
+    width: 80px;
+    margin-bottom: 15px;
+}
+
+.sidebar h3 {
+    font-weight: 700;
+    color: #7B1E3D;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.menu li {
+    padding: 18px 0;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+.menu a {
+    color: #444;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.menu a:hover {
+    color: #7B1E3D;
+}
+
+/* ============================
+   PANEL PRINCIPAL
+=============================== */
+.panel-principal {
+    flex: 1;
+    background: #f1f1f1;
+    padding: 50px;
+    border-radius: 20px;
+    min-height: 500px;
+}
+
+.panel-principal h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+/* ============================
+   TARJETAS (ESTILO EXACTO)
+=============================== */
+.grid-contenido {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    justify-items: center;
+}
+
+.tarjeta {
+    background: white;
+    width: 180px;          /* CUADRO PEQUEÑO */
+    height: 125px;         /* CUADRO PEQUEÑO */
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #B48954;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+/* ICONO GRANDE */
+.tarjeta img {
+    width: 150px;          /* ICONO GRANDE */
+    height: auto;
+}
+
+/* ============================
+   NOTIFICACIÓN DE TICKETS
+=============================== */
+.tarjeta-tickets {
+    position: absolute;   /* 🔥 SE MUEVE A DONDE QUIERAS */
+    top: 110px;            /* 🔼 ARRIBA */
+    right: 20px;          /* ▶️ DERECHA */
+
+    background: white;
+    width: 150px;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 2px solid #7B1E3D;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+
+.tarjeta-tickets p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+.tarjeta-tickets h2 {
+    margin: 8px 0 12px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #7B1E3D;
+}
+
+.btn-revisar {
+    background: #7B1E3D;
+    padding: 8px 25px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-revisar:hover {
+    background: #5a1327;
+}
+
+/* ============================
+   FOOTER
+=============================== */
+.footer {
+ background: none;
+   border-top: 3px solid var(--dorado);
+   text-align: center;
+   padding: 10px;
+   color: #333;
+   font-size: 14px;
+}

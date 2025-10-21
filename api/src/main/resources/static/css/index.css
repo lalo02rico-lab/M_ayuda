@@ -51,6 +51,20 @@ nav ul li a:hover {
   padding: 6px 14px;
   border-radius: 4px;
 }
+/* --- Solicitud de soporte como enlace normal del menú --- */
+.btn-solicitud {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0;              /* No padding para que no parezca botón */
+  border: none;            /* Quita líneas o bordes */
+}
+
+.btn-solicitud:hover {
+  color: var(--vino);       /* Para que se ponga vino como los demás links */
+  text-decoration: none;    /* Sin subrayado al pasar el mouse */
+}
+
 
 /* HERO TITLE */
 .hero {
@@ -100,22 +114,14 @@ nav ul li a:hover {
 
 /* FOOTER */
 footer {
-  background: var(--dorado);
-  text-align: center;
-  padding: 14px;
-  margin-top: 50px;
-  color: #fff;
-  font-size: 14px;
-  position: relative;
+ background: none;
+   border-top: 3px solid var(--dorado);
+   text-align: center;
+   padding: 10px;
+   color: #333;
+   font-size: 14px;
 }
 
-footer {
-  background-color: #7B1E3D;
-  color: white;
-  padding: 10px;
-  font-size: 14px;
-
-}
 
 
 html, body {

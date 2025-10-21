@@ -1,14 +1,14 @@
 package mx.gob.mesadeayuda.api.controller;
 
+import jakarta.servlet.http.HttpSession;
 import mx.gob.mesadeayuda.api.model.Usuario;
 import mx.gob.mesadeayuda.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.text.Normalizer;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
@@ -16,64 +16,51 @@ public class LoginController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // --- Función para normalizar textos (quita acentos, espacios, mayúsculas)
-    private String normalizar(String texto) {
-        if (texto == null) return "";
-        return Normalizer.normalize(texto, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "") // quita acentos
-                .trim()
-                .toLowerCase();
-    }
-
-    // Mostrar el login
+    // === Mostrar la vista del login ===
     @GetMapping("/login")
     public String mostrarLogin() {
-        return "login"; // templates/login.html
+        return "login";
     }
 
-    // Procesar el login
+    // === Procesar inicio de sesión ===
     @PostMapping("/login")
-    public String procesarLogin(
-            @RequestParam String correo, // <<-- CAMBIADO: Recibe 'correo'
-            @RequestParam String password,
-            @RequestParam String rol,
+    public String iniciarSesion(
+            @RequestParam("correo") String correo,
+            @RequestParam("contrasena") String contrasena,
+            HttpSession session,
             Model model) {
 
-        // CAMBIADO: Usar el nuevo método del repositorio findByCorreoAndContrasena
-        Optional<Usuario> usuarioOpt =
-                usuarioRepository.findByCorreoAndContrasena(correo, password);
-        System.out.println("DEBUG: Buscando usuario con Correo='" + correo + "' y Contraseña='" + password + "'");
+        Usuario usuario = usuarioRepository.findByCorreoAndContrasena(correo, contrasena);
 
-        if (usuarioOpt.isPresent()) {
-            Usuario usuario = usuarioOpt.get();
-            String rolBD = usuario.getRol() != null ? usuario.getRol().getNombre() : "SIN ROL";
-
-            System.out.println("Desde BD: user=" + usuario.getNombreUsuario()
-                    + " | pass=" + usuario.getContrasena()
-                    + " | rolBD=" + rolBD
-                    + " | rolForm=" + rol);
-
-            // Compara normalizando
-            if (!normalizar(rolBD).equals(normalizar(rol))) {
-                model.addAttribute("error", "El rol seleccionado no corresponde al usuario. (BD=" + rolBD + ")");
-                return "login";
-            }
-
-            model.addAttribute("usuario", usuario);
-
-            // Redirección según rol normalizado
-            String rolNorm = normalizar(rolBD);
-            if ("administrador".equals(rolNorm)) {
-                return "menu_admin";
-            } else if ("tecnico".equals(rolNorm)) {
-                return "menu_tecnico";
-            } else {
-                return "index"; // Servidor Público
-            }
-
-        } else {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
+        if (usuario == null) {
+            model.addAttribute("error", "Credenciales incorrectas");
             return "login";
         }
+
+        // Guardar el usuario en sesión
+        session.setAttribute("usuario", usuario);
+
+        // Obtener el nombre del rol desde la entidad Rol
+        String rol = usuario.getRol().getNombre();
+
+        // Redirigir según el tipo de usuario
+        if (rol.equalsIgnoreCase("ADMINISTRADOR")) {
+            return "redirect:/admin/menu";   // ✅ URL correcta
+        } else if (rol.equalsIgnoreCase("TECNICO")) {
+            return "redirect:/tecnico/menu?idTecnico=" + usuario.getIdUsuario();
+        }
+
+
+        // Si no tiene rol válido, regresar al login
+        model.addAttribute("error", "Rol no autorizado");
+        session.invalidate();
+        return "login";
+    }
+
+    // === Cerrar sesión ===
+    @GetMapping("/logout")
+    public String cerrarSesion(HttpSession session) {
+        session.invalidate(); // elimina los datos de sesión
+        return "redirect:/login"; // redirige al login
     }
 }

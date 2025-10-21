@@ -3,26 +3,36 @@ package mx.gob.mesadeayuda.api.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLES")
 public class Rol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_rol;
+    @Column(name = "ID_ROL", nullable = false, updatable = false)
+    private Long idRol;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(name = "NOMBRE", nullable = false, length = 100)
     private String nombre;
 
-    @Column(length = 200)
+    @Column(name = "DESCRIPCION", length = 255)
     private String descripcion;
 
-    // --- Getters y Setters ---
-    public Long getId_rol() {
-        return id_rol;
+    // ====== CONSTRUCTORES ======
+    public Rol() {
     }
 
-    public void setId_rol(Long id_rol) {
-        this.id_rol = id_rol;
+    public Rol(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
+    // ====== GETTERS Y SETTERS ======
+    public Long getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(Long idRol) {
+        this.idRol = idRol;
     }
 
     public String getNombre() {
@@ -39,5 +49,15 @@ public class Rol {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    // ====== MÉTODO EXTRA (OPCIONAL, PARA DEBUG O LOGS) ======
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "idRol=" + idRol +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
 }
