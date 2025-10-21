@@ -90,6 +90,17 @@ input {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
 .btn-guardar {
     background-color: #7B1E3D;
     color: white;

@@ -29,25 +29,41 @@
     <h2 class="titulo">SOLICITUD DE SOPORTE</h2>
 
     <div class="categorias">
-        <a th:href="@{/categoria/Ofimática}" class="card">
+        <!-- OFIMÁTICA -->
+        <form th:action="@{/categoria/OFIMATICA}" method="get" class="card">
+            <input type="hidden" name="nombre" th:value="${nombre}">
+            <input type="hidden" name="departamento" th:value="${departamento}">
             <h3>OFIMÁTICA</h3>
             <p>Atención a incidencias relacionadas con el uso de herramientas de oficina.</p>
-        </a>
+            <button type="submit">Seleccionar</button>
+        </form>
 
-        <a th:href="@{/categoria/Correo}" class="card">
+        <!-- CORREO -->
+        <form th:action="@{/categoria/CORREO}" method="get" class="card">
+            <input type="hidden" name="nombre" th:value="${nombre}">
+            <input type="hidden" name="departamento" th:value="${departamento}">
             <h3>CORREO</h3>
             <p>Recuperación de contraseñas, recepción de mensajes, solución de acceso o bloqueo.</p>
-        </a>
+            <button type="submit">Seleccionar</button>
+        </form>
 
-        <a th:href="@{/categoria/Resguardo}" class="card">
+        <!-- RESGUARDO -->
+        <form th:action="@{/categoria/RESGUARDO}" method="get" class="card">
+            <input type="hidden" name="nombre" th:value="${nombre}">
+            <input type="hidden" name="departamento" th:value="${departamento}">
             <h3>RESGUARDO</h3>
             <p>Gestión y control de los equipos de cómputo y dispositivos asignados al personal.</p>
-        </a>
+            <button type="submit">Seleccionar</button>
+        </form>
 
-        <a th:href="@{/categoria/Técnico}" class="card">
+        <!-- TÉCNICO -->
+        <form th:action="@{/categoria/TECNICO}" method="get" class="card">
+            <input type="hidden" name="nombre" th:value="${nombre}">
+            <input type="hidden" name="departamento" th:value="${departamento}">
             <h3>TÉCNICO</h3>
             <p>Atención a incidencias relacionadas con fallas de hardware, software o conectividad.</p>
-        </a>
+            <button type="submit">Seleccionar</button>
+        </form>
     </div>
 </main>
 

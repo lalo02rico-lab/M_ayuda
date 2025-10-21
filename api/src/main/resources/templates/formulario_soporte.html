@@ -33,17 +33,17 @@
     <form action="/ticket_generado" method="post">
       <input type="hidden" name="nombre" th:value="${nombre}">
       <input type="hidden" name="departamento" th:value="${departamento}">
-      <input type="hidden" name="tipo" th:value="${tipo}">
+
 
       <label for="descripcion">Descripción del problema:</label>
-      <textarea id="descripcion" name="descripcion" required></textarea>
+      <textarea name= "descripcion" required></textarea>
 
       <label for="fechaHora">Fecha y hora:</label>
-      <input type="datetime-local" id="fechaHora" name="fechaHora" required>
+      <input type="datetime-local"  name="fechaHora" required>
 
       <div class="botones">
         <a href="/solicitud_soporte" class="btn-cancelar">Cancelar</a>
-        <button type="submit" class="btn-enviar">Solicitar soporte</button>
+        <button type="submit" >Solicitar soporte</button>
       </div>
     </form>
 

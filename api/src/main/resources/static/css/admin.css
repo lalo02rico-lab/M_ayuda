@@ -1,0 +1,166 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* HEADER */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 40px;
+}
+
+.topbar .logos img {
+    height: 45px;
+    margin-right: 20px;
+}
+
+.menu-top a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.menu-top .btn-acceso {
+    background: #7B1E3D;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 5px;
+}
+
+.menu-top .btn-acceso:hover {
+    background: #B48954;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    display: flex;
+    min-height: 90vh;
+}
+
+/* PANEL IZQUIERDO */
+.sidebar {
+    width: 250px;
+    background-color: #eaeaea;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.perfil {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.icono-admin {
+    width: 60px;
+    border-radius: 50%;
+}
+
+.rol {
+    font-weight: bold;
+    color: #555;
+}
+
+.menu-lateral {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.menu-lateral li {
+    margin: 10px 0;
+    border-top: 1px solid #ccc;
+    padding-top: 8px;
+}
+
+.menu-lateral li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+}
+
+.menu-lateral li a:hover {
+    color: #7B1E3D;
+}
+
+/* CONTENIDO PRINCIPAL */
+.contenido {
+    flex: 1;
+    background-color: #f1f1f1;
+    padding: 30px;
+    border-left: 1px solid #ddd;
+}
+
+.fecha {
+    color: #777;
+    font-size: 14px;
+}
+
+.contenido h2 {
+    font-size: 28px;
+    margin: 10px 0 30px;
+    font-weight: 700;
+}
+
+.grid-tickets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: #fff;
+    border: 1.5px solid #7B1E3D;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-weight: bold;
+    color: #333;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #B48954;
+}
+.btn-salir {
+    display: inline-block;
+    background: #7B1E3D;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-salir:hover {
+    background: #B48954;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #7B1E3D;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+}

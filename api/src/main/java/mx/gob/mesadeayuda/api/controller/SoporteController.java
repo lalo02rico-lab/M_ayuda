@@ -2,67 +2,91 @@ package mx.gob.mesadeayuda.api.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import mx.gob.mesadeayuda.api.model.CatDepartamento;
+import mx.gob.mesadeayuda.api.model.PreSolicitud;
+import mx.gob.mesadeayuda.api.repository.CatDepartamentoRepository;
+import mx.gob.mesadeayuda.api.repository.PreSolicitudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class SoporteController {
 
+    @Autowired
+    private CatDepartamentoRepository departamentoRepository;
+
+    @Autowired
+    private PreSolicitudRepository preSolicitudRepository;
+
+    /**
+     * 🧩 Vista inicial (ventana emergente de registro)
+     * Carga los departamentos desde la base de datos.
+     */
     @GetMapping("/solicitud_soporte")
-    public String mostrarFormulario() {
-        return "solicitud_soporte";
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("departamentos", departamentoRepository.findAll());
+        return "solicitud_soporte";  // HTML dentro de /templates/
     }
 
-    @PostMapping("/guardar-registro")
+    /**
+     * 💾 Guarda la pre-solicitud (nombre + departamento)
+     * en la tabla PRE_SOLICITUD y redirige al menú de categorías.
+     */
+    @PostMapping("/guardar_registro")
     public String guardarRegistro(@RequestParam("nombre") String nombre,
-                                  @RequestParam("departamento") String departamento,
+                                  @RequestParam("id_departamento") Long idDepartamento,
                                   Model model) {
 
-        // Por ahora solo simulamos el guardado
+        // Busca el departamento seleccionado
+        CatDepartamento departamento = departamentoRepository.findById(idDepartamento).orElse(null);
+
+        // Crea una nueva pre-solicitud y guarda en BD
+        PreSolicitud preSolicitud = new PreSolicitud();
+        preSolicitud.setNombre(nombre);
+        preSolicitud.setDepartamento(departamento);
+        preSolicitudRepository.save(preSolicitud);
+
+        // Pasa los datos a la vista siguiente
         model.addAttribute("nombre", nombre);
-        model.addAttribute("departamento", departamento);
+        model.addAttribute("departamento", departamento.getNombreDepartamento());
 
-
-        // Aquí después se insertará en la base de datos
-        return "categorias_soporte"; // redirige al menú de categorías
+        return "categorias_soporte"; // Redirige al menú de categorías
     }
 
-    //  NUEVA RUTA: para mostrar el formulario según categoría
+    /**
+     * 📋 Muestra el formulario del tipo de soporte elegido (Ofimática, Correo, etc.)
+     */
     @GetMapping("/categoria/{tipo}")
     public String mostrarFormularioCategoria(@PathVariable String tipo,
                                              @RequestParam(required = false) String nombre,
                                              @RequestParam(required = false) String departamento,
                                              Model model) {
 
-        // Carga los datos básicos para mostrar
+        // Datos básicos del usuario y tipo de soporte
         model.addAttribute("tipo", tipo.toUpperCase());
-        model.addAttribute("nombre", nombre != null ? nombre : "...........");
-        model.addAttribute("departamento", departamento != null ? departamento : "...........");
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("departamento", departamento);
 
         return "formulario_soporte";
     }
 
+    /**
+     * 🎟️ Muestra el ticket generado al finalizar el proceso de solicitud
+     */
+    @PostMapping("/ticket_generado")
+    public String mostrarTicketGenerado(@RequestParam("descripcion") String descripcion,
+                                        @RequestParam("fechaHora") String fechaHora,
+                                        @RequestParam(value = "nombre", required = false) String nombre,
+                                        @RequestParam(value = "departamento", required = false) String departamento,
+                                        Model model) {
 
-@PostMapping("/ticket_generado")
-public String mostrarTicketGenerado(@RequestParam("descripcion") String descripcion,
-                                    @RequestParam("fechaHora") String fechaHora,
-                                    @RequestParam(value = "nombre", required = false) String nombre,
-                                    @RequestParam(value = "departamento", required = false) String departamento,
-                                    Model model) {
+        // Datos simulados (después se insertará en la tabla TICKETS)
+        model.addAttribute("fechaHora", fechaHora);
+        model.addAttribute("nombre", nombre);
+        model.addAttribute("departamento", departamento);
+        model.addAttribute("descripcion", descripcion);
 
-    // Simulación de datos (luego se reemplazará con los datos reales)
-    model.addAttribute("fechaHora", fechaHora);
-    model.addAttribute("nombre", nombre != null ? nombre : "Servidor Público");
-    model.addAttribute("departamento", departamento != null ? departamento : "Área perteneciente");
-    model.addAttribute("descripcion", descripcion);
-
-    return "ticket_generado";
+        return "ticket_generado";
+    }
 }
-}
-
-
-
-
-

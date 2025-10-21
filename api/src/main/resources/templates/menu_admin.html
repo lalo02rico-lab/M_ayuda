@@ -1,11 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Menú Admin</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Panel del Administrador - Mesa de Ayuda</title>
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-<h1>Bienvenido, <span th:text="${usuario.nombreUsuario}"></span></h1>
-<p>Rol: <span th:text="${usuario.rol.nombre}"></span></p>
+<header class="topbar">
+  <div class="logos">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+  </div>
+  <nav class="menu-top">
+    <a href="/organigrama">Organigrama</a>
+    <a href="/directorio">Directorio</a>
+    <a href="/manuales">Manuales</a>
+    <a href="/preguntas">Preguntas</a>
+    <a href="/soporte">Solicitud de Soporte</a>
+    <a href="/login" class="btn-acceso">Acceso</a>
+  </nav>
+</header>
+
+<main class="container">
+  <!-- PANEL IZQUIERDO -->
+  <aside class="sidebar">
+    <div class="perfil">
+      <img src="/img/logo_usuario.png" alt="Administrador" class="icono-admin">
+      <p class="rol">ADMINISTRADOR</p>
+    </div>
+    <ul class="menu-lateral">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Gestión de servicios</a></li>
+      <li><a href="#">Gestor de contraseñas y VPN</a></li>
+      <li><a href="#">Catálogos</a></li>
+      <li><a href="#">Reportes globales</a></li>
+      <li><a href="#">Alertas críticas</a></li>
+      <li><a href="#">Configuración del sistema</a></li>
+    </ul>
+
+  <div class="cerrar-sesion">
+    <a href="/index.html" class="btn-salir">Cerrar sesión</a>
+  </div>
+  </aside>
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="contenido">
+    <p class="fecha" th:text="${#dates.format(#dates.createNow(), 'dd MMM, HH:mm')}"></p>
+    <h2>Asignación de tickets</h2>
+
+    <div class="grid-tickets">
+      <div class="card">
+        <img src="/img/proceso.png" alt="Tickets en proceso">
+        <p>PROCESO</p>
+      </div>
+      <div class="card">
+        <img src="/img/abierto.png" alt="Tickets abiertos">
+        <p>ABIERTOS</p>
+      </div>
+      <div class="card">
+        <img src="/img/cerrado.png" alt="Tickets cerrados">
+        <p>CERRADOS</p>
+      </div>
+      <div class="card">
+        <img src="/img/asigando.png" alt="Tickets asignados">
+        <p>ASIGNADOS</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
 </body>
 </html>
