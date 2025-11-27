@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud de Soporte</title>
+    <link rel="stylesheet" href="/css/soporte.css">
+</head>
+<body>
+
+<header>
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+</header>
+
+<main>
+    <h1>Solicitud de Soporte Técnico</h1>
+
+    <form th:action="@{/soporte/guardar_registro}" method="post" class="formulario">
+        <label for="nombre">Nombre del solicitante:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre completo" required>
+
+        <label for="departamento">Área o Departamento:</label>
+        <select id="departamento" name="departamento" required>
+            <option value="">Seleccione...</option>
+            <option th:each="d : ${departamentos}"
+                    th:value="${d.idDepartamento}"
+                    th:text="${d.nombreDepartamento}"></option>
+        </select>
+
+        <button type="submit" class="btn-enviar">Guardar Datos</button>
+    </form>
+</main>
+
+<footer>
+    <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+</footer>
+
+</body>
+</html>

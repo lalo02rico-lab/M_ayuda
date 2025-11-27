@@ -1,0 +1,95 @@
+@startuml
+' =====================================================
+'  DIAGRAMA DE CLASES – SISTEMA MESA DE AYUDA
+' =====================================================
+skinparam backgroundColor #FFFFFF
+skinparam classAttributeIconSize 0
+skinparam classFontColor #7B1E3D
+skinparam classBorderColor #B48954
+skinparam classBackgroundColor #F9F5F3
+skinparam arrowColor #7B1E3D
+
+' ===================== CLASES =====================
+class Usuario {
+  +id_usuario : Long
+  +nombre : String
+  +correo : String
+  +password : String
+  +estatus : Boolean
+  +rol : Rol
+}
+
+class Rol {
+  +id_rol : Long
+  +nombre : String
+  +descripcion : String
+}
+
+class CatDepartamento {
+  +id_departamento : Long
+  +nombre : String
+  +descripcion : String
+}
+
+class Ticket {
+  +id_ticket : Long
+  +titulo : String
+  +descripcion : String
+  +fecha_creacion : Date
+  +estatus : String
+}
+
+class PreSolicitud {
+  +id_presolicitud : Long
+  +nombre : String
+  +descripcion : String
+  +fecha_registro : Date
+}
+
+class Asignacion {
+  +id_asignacion : Long
+  +fecha_asignacion : Date
+}
+
+class Historial {
+  +id_historial : Long
+  +fecha : Date
+  +descripcion : String
+}
+
+class Encuesta {
+  +id_encuesta : Long
+  +calificacion : Integer
+  +comentario : String
+}
+
+class Directorio {
+  +id_directorio : Long
+  +nombre : String
+  +puesto : String
+  +correo : String
+  +telefono : String
+}
+
+class Manual {
+  +id_manual : Long
+  +titulo : String
+  +descripcion : String
+  +archivo : String
+}
+
+class PreguntaFrecuente {
+  +id_pregunta : Long
+  +pregunta : String
+  +respuesta : String
+}
+
+' ===================== RELACIONES =====================
+Usuario "1" --> "1" Rol : pertenece a
+Usuario "1" --> "N" Ticket : crea
+Ticket "1" --> "1" CatDepartamento : pertenece a
+Ticket "1" --> "N" Historial : genera
+Ticket "1" --> "1" Encuesta : evalúa
+CatDepartamento "1" --> "N" PreSolicitud : recibe
+Ticket "1" --> "N" Asignacion : asignado
+@enduml
