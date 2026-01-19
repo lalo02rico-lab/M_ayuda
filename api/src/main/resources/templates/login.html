@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso - Mesa de Ayuda</title>
+
+    <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+
 </head>
 <body>
 
@@ -13,7 +17,7 @@
     <!-- PANEL IZQUIERDO -->
     <div class="login-left">
         <div class="overlay">
-            <h2>¡BIENVENIDO!</h2>
+            <h2>¡BIENVENIDO AL SISTEMA DE MESA DE AYUDA!</h2>
         </div>
     </div>
 
@@ -42,7 +46,16 @@
                 <option value="Tecnico">Técnico</option>
             </select>
 
-            <button type="submit" class="btn-login">Ingresar al sistema</button>
+            <div class="acciones-login">
+                <button type="submit" class="btn-login">
+                    Ingresar al sistema
+                </button>
+
+                <a href="/" class="btn-regresar">
+                    Regresar
+                </a>
+            </div>
+
         </form>
 
         <p th:if="${error}" th:text="${error}" class="error-msg"></p>

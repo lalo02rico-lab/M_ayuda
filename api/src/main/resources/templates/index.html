@@ -2,57 +2,64 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+
 </head>
 <body>
+
 <!-- HEADER -->
-<header>
+<header class="app-header">
     <div class="header-container">
         <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-        <nav>
+        <nav class="main-nav">
             <ul>
                 <li><a href="/organigrama">Organigrama</a></li>
                 <li><a href="/directorio">Directorio</a></li>
                 <li><a href="/manuales">Manuales</a></li>
                 <li><a href="/preguntas">Preguntas</a></li>
-                <a href="/soporte/solicitud" class="btn-solicitud">Solicitud de Soporte</a>
-
-                <li><a href="/login" class="btn-acceso">Acceso</a></li>
-
+                <li><a href="/soporte/solicitud" class="link-special">Solicitud de Soporte</a></li>
+                <li><a href="/login" class="btn-primary">Acceso</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
-<!-- TITULO -->
-<section class="hero">
-    <h1>MESA DE AYUDA</h1>
-</section>
+<!-- CONTENIDO -->
+<main class="app-content">
 
-<!-- CARDS -->
-<main>
+    <section class="hero">
+        <h1>MESA DE AYUDA</h1>
+    </section>
+
     <section class="servicios">
         <div class="card">
             <div class="card-title">Soporte en Tecnologías de la Información</div>
             <img src="/img/soporte.png" alt="Soporte TI">
         </div>
+
         <div class="card">
             <div class="card-title">Atención a incidencias</div>
             <img src="/img/incidencias.png" alt="Incidencias">
         </div>
+
         <div class="card">
             <div class="card-title">Soluciones rápidas y efectivas</div>
             <img src="/img/soluciones.png" alt="Soluciones">
         </div>
     </section>
+
 </main>
 
 <!-- FOOTER -->
-<footer>
-    <p> ©2025 - Subdirección de desarrollo Tecnológico</p>
+<footer class="app-footer">
+    <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
+
 </body>
 </html>

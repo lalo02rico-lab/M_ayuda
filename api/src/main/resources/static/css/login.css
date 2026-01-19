@@ -1,50 +1,46 @@
-/* === General === */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-}
-
+/* ===============================
+   CONTENEDOR PRINCIPAL
+================================ */
 .login-container {
     display: flex;
     width: 90%;
     max-width: 1100px;
     margin: 5% auto;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-radius: 16px;
     overflow: hidden;
 }
 
-/* === Panel Izquierdo === */
+/* ===============================
+   PANEL IZQUIERDO
+================================ */
 .login-left {
     flex: 1;
-    background-image: url('/img/degradado.png'); /* tu imagen aquí */
-    background-size: cover;
-    background-position: center;
+    background: url('/img/degradado.png') center/cover no-repeat;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .login-left .overlay {
-    background: rgba(123, 30, 61, 0.9); /* tono vino */
     width: 100%;
     height: 100%;
+    background: rgba(123, 30, 61, 0.9);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .login-left h2 {
     color: #fff;
-    font-size: 2.8rem;
-    font-weight: bold;
+    font-size: 2.6rem;
     text-align: center;
 }
 
-/* === Panel Derecho === */
+/* ===============================
+   PANEL DERECHO
+================================ */
 .login-right {
     flex: 1.2;
     padding: 50px 60px;
@@ -53,95 +49,114 @@ body {
     justify-content: center;
 }
 
+/* CONTENEDOR DEL LOGO */
+.login-right .header {
+    display: flex;
+    justify-content: flex-end;   /* 👉 logo a la derecha */
+    margin-bottom: 20px;
+}
+
+/* LOGO */
 .logo-edomex {
     width: 200px;
-    display: block;
-    margin-left: auto;
 }
 
-h1 {
-    color: #000;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
+/* TÍTULO */
+.login-right h1 {
+    margin: 20px 0;
+   text-align: center;
 }
 
+
+/* ===============================
+   FORMULARIO
+================================ */
 label {
-    font-weight: 500;
-    margin-top: 10px;
-    display: block;
-    color: #333;
+    margin-top: 12px;
+    font-weight: 600;
 }
 
 input, select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
     border-radius: 8px;
-    margin-top: 5px;
+    border: 1px solid #ccc;
+    margin-top: 6px;
     font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
 }
 
 input:focus, select:focus {
-    border-color: #7B1E3D;
+    border-color: var(--vino);
 }
 
+/* ===============================
+   PASSWORD
+================================ */
 .password-container {
     position: relative;
 }
 
 .toggle-password {
     position: absolute;
-    right: 12px;
-    top: 35%;
+    right: 14px;
+    top: 36%;
     cursor: pointer;
-    font-size: 1rem;
 }
 
-/* === Botón === */
+/* ===============================
+   ACCIONES
+================================ */
+.acciones-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+}
+
 .btn-login {
-    width: 100%;
-    background-color: #7B1E3D;
-    color: white;
-    border: none;
+    background: var(--vino);
+    color: #fff;
     padding: 14px;
     border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
     font-weight: bold;
-    margin-top: 25px;
-    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-login:hover {
-    background-color: #5e152e;
+    background: #5e152e;
 }
 
-/* === Línea decorativa === */
-.decorative-line {
-    width: 100%;
-    height: 5px;
-    background: repeating-linear-gradient(
-        90deg,
-        #b48954,
-        #b48954 20px,
-        transparent 20px,
-        transparent 40px
-    );
-    margin: 25px 0;
-}
-
-/* === Footer === */
-footer {
-    font-size: 0.85rem;
-    color: #555;
+.btn-regresar {
     text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--vino);
+    color: var(--vino);
+    text-decoration: none;
+    font-weight: bold;
 }
 
-/* === Error === */
+.btn-regresar:hover {
+    background: var(--vino);
+    color: #fff;
+}
+
+/* ===============================
+   ERROR
+================================ */
 .error-msg {
+    margin-top: 15px;
     color: red;
     text-align: center;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+/* ===============================
+   FOOTER INTERNO
+================================ */
+footer {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 25px;
 }

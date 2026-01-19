@@ -1,291 +1,286 @@
-/* GENERAL */
-body {
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: #F4F4F4;
-}
+/* =====================================================
+   GESTIÓN DE SERVICIOS - ADMIN
+===================================================== */
 
-/* HEADER */
-.header {
-    background: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-}
-
-.header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 12px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
+/* CONTENEDOR GENERAL */
+.gestion-servicios-container {
+    display: grid;
+    grid-template-columns: 220px 1fr;
     gap: 25px;
+    background: #e6e6e6;
+    padding: 25px;
+    border-radius: 18px;
 }
 
-.logo-gob {
-    height: 55px;
-}
-
-.logo-edomex {
-    height: 45px;
-}
-
-.btn-logout {
-    background: #B48954;
-    color: #FFFFFF;
-    padding: 10px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    border: none;
-}
-
-/* LAYOUT PRINCIPAL */
-.layout {
-    max-width: 1200px;
-    margin: 25px auto 0 auto;
-    display: flex;
-    gap: 25px;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 280px;
-    background: #E2E2E2;
-    border-radius: 16px;
-    padding: 30px 25px;
-}
-
-.user-block {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.user-img {
-    width: 90px;
-    margin-bottom: 10px;
-}
-
-.user-block h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #777;
-}
-
-.side-menu {
+/* =====================================================
+   MENÚ DE CATEGORÍAS
+===================================================== */
+.servicios-menu {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
+    gap: 14px;
 }
 
-.side-menu a {
+.servicios-menu a {
+    background: #fff;
+    border: 2px solid var(--dorado);
+    border-radius: 12px;
+    padding: 12px 16px;
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    position: relative;
-    padding-bottom: 8px;
+    font-weight: 600;
+    color: var(--texto);
+    transition: all .2s ease;
 }
 
-.side-menu a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 1px;
-    width: 100%;
-    background: #555;
+.servicios-menu a:hover {
+    background: #f4f4f4;
 }
 
-.side-menu a.active {
-    font-weight: 700;
+.servicios-menu a.active {
+    background: var(--dorado);
+    color: #fff;
+    border-color: var(--dorado);
 }
 
-/* MAIN */
-.main {
-    flex: 1;
+/* =====================================================
+   PANEL DERECHO
+===================================================== */
+.servicios-panel {
+    background: #d9d9d9;
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
 }
 
-.titulo {
-    font-size: 22px;
-    font-weight: 700;
+/* =====================================================
+   BUSCADOR
+===================================================== */
+.buscador {
     margin-bottom: 15px;
 }
 
-/* CONTENEDOR CENTRAL */
-.panel-container {
+.filtros-form {
     display: flex;
-    gap: 35px;
+    gap: 12px;
+    align-items: center;
 }
 
-/* BOTONES CATEGORÍA */
-.categorias {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-top: 35px;
+.filtros-form input,
+.filtros-form select {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
 }
 
-.cat-btn {
-    width: 200px;
-    padding: 14px 10px;
-    font-size: 16px;
-    background: #FFFFFF;
-    border: 2px solid #B48954;
+.filtros-form button {
+    background: var(--vino);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
     border-radius: 10px;
     cursor: pointer;
-    text-align: center;
-}
-
-.cat-btn.activo {
-    background: #B48954;
-    color: #FFFFFF;
-}
-
-/* PANEL DERECHO */
-.panel-datos {
-    flex: 1;
-    background: #DADADA;
-    border-radius: 16px;
-    padding: 25px 28px;
-}
-
-/* SELECT ÁREA */
-#areaSelect {
-    width: 100%;
-    max-width: 420px;
-    padding: 10px 40px 10px 45px;
-    border-radius: 10px;
-    border: 1px solid #B3B3B3;
-    font-size: 14px;
-    background: #F5F5F5;
-    margin-bottom: 20px;
-}
-
-/* LISTA */
-.lista {
-    margin-top: 10px;
-}
-
-.item {
-    display: flex;
-    align-items: center;
-    background: #FFFFFF;
-    border-radius: 10px;
-    border: 1px solid #B48954;
-    padding: 10px 14px;
-    margin-bottom: 12px;
-}
-
-.nombre {
-    width: 270px;
-    font-size: 13px;
     font-weight: 600;
 }
 
-.correo {
-    width: 260px;
-    font-size: 13px;
-}
-
-.extra {
-    width: 90px;
-    font-size: 13px;
-    text-align: right;
-}
-
+/* =====================================================
+   ACCIONES
+===================================================== */
 .acciones {
     display: flex;
-    gap: 8px;
-    margin-left: auto;
-}
-
-.btn-accion {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-/* PANEL EDICIÓN */
-.panel-editar {
-    background: #FFFFFF;
-    border-radius: 10px;
-    padding: 18px;
-    margin-top: 20px;
-    border: 1px solid #7B1E3D;
-}
-
-.panel-editar h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.panel-editar input {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid #CCCCCC;
-    margin-bottom: 10px;
-    font-size: 13px;
-}
-
-.edit-buttons {
-    display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    margin-bottom: 12px;
 }
 
-.btn-guardar {
-    background: #7B1E3D;
-    color: #FFFFFF;
-    padding: 8px 16px;
-    border-radius: 8px;
+.btn-agregar,
+.btn-descargar {
+    background: var(--vino);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+/* =====================================================
+   TABLAS
+===================================================== */
+.resultado-box table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.resultado-box th {
+    background: var(--vino);
+    color: #fff;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.resultado-box td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* BOTONES DE ACCIÓN */
+.resultado-box button {
+    background: none;
     border: none;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 16px;
 }
 
-.btn-cancelar {
-    background: #B48954;
-    color: #FFFFFF;
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 13px;
+/* =====================================================
+   MODAL (CORREGIDO Y COMPLETO)
+===================================================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
 }
 
-.oculto {
+.modal.hidden {
     display: none;
 }
 
-/* BOTÓN DESCARGAR */
-.download-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+/* CONTENEDOR */
+.modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 900px;        /* 🔥 MÁS ANCHO */
+    max-height: 90vh;        /* 🔥 CLAVE */
+    overflow-y: auto;        /* 🔥 SCROLL INTERNO */
+    padding: 30px 35px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.35);
 }
 
-.btn-descargar {
-    background: #7B1E3D;
-    color: #FFFFFF;
-    padding: 12px 26px;
-    border-radius: 10px;
+/* TÍTULO */
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--vino);
+}
+
+/* FORMULARIO EN GRID */
+#camposFormulario {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    gap: 14px 20px;
+}
+
+/* LABELS */
+#camposFormulario label {
+    grid-column: span 2;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+}
+
+/* INPUTS */
+#camposFormulario input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+}
+
+/* BOTONES */
+.modal-content button {
+    background: var(--vino);
+    color: #fff;
     border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
+    margin-top: 20px;
+    margin-right: 10px;
 }
 
-/* FOOTER */
-footer {
- background: none;
-   border-top: 3px solid var(--dorado);
-   text-align: center;
-   padding: 10px;
-   color: #333;
-   font-size: 14px;
+///////////////////////////paginacion///////////////////////////////////////////
+
+/* =====================================================
+   PAGINACIÓN (HORIZONTAL FORZADA)
+===================================================== */
+.paginacion {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    margin: 20px auto 10px;
+    width: fit-content;
+}
+
+/* FORZAMOS INLINE */
+.paginacion a,
+.paginacion span {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+
+    width: 38px;
+    height: 38px;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+
+    background: #fff;
+    color: var(--dorado);
+    border: 2px solid var(--dorado);
+
+    white-space: nowrap;
+    transition: all .2s ease;
+}
+
+/* HOVER */
+.paginacion a:hover {
+    background: var(--dorado);
+    color: #fff;
+}
+
+/* ACTIVO */
+.paginacion .active {
+    background: var(--dorado);
+    color: #fff;
+    pointer-events: none;
+}
+
+/* FLECHAS */
+.paginacion .nav {
+    width: auto;
+    padding: 0 12px;
+    font-size: 16px;
+}
+
+/* DESHABILITADO */
+.paginacion .disabled {
+    opacity: .4;
+    pointer-events: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .paginacion a,
+    .paginacion span {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
 }

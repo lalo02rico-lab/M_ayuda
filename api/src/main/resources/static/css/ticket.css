@@ -1,84 +1,68 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #fff;
-    border-bottom: 3px solid #B48954;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-}
-
-header img {
-    height: 65px;
-}
-
+/* CONTENEDOR */
 .ticket-container {
-    background-color: #fff;
-    border: 3px solid #7b1e3d;
+    background: #fff;
+    border: 3px solid var(--vino);
     border-radius: 20px;
-    width: 50%;
-    margin: 60px auto;
+    width: 100%;
+    max-width: 650px;
+    margin: 50px auto;
     padding: 40px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
     text-align: center;
 }
 
-h1 {
-    color: #6b1e3d;
+/* TÍTULO */
+.ticket-container h1 {
+    color: var(--vino);
     font-size: 26px;
     margin-bottom: 20px;
 }
 
-p {
+/* TEXTO */
+.ticket-container p {
+    font-size: 15px;
     color: #333;
-    font-size: 16px;
     margin: 10px 0;
 }
 
-.btn-cerrar {
-    background-color: #7b1e3d;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    display: inline-block;
+/* ACCIONES */
+.acciones-ticket {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
     margin-top: 25px;
 }
-.btn-solicitar {
-    background-color: #B48954; /* Dorado institucional */
+
+/* BOTÓN PDF */
+.btn-pdf {
+    background: linear-gradient(135deg, var(--dorado), #967341);
     color: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 10px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 16px;
-    display: inline-block;
-    width: 60%;
-    margin: 20px auto;
-    transition: 0.3s ease-in-out;
+    transition: .25s;
 }
 
-.btn-solicitar:hover {
-    background-color: #967341; /* Dorado más oscuro */
+.btn-pdf:hover {
     transform: scale(1.03);
+    background: linear-gradient(135deg, #967341, var(--dorado));
 }
 
+/* BOTÓN CERRAR */
+.btn-cerrar {
+    background: #fff;
+    color: var(--vino);
+    border: 2px solid var(--vino);
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .25s;
+}
 
 .btn-cerrar:hover {
-    background-color: #5b152f;
-}
-
-footer {
- background: none;
-   border-top: 3px solid var(--dorado);
-   text-align: center;
-   padding: 10px;
-   color: #333;
-   font-size: 14px;
+    background: var(--vino);
+    color: #fff;
 }

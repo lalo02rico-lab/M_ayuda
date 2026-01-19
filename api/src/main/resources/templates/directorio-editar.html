@@ -2,31 +2,45 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Editar contacto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar contacto - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/directorio.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
+
 <body>
 
-<header class="header">
-  <div class="top-bar">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México" class="logo-gem">
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-    <nav class="menu">
-      <li><a href="/">Inicio</a></li>
-      <a th:href="@{/organigrama}">Organigrama</a>
-      <a th:href="@{/directorio}" class="activo">Directorio</a>
-      <a th:href="@{/manuales}">Manuales</a>
-      <a th:href="@{/preguntas}">Preguntas</a>
-      <a href="/soporte/solicitud" class="btn-solicitud">Solicitud de Soporte</a>
-      <a th:href="@{/login}" class="btn-acceso">Acceso</a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a th:href="@{/organigrama}">Organigrama</a></li>
+        <li><a th:href="@{/directorio}" class="activo">Directorio</a></li>
+        <li><a th:href="@{/manuales}">Manuales</a></li>
+        <li><a th:href="@{/preguntas}">Preguntas</a></li>
+        <li><a href="/soporte/solicitud" class="link-special">Solicitud de Soporte</a></li>
+        <li><a th:href="@{/login}" class="btn-primary">Acceso</a></li>
+      </ul>
     </nav>
   </div>
 </header>
 
-<main class="contenedor">
-  <h1>Editar registro del directorio</h1>
+<!-- CONTENIDO -->
+<main class="app-content">
 
-  <form th:action="@{/directorio/actualizar}" th:object="${contacto}" method="post" class="form-edicion">
+  <h1 class="titulo-seccion">Editar registro del directorio</h1>
+
+  <form th:action="@{/directorio/actualizar}"
+        th:object="${contacto}"
+        method="post"
+        class="form-edicion">
 
     <!-- ID oculto -->
     <input type="hidden" th:field="*{idDirectorio}"/>
@@ -57,10 +71,12 @@
     </div>
 
   </form>
+
 </main>
 
-<footer class="footer">
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
 </body>

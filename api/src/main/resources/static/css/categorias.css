@@ -1,110 +1,86 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #fff;
-    border-bottom: 3px solid #B48954;
-    padding: 15px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header img {
-    height: 65px;
-}
-
-main h1 {
+/* TÍTULO */
+.titulo-seccion {
     text-align: center;
-    color: #6b1e3d;
-    margin-top: 40px;
+    color: var(--vino);
+    margin-top: 20px;
     font-size: 26px;
     font-weight: bold;
 }
 
-/* 🔥 GRID DINÁMICO PARA TODAS LAS CATEGORÍAS */
+/* GRID DE CATEGORÍAS */
 .categorias {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 40px;
-    width: 90%;
-    margin: 40px auto;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
 }
 
+/* TARJETA */
 .categoria {
     width: 100%;
 }
 
 .btn-categoria {
-    background-color: #fff;
+    background: #fff;
     border: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 25px;
+    border-radius: 14px;
+    padding: 26px 22px;
     width: 100%;
     cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .btn-categoria:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.18);
 }
 
 .btn-categoria h3 {
-    color: #7b1e3d;
-    font-weight: bold;
+    color: var(--vino);
+    font-weight: 700;
     font-size: 20px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .btn-categoria p {
     color: #333;
     font-size: 15px;
     line-height: 1.5;
-    margin: 0 0 15px 0;
-    width: 90%;
+    margin: 0 0 14px;
+    text-align: center;
 }
 
 .btn-categoria .flecha {
     font-size: 22px;
-    color: #7b1e3d;
-    margin-top: 10px;
+    color: var(--vino);
 }
 
+/* REGRESAR */
 .regresar {
     text-align: center;
-    margin-top: 30px;
+    margin: 30px 0 10px;
 }
 
 .btn-regresar {
-    background-color: #7b1e3d;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background: #fff;
+    color: var(--vino);
+    border: 2px solid var(--vino);
+    border-radius: 10px;
+    padding: 10px 26px;
+    font-size: 15px;
+    font-weight: 600;
     text-decoration: none;
+    transition: all .25s ease;
 }
 
 .btn-regresar:hover {
-    background-color: #5b152f;
-}
-
-footer {
-    background: none;
-    border-top: 3px solid var(--dorado);
-    text-align: center;
-    padding: 10px;
-    color: #333;
-    font-size: 14px;
+    background: var(--vino);
+    color: #fff;
 }

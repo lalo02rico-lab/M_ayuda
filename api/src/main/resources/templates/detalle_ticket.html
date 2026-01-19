@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <title>Detalle del Ticket</title>
     <link rel="stylesheet" th:href="@{/css/detalle.css}">
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 </head>
 
 <body>
 
 <!-- HEADER SOLO CON CERRAR SESIÓN -->
-<header class="header">
+<header class="app-header">
     <div class="header-container">
         <img th:src="@{/img/logo_gobierno.png}">
-        <a href="/logout" class="btn-acceso">Cerrar sesión</a>
+        <nav class="main-nav">
+            <a href="/logout" class="btn-primary">Cerrar sesión</a>
+        </nav>
     </div>
-    <div class="gold-line"></div>
 </header>
+
 
 <!-- CUERPO -->
 <main class="layout">
@@ -28,14 +34,19 @@
         </div>
 
         <ul>
-            <li>Estado del ticket</li>
-            <li>Manuales</li>
-
-            <!-- BOTÓN VOLVER -->
             <li>
-                <a href="javascript:history.back()" class="volver-link">← Volver</a>
+                <a th:href="@{'/tecnico/estado?idTecnico=' + ${idTecnico}}">
+                    Estado del ticket
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:history.back()" class="volver-link">
+                    ← Volver
+                </a>
             </li>
         </ul>
+
     </aside>
 
     <!-- CONTENIDO -->
@@ -122,9 +133,10 @@
 
 </main>
 
-<footer class="footer">
+<footer class="app-footer">
     ©2025 - Subdirección de desarrollo Tecnológico
 </footer>
+
 
 </body>
 </html>

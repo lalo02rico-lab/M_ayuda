@@ -1,0 +1,18 @@
+:root {
+    --vino: #7B1E3D;
+    --dorado: #B48954;
+    --gris: #f4f4f4;
+    --texto: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--gris);
+    color: var(--texto);
+}

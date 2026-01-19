@@ -1,0 +1,252 @@
+.app-header {
+    background: #fff;
+    border-bottom: 3px solid var(--vino);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    flex-wrap: wrap;
+}
+
+.header-container img {
+    height: 60px;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.main-nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--texto);
+}
+
+.main-nav a.btn-logout {
+    background: var(--vino);
+    color: #fff !important;
+    padding: 8px 22px;
+    border-radius: 10px;
+}
+
+
+.btn-primary {
+    background: var(--vino);
+    color: #fff !important;
+    padding: 6px 14px;
+    border-radius: 4px;
+}
+
+.link-special {
+    font-weight: bold;
+}
+
+.app-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.app-footer {
+    border-top: 3px solid var(--dorado);
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+}
+/* layout.css */
+///////////////////tecnico///////////////////////////////////////////777
+/* =========================
+   LAYOUT ADMIN (GRID REAL)
+========================= */
+.admin-layout {
+    display: grid !important;
+    grid-template-columns: 260px 1fr; /* Sidebar fija y contenido flexible */
+    gap: 30px; /* Espacio entre columnas */
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    align-items: start; /* Alineación superior perfecta */
+}
+
+/* IMPORTANTE: Quitamos cualquier comportamiento de bloque de la etiqueta section */
+
+////////////////////////////////////////////////////////////////////////////////
+
+/* =========================
+   FIX DEFINITIVO BOTÓN CERRAR SESIÓN
+========================= */
+header a.btn-logout,
+header a.btn-logout:link,
+header a.btn-logout:visited {
+    background: var(--vino);
+    color: #fff !important;
+    padding: 8px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+}
+
+header a.btn-logout:hover,
+header a.btn-logout:active {
+    background: #5a1327;
+    color: #fff !important;
+}
+
+
+
+
+/* =====================================================
+   LINKS Y BOTONES ADMIN – ESTILO INSTITUCIONAL
+===================================================== */
+
+/* Quitar azul y subrayado a TODOS los links del header y sidebar */
+header a,
+.sidebar a,
+.tarjeta-tickets a {
+    color: var(--vino);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Hover general */
+header a:hover,
+.sidebar a:hover,
+.tarjeta-tickets a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   BOTÓN PRINCIPAL (vino)
+========================= */
+.btn-logout,
+.btn-revisar,
+.sidebar a.active,
+.sidebar a.btn,
+.access-container a:last-child {
+    background: var(--vino);
+    color: #fff !important;
+    padding: 8px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: background .25s ease;
+}
+
+/* Hover botón */
+.btn-logout:hover,
+.btn-revisar:hover,
+.access-container a:last-child:hover {
+    background: #5a1327;
+}
+
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* BOTÓN VOLVER */
+.btn-back {
+    background: #e6e6e6;
+    color: var(--vino);
+    padding: 8px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid var(--vino);
+    transition: all .2s ease;
+}
+
+.btn-back:hover {
+    background: var(--vino);
+    color: #fff;
+}
+
+////////////////////////////////////////////////////////////////////
+/* =====================================================
+   SIDEBAR ADMIN – BASE (NO ROMPE OTRAS VISTAS)
+===================================================== */
+
+.sidebar {
+    background: #e6e6e6;
+    border-radius: 22px;
+    padding: 30px 20px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ================= USER BOX ================= */
+
+.sidebar .user-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* ICONO USUARIO */
+.sidebar .user-icon img {
+    width: 90px;
+    height: 90px;
+    max-width: 90px;
+    max-height: 90px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ROL */
+.sidebar .user-role {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--vino);
+    text-align: center;
+}
+
+/* ================= MENU ================= */
+
+.sidebar .menu {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* LINKS */
+.sidebar .menu a {
+    display: block;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    transition: background .2s ease, color .2s ease;
+}
+
+/* HOVER */
+.sidebar .menu a:hover {
+    background: #dcdcdc;
+}
+
+/* ACTIVO */
+.sidebar .menu a.active {
+    background: var(--vino);
+    color: #fff !important;
+}
+
+/* BOTÓN VOLVER (hereda estilo, solo ajuste leve) */
+.sidebar .menu a:last-child {
+    margin-top: 18px;
+}

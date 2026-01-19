@@ -2,43 +2,52 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Directorio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directorio - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/directorio.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 
 <body>
 
-<!-- 🔹 ENCABEZADO INSTITUCIONAL -->
-<header class="header">
-  <div class="top-bar">
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México" class="logo-gem">
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
 
-    <nav class="menu">
-      <li><a href="/">Inicio</a></li>
-      <a th:href="@{/organigrama}">Organigrama</a>
-      <a th:href="@{/directorio}" class="activo">Directorio</a>
-      <a th:href="@{/manuales}">Manuales</a>
-      <a th:href="@{/preguntas}">Preguntas</a>
-      <a href="/soporte/solicitud" class="btn-solicitud">Solicitud de Soporte</a>
-      <a th:href="@{/login}" class="btn-acceso">Acceso</a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a th:href="@{/organigrama}">Organigrama</a></li>
+        <li><a th:href="@{/directorio}" class="activo">Directorio</a></li>
+        <li><a th:href="@{/manuales}">Manuales</a></li>
+        <li><a th:href="@{/preguntas}">Preguntas</a></li>
+        <li><a href="/soporte/solicitud" class="link-special">Solicitud de Soporte</a></li>
+        <li><a th:href="@{/login}" class="btn-primary">Acceso</a></li>
+      </ul>
     </nav>
   </div>
 </header>
 
-<!-- 🔹 CONTENIDO -->
-<main class="contenedor">
-  <h1>DIRECTORIO</h1>
+<!-- CONTENIDO -->
+<main class="app-content">
+
+  <h1 class="titulo-seccion">DIRECTORIO</h1>
 
   <!-- Mensaje de actualización -->
   <div th:if="${mensaje != null}" class="alert-success" th:text="${mensaje}"></div>
 
-  <!-- 🔍 FILTRO GENERAL -->
+  <!-- BUSCADOR -->
   <form th:action="@{/directorio}" method="get" class="buscador-general">
     <input type="text" name="filtro" placeholder="Buscar por cualquier campo..." th:value="${filtro}">
     <button type="submit" class="btn-buscar">Buscar</button>
     <a th:href="@{/directorio}" class="btn-limpiar">Limpiar</a>
   </form>
 
+  <!-- TABLA -->
   <div class="tabla-container">
     <table>
       <thead>
@@ -51,27 +60,24 @@
       </tr>
       </thead>
 
-      <tbody id="tablaDirectorio">
+      <tbody>
       <tr th:each="c : ${contactos}">
-        <td th:text="${c.dependencia}">Secretaría General de Gobierno</td>
-        <td th:text="${c.profesion}">Licenciado en Derecho</td>
-        <td th:text="${c.nombre}">Juan Pérez</td>
-        <td th:text="${c.cargo}">Director General</td>
+        <td th:text="${c.dependencia}"></td>
+        <td th:text="${c.profesion}"></td>
+        <td th:text="${c.nombre}"></td>
+        <td th:text="${c.cargo}"></td>
         <td>
           <button class="btn-editar" type="button"
-                  th:onclick="'abrirModal(' + ${c.idDirectorio} + ')'" >
-
-          Editar
+                  th:onclick="'abrirModal(' + ${c.idDirectorio} + ')'">
+            Editar
           </button>
         </td>
-
-
       </tr>
       </tbody>
     </table>
   </div>
 
-  <!--  PAGINACIÓN DINÁMICA -->
+  <!-- PAGINACIÓN -->
   <div class="paginacion">
     <a th:if="${currentPage > 0}"
        th:href="@{'/directorio'(page=${currentPage - 1}, filtro=${filtro})}"
@@ -86,15 +92,15 @@
        th:href="@{'/directorio'(page=${currentPage + 1}, filtro=${filtro})}"
        class="nav">&raquo;</a>
   </div>
+
 </main>
 
-<!--  PIE DE PÁGINA -->
-<footer class="footer">
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
-
-<!-- 🔒 Modal de autorización -->
+<!-- MODAL (SE QUEDA IGUAL) -->
 <div id="modalAuth" class="modal">
   <div class="modal-content">
     <h2>Autorización requerida</h2>
@@ -110,11 +116,11 @@
       <button onclick="cerrarModal()" class="btn-cancelar">Cancelar</button>
     </div>
 
-    <!-- Guarda el ID temporalmente -->
     <input type="hidden" id="idTemp">
   </div>
 </div>
 
+<!-- JS: NO SE TOCA -->
 <script>
   function abrirModal(id) {
       document.getElementById("modalAuth").style.display = "block";
@@ -128,7 +134,6 @@
       document.getElementById("errorMsg").innerText = "";
   }
 
-  // 🔥 VALIDAR CREDENCIALES EN SPRING
   function validarAdmin() {
       let correo = document.getElementById("adminCorreo").value;
       let pass = document.getElementById("adminPass").value;
@@ -137,24 +142,18 @@
       fetch('/validar-admin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-              correo: correo,
-              contrasena: pass
-          })
+          body: JSON.stringify({ correo: correo, contrasena: pass })
       })
       .then(response => response.json())
       .then(data => {
-
           if (data.autorizado === true) {
               window.location.href = "/directorio/editar/" + id;
           } else {
               document.getElementById("errorMsg").innerText = "Credenciales incorrectas";
           }
-
       });
   }
 </script>
-
 
 </body>
 </html>

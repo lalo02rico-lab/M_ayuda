@@ -1,0 +1,56 @@
+/* TÍTULO + BUSCADOR */
+.titulo-section {
+    padding: 40px 20px 20px;
+    text-align: center;
+}
+
+.titulo-seccion {
+    font-size: 36px;
+    color: var(--vino);
+    font-weight: bold;
+}
+
+.buscador {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.buscador input {
+    width: 420px;
+    max-width: 90%;
+    padding: 10px 18px;
+    font-size: 15px;
+    border: 2px solid #DCDCDC;
+    border-radius: 40px;
+}
+
+/* TARJETAS */
+.tarjetas-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px 40px 60px;
+}
+
+.tarjeta {
+    background: #fff;
+    border: 2px solid var(--vino);
+    border-radius: 12px;
+    padding: 16px 18px;
+    min-height: 160px;
+    transition: 0.25s;
+}
+
+.tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.tarjeta h3 {
+    color: var(--vino);
+    margin: 0 0 6px;
+    font-size: 16px;
+}
+
+.ta

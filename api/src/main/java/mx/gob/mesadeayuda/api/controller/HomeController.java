@@ -27,4 +27,5 @@ public class HomeController {
     public String preguntas() {
         return "preguntas"; // Carga preguntas.html
     }
+
 }

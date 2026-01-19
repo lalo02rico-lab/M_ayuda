@@ -9,18 +9,27 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    // 🔹 Tickets nuevos (por estado)
+    // s Tickets nuevos (por estado)
 
     // Buscar tickets por estado
     List<Ticket> findByIdEstado(Long idEstado);
 
-    // 🔥 ORDEN CORRECTO (ASC) = MÁS VIEJOS ARRIBA
+    //  ORDEN CORRECTO (ASC) = MÁS VIEJOS ARRIBA
     List<Ticket> findByIdEstadoOrderByFechaHoraAsc(Long idEstado);
 
-    // 🔥 Tickets asignados a un técnico ordenados por fecha
+    //  Tickets asignados a un técnico ordenados por fecha
     List<Ticket> findByTecnicoIdUsuarioOrderByFechaHoraAsc(Long idTecnico);
 
-    // ⭐⭐⭐ NUEVO MÉTODO: traer solo tickets NO finalizados
+    //  NUEVO MÉTODO: traer solo tickets NO finalizados
     List<Ticket> findByTecnicoIdUsuarioAndIdEstadoNotOrderByFechaHoraAsc(Long idTecnico, Long idEstado);
+
+
+
+
+    //  PARA DASHBOARD — CONTEOS
+    long countByIdEstado(Long idEstado);
+
+    //  CONTEO POR CATEGORÍA usando ID_TIPO
+    long countByTipoSolicitud_IdTipo(Long idTipo);
 
 }

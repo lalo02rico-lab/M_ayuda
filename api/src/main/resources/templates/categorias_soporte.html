@@ -2,19 +2,29 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Categorías de Soporte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías de Soporte - Mesa de Ayuda</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/categorias.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<header>
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+    <div class="header-container">
+        <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+    </div>
 </header>
 
-<main>
-    <h1>Seleccione la Categoría de Soporte</h1>
+<!-- CONTENIDO -->
+<main class="app-content">
 
-    <div class="categorias">
+    <h1 class="titulo-seccion">Seleccione la Categoría de Soporte</h1>
+
+    <section class="categorias">
         <div class="categoria" th:each="c : ${categorias}">
             <form th:action="@{/soporte/formulario}" method="post">
                 <input type="hidden" name="idPre" th:value="${idPre}">
@@ -27,14 +37,16 @@
                 </button>
             </form>
         </div>
-    </div>
+    </section>
 
     <div class="regresar">
         <a href="/soporte/solicitud" class="btn-regresar">Regresar</a>
     </div>
+
 </main>
 
-<footer>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
     <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 

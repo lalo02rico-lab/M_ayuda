@@ -1,5 +1,9 @@
 @startuml
 left to right direction
+
+' =========================
+' ESTILO
+' =========================
 skinparam backgroundColor #FFFFFF
 skinparam actorStyle awesome
 skinparam usecase {
@@ -8,30 +12,67 @@ skinparam usecase {
   FontColor #7B1E3D
 }
 
-actor "Administrador" as admin
-actor "Técnico" as tecnico
-actor "Servidor Público" as usuario
+' =========================
+' ACTORES
+' =========================
+actor "Administrador" as Admin
+actor "Técnico" as Tecnico
+actor "Servidor Público" as Usuario
 
-rectangle "Sistema Mesa de Ayuda" #FDF8F6 {
-  usecase "Registrar solicitud de soporte" as UC1
-  usecase "Consultar estado de ticket" as UC2
-  usecase "Asignar ticket a técnico" as UC3
-  usecase "Actualizar estado del ticket" as UC4
-  usecase "Cerrar ticket" as UC5
-  usecase "Gestionar usuarios y roles" as UC6
-  usecase "Gestionar departamentos" as UC7
-  usecase "Responder encuesta de servicio" as UC8
-  usecase "Consultar directorio y manuales" as UC9
+' =========================
+' SISTEMA
+' =========================
+rectangle "Sistema Mesa de Ayuda Institucional" #FDF8F6 {
+
+  ' --- Servidor Público ---
+  usecase "Registrar solicitud de soporte" as UC_Registrar
+  usecase "Completar formulario de solicitud" as UC_Formulario
+  usecase "Generar ticket en PDF" as UC_PDF
+  usecase "Firmar ticket de cumplimiento" as UC_Firma
+  usecase "Consulta, Manuales, Organigrama, Directorio y Preguntas  " as UC_ConsultaUsuario
+
+  ' --- Técnico ---
+  usecase "Consultar tickets asignados" as UC_TicketsTecnico
+  usecase "Ver detalle del ticket" as UC_Detalle
+  usecase "Actualizar estado del ticket\n(Asumido / Pendiente / Finalizado)" as UC_Estado
+  usecase "Consultar estado del ticket" as UC_ConsultaTecnico
+
+  ' --- Administrador ---
+  usecase "Edita Directorio" as UC_Directorio
+  usecase "Revisar tickets registrados" as UC_Revisar
+  usecase "Asignar ticket a técnico" as UC_Asignar
+  usecase "Reasignar ticket a otro técnico" as UC_Reasignar
+  usecase "Monitorear estado de tickets\nen dashboard" as UC_Dashboard
+  usecase "Exportar bitácora de tickets finalizados" as UC_Bitacora
+  usecase "Gestiona servicios realizando operaciones CRUD\n(Resguardos, Inventario,\nCorreo, Licencias, Extensiones)" as UC_Servicios
 }
 
-usuario --> UC1
-usuario --> UC2
-usuario --> UC8
-usuario --> UC9
-tecnico --> UC2
-tecnico --> UC4
-tecnico --> UC5
-admin --> UC3
-admin --> UC6
-admin --> UC7
+' =========================
+' RELACIONES SERVIDOR PÚBLICO
+' =========================
+Usuario --> UC_Registrar
+Usuario --> UC_Formulario
+Usuario --> UC_PDF
+Usuario --> UC_ConsultaUsuario
+Usuario --> UC_Firma
+
+' =========================
+' RELACIONES TÉCNICO
+' =========================
+Tecnico --> UC_TicketsTecnico
+Tecnico --> UC_Detalle
+Tecnico --> UC_Estado
+Tecnico --> UC_ConsultaTecnico
+
+' =========================
+' RELACIONES ADMINISTRADOR
+' =========================
+Admin --> UC_Directorio
+Admin --> UC_Revisar
+Admin --> UC_Asignar
+Admin --> UC_Reasignar
+Admin --> UC_Dashboard
+Admin --> UC_Bitacora
+Admin --> UC_Servicios
+
 @enduml

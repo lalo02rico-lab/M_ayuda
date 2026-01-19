@@ -4,76 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel del Administrador - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<!-- ======= ENCABEZADO ======= -->
-<header class="top-bar">
-  <div class="logo-container">
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
     <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-  </div>
+    <a href="/login" class="btn-logout">Cerrar sesión</a>
 
-  <div class="access-container">
-    <a href="/login" class="btn-acceso">Cerrar sesión</a>
   </div>
 </header>
 
-<!-- ======= CONTENIDO PRINCIPAL ======= -->
-<main class="layout">
+
+<!-- CONTENIDO ADMIN -->
+<main class="admin-layout admin-dashboard">
+
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <img src="/img/logo_usuario.png" class="icono-usuario">
 
-    <h3>ADMINISTRADOR</h3>
-
-    <ul class="menu">
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="/admin/gestion-servicios">Gestión de servicios</a></li>
-      <li><a href="#">Contraseñas y VPN</a></li>
-      <li><a href="#">Manuales</a></li>
-    </ul>
-  </aside>
-
-  <!-- PANEL PRINCIPAL -->
-  <section class="panel-principal">
-
-    <h1>Bienvenido al sistema !</h1>
-
-    <div class="grid-contenido">
-
-      <div class="tarjeta">
-        <img src="/img/Proceso.png">
+    <div class="user-box">
+      <div class="user-icon">
+        <img src="/img/logo_usuario.png" alt="Usuario">
       </div>
+      <div class="user-role">ADMINISTRADOR</div>
+    </div>
 
-      <div class="tarjeta">
-        <img src="/img/Abierto.png">
-      </div>
+    <nav class="menu">
+      <a th:href="@{/admin/dashboard}">Dashboard</a>
+      <a href="/admin/tickets/asignados">Tickets asignados / Reasignar</a>
+      <a href="/admin/gestion-servicios">Gestión de servicios</a>
+      <!-- <a href="#">Contraseñas y VPN</a>
+       <a href="#">Manuales</a> -->
+     </nav>
 
-      <div class="tarjeta">
-        <img src="/img/cerrado.png">
-      </div>
+   </aside>
 
-      <div class="tarjeta">
-        <img src="/img/asigando.png">
+   <!-- PANEL PRINCIPAL -->
+  <section class="content">
+
+    <!-- CONTENEDOR CENTRAL -->
+    <div class="contenido-central">
+
+      <h1 class="titulo-seccion">Bienvenido al sistema</h1>
+
+      <div class="grid-contenido">
+        <div class="tarjeta"><img src="/img/Proceso.png"></div>
+        <div class="tarjeta"><img src="/img/Abierto.png"></div>
+        <div class="tarjeta"><img src="/img/cerrado.png"></div>
+        <div class="tarjeta"><img src="/img/asigando.png"></div>
       </div>
 
     </div>
 
+    <!-- TARJETA FLOTANTE -->
     <div class="tarjeta-tickets">
       <p>Nuevos tickets</p>
+
       <h2 th:text="${nuevos}">0</h2>
+
       <a href="/admin/tickets" class="btn-revisar">Revisar</a>
     </div>
 
+
   </section>
+
 </main>
 
 
-<!-- ======= FOOTER ======= -->
-<footer class="footer">
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+<!-- FOOTER -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
 </body>

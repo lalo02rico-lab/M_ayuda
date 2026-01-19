@@ -1,7 +1,9 @@
 @startuml
 ' =====================================================
 '  DIAGRAMA DE CLASES – SISTEMA MESA DE AYUDA
+'  MODELO DE DATOS + GESTIÓN DE SERVICIOS (ADMIN)
 ' =====================================================
+
 skinparam backgroundColor #FFFFFF
 skinparam classAttributeIconSize 0
 skinparam classFontColor #7B1E3D
@@ -9,14 +11,14 @@ skinparam classBorderColor #B48954
 skinparam classBackgroundColor #F9F5F3
 skinparam arrowColor #7B1E3D
 
-' ===================== CLASES =====================
+' ===================== ENTIDADES BASE =====================
+
 class Usuario {
   +id_usuario : Long
   +nombre : String
   +correo : String
   +password : String
   +estatus : Boolean
-  +rol : Rol
 }
 
 class Rol {
@@ -31,12 +33,23 @@ class CatDepartamento {
   +descripcion : String
 }
 
+class CatEstadoTicket {
+  +id_estado : Long
+  +nombre : String
+  +descripcion : String
+}
+
+class CatTipoSolicitud {
+  +id_tipo : Long
+  +nombre : String
+  +descripcion : String
+}
+
 class Ticket {
   +id_ticket : Long
   +titulo : String
   +descripcion : String
   +fecha_creacion : Date
-  +estatus : String
 }
 
 class PreSolicitud {
@@ -54,7 +67,8 @@ class Asignacion {
 class Historial {
   +id_historial : Long
   +fecha : Date
-  +descripcion : String
+  +accion : String
+  +observaciones : String
 }
 
 class Encuesta {
@@ -62,6 +76,8 @@ class Encuesta {
   +calificacion : Integer
   +comentario : String
 }
+
+' ===================== INFORMACIÓN INSTITUCIONAL =====================
 
 class Directorio {
   +id_directorio : Long
@@ -84,12 +100,73 @@ class PreguntaFrecuente {
   +respuesta : String
 }
 
-' ===================== RELACIONES =====================
-Usuario "1" --> "1" Rol : pertenece a
+' ===================== GESTIÓN DE SERVICIOS (ADMIN) =====================
+
+class VwResguardo {
+  +id_resguardo : Long
+  +no_inventario : String
+  +descripcion_bien : String
+  +resguardatario : String
+  +area : String
+  +estatus : String
+}
+
+class InventarioBien {
+  +id_bien : Long
+  +no_inventario : String
+  +descripcion : String
+  +marca : String
+  +modelo : String
+  +serie : String
+  +estatus : String
+}
+
+class Correo {
+  +id_correo : Long
+  +cuenta : String
+  +tipo : String
+  +estatus : String
+}
+
+class Licencia {
+  +id_licencia : Long
+  +nombre : String
+  +tipo : String
+  +vigencia : Date
+  +estatus : String
+}
+
+class Extencion {
+  +id_extencion : Long
+  +numero : String
+  +area : String
+  +estatus : String
+}
+
+' ===================== RELACIONES (TICKETS) =====================
+
+Usuario "1" --> "1" Rol : tiene
 Usuario "1" --> "N" Ticket : crea
+
 Ticket "1" --> "1" CatDepartamento : pertenece a
+Ticket "1" --> "1" CatEstadoTicket : tiene estado
+Ticket "1" --> "1" CatTipoSolicitud : tipo
 Ticket "1" --> "N" Historial : genera
-Ticket "1" --> "1" Encuesta : evalúa
+Ticket "1" --> "0..1" Encuesta : evalúa
+
+Ticket "1" --> "N" Asignacion : es asignado
+Asignacion "1" --> "1" Usuario : técnico asignado
+
 CatDepartamento "1" --> "N" PreSolicitud : recibe
-Ticket "1" --> "N" Asignacion : asignado
+
+Historial "N" --> "1" Usuario : registrado por
+
+' ===================== RELACIONES (GESTIÓN DE SERVICIOS ADMIN) =====================
+
+Usuario "1" --> "N" VwResguardo : consulta/gestiona
+Usuario "1" --> "N" InventarioBien : consulta/gestiona
+Usuario "1" --> "N" Correo : consulta/gestiona
+Usuario "1" --> "N" Licencia : consulta/gestiona
+Usuario "1" --> "N" Extencion : consulta/gestiona
+
 @enduml

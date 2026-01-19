@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preguntas Frecuentes - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/preguntas.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/organigrama">Organigrama</a></li>
+        <li><a href="/directorio">Directorio</a></li>
+        <li><a href="/manuales">Manuales</a></li>
+        <li><a href="/preguntas" class="activo">Preguntas</a></li>
+        <li><a href="/soporte/solicitud" class="link-special">Solicitud de Soporte</a></li>
+        <li><a href="/login" class="btn-primary">Acceso</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CONTENIDO -->
+<main class="app-content">
+
+  <!-- TÍTULO + BUSCADOR -->
+  <section class="titulo-section">
+    <h1 class="titulo-seccion">PREGUNTAS FRECUENTES</h1>
+
+    <div class="buscador">
+      <input type="text" id="searchInput" placeholder="Buscar pregunta...">
+    </div>
+  </section>
+
+  <!-- TARJETAS -->
+  <section class="tarjetas-container" id="tarjetasContainer">
+
+    <div class="tarjeta">
+      <h3>Acceso al sistema</h3>
+      <p>Cómo ingresar a la mesa de ayuda</p>
+      <span>Ingresa con tu usuario institucional y contraseña proporcionada.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Recuperación de contraseña</h3>
+      <p>¿Qué hago si olvidé mi contraseña?</p>
+      <span>Usa la opción recuperar contraseña o contacta al área de soporte.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Solicitud de soporte</h3>
+      <p>¿A quién puedo enviar mi solicitud?</p>
+      <span>Llena el formulario y selecciona tu incidente.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Tiempo de atención</h3>
+      <p>¿Cuánto tardan en resolver un ticket?</p>
+      <span>Depende de la complejidad del soporte solicitado.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Contacto directo</h3>
+      <p>¿Dónde puedo comunicarme para atención inmediata?</p>
+      <span>Llama a la extensión 113 o envía un correo al área de soporte.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Estado del Ticket</h3>
+      <p>¿Puedo modificar o ver el estado?</p>
+      <span>Sí, mientras esté abierto puedes añadir comentarios.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Tipo de soporte</h3>
+      <p>¿Cómo puedo eliminar un ticket?</p>
+      <span>Si ya está resuelto o cerrado puedes archivarlo.</span>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Seguimiento del ticket</h3>
+      <p>¿Cómo sé el estado de mi ticket?</p>
+      <span>Recibirás notificaciones sobre su avance y conclusión.</span>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+</footer>
+
+<!-- ===============================
+     SCRIPT BUSCADOR (FUNCIONAL)
+================================ -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const searchInput = document.getElementById('searchInput');
+      const tarjetas = document.querySelectorAll('.tarjeta');
+
+      searchInput.addEventListener('input', function () {
+          const filtro = searchInput.value.toLowerCase().trim();
+
+          tarjetas.forEach(tarjeta => {
+              const texto = tarjeta.innerText.toLowerCase();
+              tarjeta.style.display = texto.includes(filtro) ? 'block' : 'none';
+          });
+      });
+  });
+</script>
+
+</body>
+</html>

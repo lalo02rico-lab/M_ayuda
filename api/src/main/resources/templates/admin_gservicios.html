@@ -1,193 +1,466 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Gestión de Servicios</title>
-  <link rel="stylesheet" href="/css/admin_Gservicios.css">
+    <meta charset="UTF-8">
+    <title>Gestión de servicios - Mesa de Ayuda</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/admin_gservicios.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 </head>
 
 <body>
 
-<!-- ============= HEADER COMO EN LA IMAGEN ============= -->
-<header class="header">
-  <div class="header-inner">
-    <div class="header-left">
-      <img src="/img/logo_gobierno.png" class="logo-gob">
-
+<header class="app-header">
+    <div class="header-container">
+        <div class="logos">
+            <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+        </div>
+        <a href="/admin/menu" class="btn-back">← Volver</a>
+        <a href="/logout" class="btn-logout">Cerrar sesión</a>
     </div>
-
-    <div class="header-right">
-      <a href="/logout" class="btn-logout">Cerrar sesión</a>
-    </div>
-  </div>
 </header>
 
-<!-- ============= CONTENIDO PRINCIPAL ============= -->
-<div class="layout">
+<main class="admin-layout">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="user-block">
-      <img src="/img/logo_usuario.png" class="user-img">
-      <h2>ADMINISTRADOR</h2>
-    </div>
+    <aside class="sidebar"></aside>
 
-    <nav class="side-menu">
-      <a href="/admin/menu">Dashboard</a>
-      <a href="/admin/gestion-servicios" class="active">Gestión de servicios</a>
-      <a href="#">Contraseñas y VPN</a>
-      <a href="#">Manuales</a>
-    </nav>
-  </aside>
+    <section class="content">
+        <div class="gestion-servicios-container">
 
-  <!-- MAIN -->
-  <main class="main">
+            <!-- ===== MENÚ ===== -->
+            <div class="servicios-menu">
+                <a th:href="@{/admin/gestion-servicios(categoria='resguardos')}"
+                   th:classappend="${categoria=='resguardos'}?'active':''">Resguardos</a>
 
-    <h1 class="titulo">Gestión de servicios</h1>
+                <a th:href="@{/admin/gestion-servicios(categoria='correos')}"
+                   th:classappend="${categoria=='correos'}?'active':''">Correos</a>
 
-    <div class="panel-container">
+                <a th:href="@{/admin/gestion-servicios(categoria='licencias')}"
+                   th:classappend="${categoria=='licencias'}?'active':''">Licencias</a>
 
-      <!-- BOTONES DE CATEGORÍA -->
-      <div class="categorias">
-        <a th:href="@{'/admin/gestion-servicios'(categoria='resguardos')}">
-          <button class="cat-btn"
-                  th:classappend="${categoria=='resguardos'} ? 'activo' : ''">
-            Resguardos
-          </button>
+                <a th:href="@{/admin/gestion-servicios(categoria='extenciones')}"
+                   th:classappend="${categoria=='extenciones'}?'active':''">Extenciones</a>
+
+                <a th:href="@{/admin/gestion-servicios(categoria='inventarios')}"
+                   th:classappend="${categoria=='inventarios'}?'active':''">Inventarios</a>
+            </div>
+
+            <div class="servicios-panel">
+
+                <!-- ================= FILTROS / BUSCADOR ================= -->
+                <div class="buscador">
+                    <form method="get" th:action="@{/admin/gestion-servicios}" class="filtros-form">
+                        <input type="hidden" name="categoria" th:value="${categoria}">
+
+                        <!-- filtro solo resguardos -->
+                        <select name="tipo" th:if="${categoria=='resguardos'}">
+                            <option value="">Todos</option>
+                            <option value="ESCRITORIO_BASICO"   th:selected="${tipo=='ESCRITORIO_BASICO'}">Escritorio básico</option>
+                            <option value="MOVIL_AVANZADO"      th:selected="${tipo=='MOVIL_AVANZADO'}">Móvil avanzado</option>
+                            <option value="ESCRITORIO_AVANZADO" th:selected="${tipo=='ESCRITORIO_AVANZADO'}">Escritorio avanzado</option>
+                            <option value="MOVIL_MEDIO"         th:selected="${tipo=='MOVIL_MEDIO'}">Móvil medio</option>
+                            <option value="PORTATIL_DONADO"     th:selected="${tipo=='PORTATIL_DONADO'}">Portátil donado</option>
+                        </select>
+
+                        <input type="text" name="q"
+                               placeholder="Buscar por usuario, área, correo, serie, modelo…"
+                               th:value="${q}">
+                        <button type="submit">Buscar</button>
+                    </form>
+                </div>
+
+                <!-- ================= ACCIONES ================= -->
+                <div class="acciones">
+                    <button class="btn-agregar"
+                            th:if="${categoria!='resguardos'}"
+                            th:data-categoria="${categoria}"
+                            onclick="abrirModalAgregar(this)">
+                        ➕ Agregar
+                    </button>
+
+                    <a th:href="@{/admin/descargar-pdf(
+                               categoria=${categoria},
+                               tipo=${tipo},
+                               q=${q}
+                              )}"
+                       class="btn-descargar">
+                        Descargar PDF
+                    </a>
+                </div>
+
+                <!-- ================= TABLAS ================= -->
+                <div class="resultado-box">
+
+                    <!-- ================= RESGUARDOS ================= -->
+                    <table th:if="${categoria=='resguardos'}">
+                        <thead>
+                        <tr>
+                            <th>No</th><th>Tipo</th><th>Usuario</th><th>Usuario final</th>
+                            <th>Dirección</th><th>Área</th><th>Perfil</th>
+                            <th>Modelo</th><th>Serie CPU</th><th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="r : ${resguardos}">
+                            <td th:text="${r.no}"></td>
+                            <td th:text="${r.tipoEquipo}"></td>
+                            <td th:text="${r.usuario}"></td>
+                            <td th:text="${r.usuarioFinal}"></td>
+                            <td th:text="${r.direccion}"></td>
+                            <td th:text="${r.area}"></td>
+                            <td th:text="${r.perfilEquipo}"></td>
+                            <td th:text="${r.modelo}"></td>
+                            <td th:text="${r.serieCpu}"></td>
+                            <td th:text="${r.status}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ================= CORREOS ================= -->
+                    <table th:if="${categoria=='correos'}">
+                        <thead>
+                        <tr>
+                            <th>Usuario</th><th>Correo</th><th>Licencia</th><th>Área</th><th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="c : ${correos}">
+                            <td th:text="${c.usuario}"></td>
+                            <td th:text="${c.correo}"></td>
+                            <td th:text="${c.tipoLicencia}"></td>
+                            <td th:text="${c.area}"></td>
+                            <td>
+                                <button th:data-id="${c.id}" data-categoria="correos"
+                                        onclick="abrirModalEditar(this)">✏️</button>
+                                <button th:data-id="${c.id}" data-categoria="correos"
+                                        onclick="eliminarRegistro(this)">🗑️</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ================= LICENCIAS ================= -->
+                    <table th:if="${categoria=='licencias'}">
+                        <thead>
+                        <tr>
+                            <th>Usuario</th><th>Área</th><th>Total</th><th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="l : ${licencias}">
+                            <td th:text="${l.usuario}"></td>
+                            <td th:text="${l.area}"></td>
+                            <td th:text="${l.totalLicencias}"></td>
+                            <td>
+                                <button th:data-id="${l.id}" data-categoria="licencias"
+                                        onclick="abrirModalEditar(this)">✏️</button>
+                                <button th:data-id="${l.id}" data-categoria="licencias"
+                                        onclick="eliminarRegistro(this)">🗑️</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ================= EXTENCIONES ================= -->
+                    <table th:if="${categoria=='extenciones'}">
+                        <thead>
+                        <tr>
+                            <th>Ext</th><th>Nombre</th><th>Departamento</th><th>Correo</th><th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="e : ${extenciones}">
+                            <td th:text="${e.id}"></td>
+                            <td th:text="${e.nombre}"></td>
+                            <td th:text="${e.departamento}"></td>
+                            <td th:text="${e.correo}"></td>
+                            <td>
+                                <button th:data-id="${e.id}" data-categoria="extenciones"
+                                        onclick="abrirModalEditar(this)">✏️</button>
+                                <button th:data-id="${e.id}" data-categoria="extenciones"
+                                        onclick="eliminarRegistro(this)">🗑️</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ================= INVENTARIOS ================= -->
+                    <table th:if="${categoria=='inventarios'}">
+                        <thead>
+                        <tr>
+                            <th>Inventario</th><th>NIC</th><th>Descripción</th><th>Valor</th>
+                            <th>Marca</th><th>Modelo</th><th>Serie</th>
+                            <th>Clave dependencia</th><th>Dependencia</th>
+                            <th>Resguardatario</th><th>Inmueble</th><th>Proveedor</th>
+                            <th>Estado de uso</th><th>Fecha adquisición</th>
+                            <th>Fecha asignación</th><th>Fecha firma resguardo</th>
+                            <th>Sal. mín. UMA</th><th>Tipo propiedad</th>
+                            <th>Forma adquisición</th><th>Tipo documento</th>
+                            <th>Características</th><th>Material</th><th>Color</th>
+                            <th>Tipo asignación</th><th>Placas</th>
+                            <th>Activo genérico</th><th>Grupo activo</th>
+                            <th>Activo específico</th><th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="i : ${inventarios}">
+                            <td th:text="${i.inventario}"></td>
+                            <td th:text="${i.nic}"></td>
+                            <td th:text="${i.descripcionBien}"></td>
+                            <td th:text="${i.valor}"></td>
+                            <td th:text="${i.marca}"></td>
+                            <td th:text="${i.modelo}"></td>
+                            <td th:text="${i.serie}"></td>
+                            <td th:text="${i.claveDependencia}"></td>
+                            <td th:text="${i.nombreDependencia}"></td>
+                            <td th:text="${i.resguardatario}"></td>
+                            <td th:text="${i.nombreInmueble}"></td>
+                            <td th:text="${i.proveedor}"></td>
+                            <td th:text="${i.estadoUso}"></td>
+                            <td th:text="${i.fechaAdquisicion != null ? #temporals.format(i.fechaAdquisicion,'dd/MM/yyyy') : ''}"></td>
+                            <td th:text="${i.fechaAsignacion != null ? #temporals.format(i.fechaAsignacion,'dd/MM/yyyy') : ''}"></td>
+                            <td th:text="${i.fechaFirmaResg != null ? #temporals.format(i.fechaFirmaResg,'dd/MM/yyyy') : ''}"></td>
+                            <td th:text="${i.salMinUma}"></td>
+                            <td th:text="${i.tipoPropiedad}"></td>
+                            <td th:text="${i.formaAdquisicion}"></td>
+                            <td th:text="${i.tipoDocumento}"></td>
+                            <td th:text="${i.caracteristicas}"></td>
+                            <td th:text="${i.material}"></td>
+                            <td th:text="${i.color}"></td>
+                            <td th:text="${i.tipoAsignacion}"></td>
+                            <td th:text="${i.placas}"></td>
+                            <td th:text="${i.activoGenerico}"></td>
+                            <td th:text="${i.grupoActivo}"></td>
+                            <td th:text="${i.activoEspecifico}"></td>
+                            <td>
+                                <button th:data-id="${i.inventario}" data-categoria="inventarios"
+                                        onclick="abrirModalEditar(this)">✏️</button>
+                                <button th:data-id="${i.inventario}" data-categoria="inventarios"
+                                        onclick="eliminarRegistro(this)">🗑️</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- ================= PAGINACIÓN ================= -->
+                <div class="paginacion" th:if="${totalPages > 1}">
+
+                    <!-- ANTERIOR -->
+                    <a class="nav"
+                       th:if="${currentPage > 0}"
+                       th:href="@{/admin/gestion-servicios(
+           categoria=${categoria},
+           tipo=${tipo},
+           q=${q},
+           page=${currentPage - 1}
+       )}">
+                        ‹
+                    </a>
+
+                    <!-- NÚMEROS (SOLO 3 DINÁMICOS) -->
+                    <span th:each="i : ${#numbers.sequence(
+            T(java.lang.Math).max(0, currentPage - 1),
+            T(java.lang.Math).min(totalPages - 1, currentPage + 1)
+        )}">
+        <a th:href="@{/admin/gestion-servicios(
+                categoria=${categoria},
+                tipo=${tipo},
+                q=${q},
+                page=${i}
+            )}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''">
         </a>
+    </span>
 
-        <a th:href="@{'/admin/gestion-servicios'(categoria='correos')}">
-          <button class="cat-btn"
-                  th:classappend="${categoria=='correos'} ? 'activo' : ''">
-            Correos
-          </button>
-        </a>
+                    <!-- SIGUIENTE -->
+                    <a class="nav"
+                       th:if="${currentPage < totalPages - 1}"
+                       th:href="@{/admin/gestion-servicios(
+           categoria=${categoria},
+           tipo=${tipo},
+           q=${q},
+           page=${currentPage + 1}
+       )}">
+                        ›
+                    </a>
 
-        <button class="cat-btn">Licencias</button>
-        <button class="cat-btn">Extensiones</button>
-        <button class="cat-btn">Inventarios</button>
-      </div>
+                </div>
 
-      <!-- PANEL DERECHO -->
-      <div class="panel-datos">
 
-        <!-- SELECT DEPARTAMENTOS -->
-        <form method="get" th:action="@{'/admin/gestion-servicios'}" id="filtroForm">
-          <input type="hidden" name="categoria" value="correos">
+            </div>
+        </div>
+    </section>
+</main>
 
-          <select id="areaSelect" name="area"
-                  onchange="document.getElementById('filtroForm').submit()">
-            <option value="">Departamentos</option>
+<!-- ===== MODAL ===== -->
+<div id="modalCrud" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="modalTitulo"></h3>
 
-            <th:block th:each="a : ${areas}">
-              <option th:value="${a}"
-                      th:text="${a}"
-                      th:selected="${a==areaSeleccionada}">
-              </option>
-            </th:block>
-          </select>
+        <form method="post" action="/admin/guardar">
+            <input type="hidden" name="categoria" id="categoria">
+            <input type="hidden" name="id" id="registroId">
+            <div id="camposFormulario"></div>
+
+            <button type="submit">Guardar</button>
+            <button type="button" onclick="cerrarModal()">Cancelar</button>
         </form>
-
-        <!-- LISTA DE REGISTROS -->
-        <div class="lista">
-
-          <div class="item" th:each="d : ${datos}">
-            <span class="nombre" th:text="${d.nombreCompleto}"></span>
-            <span class="correo" th:text="${d.correo}"></span>
-            <span class="extra" th:text="${d.extension}"></span>
-
-            <div class="acciones">
-              <button type="button" class="btn-accion"
-                      th:attr="
-                        data-id=${d.id},
-                        data-nombre=${d.nombreCompleto},
-                        data-correo=${d.correo},
-                        data-extension=${d.extension},
-                        data-puesto=${d.puesto},
-                        data-area=${d.area}
-                      "
-                      onclick="abrirEditor(this)">
-                ✏️
-              </button>
-
-              <form th:action="@{'/admin/correos/eliminar/' + ${d.id}}"
-                    method="post"
-                    onsubmit="return confirm('¿Eliminar registro?');">
-                <button class="btn-accion delete">🗑️</button>
-              </form>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- PANEL EDICIÓN -->
-        <div id="panel-editar" class="panel-editar oculto">
-          <h3>Editar registro</h3>
-
-          <form method="post" action="/admin/correos/actualizar">
-
-            <input type="hidden" id="edit-id" name="id">
-
-            <label>Nombre completo</label>
-            <input type="text" id="edit-nombre" name="nombreCompleto">
-
-            <label>Correo</label>
-            <input type="email" id="edit-correo" name="correo">
-
-            <label>Extensión</label>
-            <input type="text" id="edit-extension" name="extension">
-
-            <label>Puesto</label>
-            <input type="text" id="edit-puesto" name="puesto">
-
-            <label>Área</label>
-            <input type="text" id="edit-area" name="area">
-
-            <div class="edit-buttons">
-              <button type="submit" class="btn-guardar">Guardar cambios</button>
-              <button type="button" class="btn-cancelar" onclick="cerrarEditor()">Cancelar</button>
-            </div>
-
-          </form>
-        </div>
-
-      </div>
     </div>
-
-    <!-- BOTÓN DESCARGAR -->
-    <div class="download-container">
-      <a href="/admin/correos/exportar-todo">
-        <button class="btn-descargar">Descargar</button>
-      </a>
-    </div>
-
-  </main>
-
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-bar"></div>
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
-</footer>
-
 <script>
-  function abrirEditor(btn) {
-    document.getElementById("panel-editar").classList.remove("oculto");
+    function abrirModalAgregar(btn){
+        const c = btn.dataset.categoria;
+        document.getElementById('modalTitulo').innerText='Agregar';
+        document.getElementById('categoria').value=c;
+        document.getElementById('registroId').value='';
+        cargarCampos(c,{});
+        document.getElementById('modalCrud').classList.remove('hidden');
+    }
 
-    document.getElementById("edit-id").value = btn.dataset.id;
-    document.getElementById("edit-nombre").value = btn.dataset.nombre;
-    document.getElementById("edit-correo").value = btn.dataset.correo;
-    document.getElementById("edit-extension").value = btn.dataset.extension;
-    document.getElementById("edit-puesto").value = btn.dataset.puesto;
-    document.getElementById("edit-area").value = btn.dataset.area;
+    function abrirModalEditar(btn){
+        const id = btn.dataset.id;
+        const c  = btn.dataset.categoria;
 
-    document.getElementById("panel-editar").scrollIntoView({ behavior: "smooth" });
-  }
+        fetch(`/admin/obtener/${c}/${encodeURIComponent(id)}`)
+            .then(r=>r.json())
+            .then(d=>{
+                document.getElementById('modalTitulo').innerText='Editar';
+                document.getElementById('categoria').value=c;
+                document.getElementById('registroId').value=id;
+                cargarCampos(c,d);
+                document.getElementById('modalCrud').classList.remove('hidden');
+            });
+    }
 
-  function cerrarEditor() {
-    document.getElementById("panel-editar").classList.add("oculto");
-  }
+    function eliminarRegistro(btn){
+        if(!confirm('¿Eliminar registro?')) return;
+
+        fetch('/admin/eliminar',{
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:`categoria=${btn.dataset.categoria}&id=${encodeURIComponent(btn.dataset.id)}`
+        }).then(()=>location.reload());
+    }
+
+    function cerrarModal(){
+        document.getElementById('modalCrud').classList.add('hidden');
+    }
+
+    function cargarCampos(c,d){
+        let h='';
+        if(c==='correos'){
+            h=`<input name="usuario" value="${d.usuario||''}">
+               <input name="correo" value="${d.correo||''}">
+               <input name="tipoLicencia" value="${d.tipoLicencia||''}">
+               <input name="area" value="${d.area||''}">`;
+        }
+        if(c==='licencias'){
+            h=`<input name="usuario" value="${d.usuario||''}">
+               <input name="area" value="${d.area||''}">
+               <input type="number" name="totalLicencias" value="${d.totalLicencias||0}">`;
+        }
+        if(c==='extenciones'){
+            h=`<input name="nombre" value="${d.nombre||''}">
+               <input name="departamento" value="${d.departamento||''}">
+               <input name="correo" value="${d.correo||''}">`;
+        }
+       if(c === 'inventarios'){
+    h = `
+    <label>Inventario</label>
+    <input name="inventario" value="${d.inventario||''}" readonly>
+
+    <label>NIC</label>
+    <input name="nic" value="${d.nic||''}">
+
+    <label>Descripción</label>
+    <input name="descripcionBien" value="${d.descripcionBien||''}">
+
+    <label>Valor</label>
+    <input name="valor" value="${d.valor||''}">
+
+    <label>Marca</label>
+    <input name="marca" value="${d.marca||''}">
+
+    <label>Modelo</label>
+    <input name="modelo" value="${d.modelo||''}">
+
+    <label>Serie</label>
+    <input name="serie" value="${d.serie||''}">
+
+    <label>Clave dependencia</label>
+    <input name="claveDependencia" value="${d.claveDependencia||''}">
+
+    <label>Dependencia</label>
+    <input name="nombreDependencia" value="${d.nombreDependencia||''}">
+
+    <label>Resguardatario</label>
+    <input name="resguardatario" value="${d.resguardatario||''}">
+
+    <label>Inmueble</label>
+    <input name="nombreInmueble" value="${d.nombreInmueble||''}">
+
+    <label>Proveedor</label>
+    <input name="proveedor" value="${d.proveedor||''}">
+
+    <label>Estado de uso</label>
+    <input name="estadoUso" value="${d.estadoUso||''}">
+
+    <label>Fecha adquisición</label>
+    <input type="date" name="fechaAdquisicion" value="${d.fechaAdquisicion||''}">
+
+    <label>Fecha asignación</label>
+    <input type="date" name="fechaAsignacion" value="${d.fechaAsignacion||''}">
+
+    <label>Fecha firma resguardo</label>
+    <input type="date" name="fechaFirmaResg" value="${d.fechaFirmaResg||''}">
+
+    <label>Salario mínimo UMA</label>
+    <input name="salMinUma" value="${d.salMinUma||''}">
+
+    <label>Tipo propiedad</label>
+    <input name="tipoPropiedad" value="${d.tipoPropiedad||''}">
+
+    <label>Forma adquisición</label>
+    <input name="formaAdquisicion" value="${d.formaAdquisicion||''}">
+
+    <label>Tipo documento</label>
+    <input name="tipoDocumento" value="${d.tipoDocumento||''}">
+
+    <label>Características</label>
+    <input name="caracteristicas" value="${d.caracteristicas||''}">
+
+    <label>Material</label>
+    <input name="material" value="${d.material||''}">
+
+    <label>Color</label>
+    <input name="color" value="${d.color||''}">
+
+    <label>Tipo asignación</label>
+    <input name="tipoAsignacion" value="${d.tipoAsignacion||''}">
+
+    <label>Placas</label>
+    <input name="placas" value="${d.placas||''}">
+
+    <label>Activo genérico</label>
+    <input name="activoGenerico" value="${d.activoGenerico||''}">
+
+    <label>Grupo activo</label>
+    <input name="grupoActivo" value="${d.grupoActivo||''}">
+
+    <label>Activo específico</label>
+    <input name="activoEspecifico" value="${d.activoEspecifico||''}">
+    `;
+}
+        document.getElementById('camposFormulario').innerHTML=h;
+    }
 </script>
 
 </body>

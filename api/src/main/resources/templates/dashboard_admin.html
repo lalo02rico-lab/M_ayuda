@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Mesa de Ayuda</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS BASE DEL SISTEMA -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER GLOBAL ================= -->
+<header class="app-header">
+    <div class="header-container">
+        <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+
+        <div style="display:flex; gap:12px; align-items:center;">
+            <span class="fecha-header"
+                  th:text="${#dates.format(#dates.createNow(), 'dd MMM, HH:mm')}"></span>
+
+            <a href="/admin/menu" class="btn-primary">Inicio</a>
+            <a href="/login" class="btn-logout">Cerrar sesión</a>
+        </div>
+    </div>
+</header>
+
+<!-- ================= CONTENIDO ================= -->
+<main class="admin-layout admin-dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="user-box">
+            <div class="user-icon">
+                <img src="/img/logo_usuario.png" alt="Usuario">
+            </div>
+            <div class="user-role">ADMINISTRADOR</div>
+        </div>
+
+        <nav class="menu">
+            <a href="/admin/menu">volver</a>
+            <a href="/admin/dashboard" class="active">Dashboard</a>
+            <a href="/admin/tickets">Nuevos tickets</a>
+            <a href="/admin/tickets/asignados">Asignados</a>
+        </nav>
+    </aside>
+
+    <!-- ================= PANEL PRINCIPAL ================= -->
+    <section class="content">
+
+        <h1 class="titulo-seccion">INDICADORES</h1>
+
+        <!-- ================= FILTROS ================= -->
+        <form class="filtro-fechas" method="get" th:action="@{/admin/dashboard}">
+            <label>
+                Desde:
+                <input type="date" name="inicio" th:value="${inicio}">
+            </label>
+
+            <label>
+                Hasta:
+                <input type="date" name="fin" th:value="${fin}">
+            </label>
+
+            <button type="submit" class="btn-filtrar">Aplicar</button>
+            <a th:href="@{/admin/dashboard}" class="btn-limpiar">Quitar filtro</a>
+            <a th:href="@{/admin/dashboard/export(inicio=${inicio},fin=${fin})}"
+               class="btn-exportar">
+                Exportar bitácora de soportes
+            </a>
+        </form>
+
+        <!-- ================= TARJETAS ================= -->
+        <section class="cards-row">
+            <div class="card"><p>Tickets totales</p><h2 th:text="${data.total}">0</h2></div>
+            <div class="card"><p>Tickets nuevos</p><h2 th:text="${data.nuevos}">0</h2></div>
+            <div class="card"><p>Pendientes</p><h2 th:text="${data.pendientes}">0</h2></div>
+            <div class="card"><p>En proceso</p><h2 th:text="${data.enProceso}">0</h2></div>
+            <div class="card"><p>Finalizados</p><h2 th:text="${data.finalizados}">0</h2></div>
+        </section>
+
+        <!-- ================= MENÚ DASHBOARD ================= -->
+        <section class="dashboard-menu">
+            <button class="dash-btn active" onclick="cargarGrafica('estado', this)">📊 Resumen</button>
+            <button class="dash-btn" onclick="cargarGrafica('categorias', this)">🗂 Categorías</button>
+            <button class="dash-btn" onclick="cargarGrafica('tecnicos', this)">👨‍🔧 Técnicos</button>
+        </section>
+
+        <!-- ================= GRÁFICA ================= -->
+        <section class="charts-row">
+            <div class="chart-card full">
+                <h3 id="tituloGrafica">Estado del ticket</h3>
+                <canvas id="chartDashboard"></canvas>
+            </div>
+        </section>
+
+        <!-- ================= ÚLTIMOS ================= -->
+        <section class="ultimos">
+            <h3>Últimos tickets</h3>
+            <table class="tabla-ultimos">
+                <thead>
+                <tr>
+                    <th>ID</th><th>Solicitante</th><th>Categoría</th>
+                    <th>Estado</th><th>Técnico</th><th>Nivel</th><th>Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${data.ultimosTickets}">
+                    <td th:text="${t.idTicket}"></td>
+                    <td th:text="${t.solicitante}"></td>
+                    <td th:text="${t.categoria}"></td>
+                    <td th:text="${t.estado}"></td>
+                    <td th:text="${t.tecnico}"></td>
+                    <td th:text="${t.nivelAtencion}"></td>
+                    <td th:text="${t.fecha}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="app-footer">
+    <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+</footer>
+
+<script th:src="@{/js/chart.js}"></script>
+
+<script th:inline="javascript">
+    Chart.defaults.devicePixelRatio = 2;
+    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.font.size = 13;
+
+    const data = /*[[${data}]]*/ {};
+    let chartActual = null;
+
+    function cargarGrafica(tipo, btn) {
+
+        document.querySelectorAll('.dash-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const ctx = document.getElementById('chartDashboard').getContext('2d');
+        if (chartActual) chartActual.destroy();
+
+        /* ================= ESTADO ================= */
+        if (tipo === 'estado') {
+            document.getElementById('tituloGrafica').innerText = 'Estado del ticket';
+
+            chartActual = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Nuevos', 'Pendientes', 'En proceso', 'Finalizados'],
+                    datasets: [{
+                        data: [data.nuevos, data.pendientes, data.enProceso, data.finalizados],
+                        backgroundColor: ['#7B1E3D','#C89F56','#B48954','#EBCDA8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    animation: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        /* ================= CATEGORÍAS ================= */
+        if (tipo === 'categorias') {
+            document.getElementById('tituloGrafica').innerText = 'Categorías';
+
+            chartActual = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.porCategoria || {}),
+                    datasets: [{
+                        data: Object.values(data.porCategoria || {}),
+                        backgroundColor: [
+                            '#4A90E2','#FF9F40','#FF6384','#FFCD56','#4BC0C0'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    animation: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 14, padding: 14 }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* ================= TÉCNICOS ================= */
+        if (tipo === 'tecnicos') {
+            document.getElementById('tituloGrafica').innerText = 'Rendimiento de técnicos';
+
+            chartActual = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.porTecnicoFinalizados || {}),
+                    datasets: [{
+                        data: Object.values(data.porTecnicoFinalizados || {}),
+                        backgroundColor: '#7B1E3D'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    animation: false,
+                    scales: {
+                        x: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        cargarGrafica('estado', document.querySelector('.dash-btn.active'));
+    });
+</script>
+<!-- TU JS DE GRÁFICAS QUEDA IGUAL -->
+
+</body>
+</html>

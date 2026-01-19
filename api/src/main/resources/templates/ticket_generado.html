@@ -2,40 +2,72 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Ticket Generado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Generado - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/ticket.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<header>
-  <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+  </div>
 </header>
 
-<main>
+<!-- CONTENIDO -->
+<main class="app-content">
+
   <div class="ticket-container">
-    <h1>🎫 Ticket Generado Correctamente</h1>
-    <p><strong>Nombre:</strong> <span th:text="${pre.nombre}"></span></p>
-    <p><strong>Departamento:</strong> <span th:text="${pre.departamento.nombreDepartamento}"></span></p>
-    <p><strong>Categoría:</strong> <span th:text="${tipo.nombre}"></span></p>
-    <p><strong>Descripción:</strong> <span th:text="${ticket.descripcion}"></span></p>
-    <p><strong>Fecha:</strong> <span th:text="${#dates.format(ticket.fechaHora, 'dd/MM/yyyy HH:mm')}"></span></p>
+
+    <h1>🎫 Ticket generado correctamente</h1>
+
+    <p><strong>Nombre:</strong>
+      <span th:text="${pre.nombre}"></span>
+    </p>
+
+    <p><strong>Departamento:</strong>
+      <span th:text="${pre.departamento.nombreDepartamento}"></span>
+    </p>
+
+    <p><strong>Categoría:</strong>
+      <span th:text="${tipo.nombre}"></span>
+    </p>
+
+    <p><strong>Descripción:</strong>
+      <span th:text="${ticket.descripcion}"></span>
+    </p>
+
+    <p><strong>Fecha:</strong>
+      <span th:text="${#dates.format(ticket.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
+    </p>
+
     <p><strong>Estado:</strong> NUEVO</p>
 
-    <a th:href="@{'/soporte/pdf/' + ${ticket.idTicket}}"
-       class="btn-solicitar"
-       style="display:block; margin-top:20px; text-align:center;">
-      📄 Descargar ticket en PDF
-    </a>
+    <!-- ACCIONES -->
+    <div class="acciones-ticket">
 
+      <a th:href="@{'/soporte/pdf/' + ${ticket.idTicket}}"
+         class="btn-pdf">
+        📄 Descargar ticket en PDF
+      </a>
 
+      <a href="/" class="btn-cerrar">
+        Cerrar
+      </a>
 
-    <a href="/" class="btn-cerrar">Cerrar</a>
+    </div>
 
   </div>
+
 </main>
 
-<footer>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
   <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 

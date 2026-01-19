@@ -1,194 +1,475 @@
 package mx.gob.mesadeayuda.api.controller;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import mx.gob.mesadeayuda.api.model.DirectorioCorreo;
-import mx.gob.mesadeayuda.api.repository.DirectorioCorreoRepository;
-
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-
+import mx.gob.mesadeayuda.api.model.*;
+import mx.gob.mesadeayuda.api.repository.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
-
-
-import jakarta.servlet.http.HttpServletResponse;
-import com.itextpdf.text.BaseColor;
-
-
-
-
-import com.itextpdf.text.Document;
-
-import com.itextpdf.text.Font;
-
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-
-import com.itextpdf.text.pdf.PdfWriter;
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminServiciosController {
 
-    private final DirectorioCorreoRepository repo;
+    private final VwResguardoRepository vwResguardoRepository;
+    private final CorreoRepository correoRepository;
+    private final LicenciaRepository licenciaRepository;
+    private final ExtencionRepository extencionRepository;
+    private final InventarioBienRepository inventarioBienRepository;
 
-    // ============================================
-    //   VISTA PRINCIPAL DE GESTIÓN DE SERVICIOS
-    // ============================================
+    /* =================================================
+       FUENTES PDF
+    ================================================= */
+    private Font tituloFont() {
+        return new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, new BaseColor(123, 30, 61));
+    }
+
+    private Font headerFont() {
+        return new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD, BaseColor.WHITE);
+    }
+
+    private Font cellFont() {
+        return new Font(Font.FontFamily.HELVETICA, 9);
+    }
+
+    private PdfPCell headerCell(String text) {
+        PdfPCell c = new PdfPCell(new Phrase(text, headerFont()));
+        c.setBackgroundColor(new BaseColor(180, 137, 84));
+        c.setHorizontalAlignment(Element.ALIGN_CENTER);
+        return c;
+    }
+
+    private PdfPCell cell(String text) {
+        PdfPCell c = new PdfPCell(new Phrase(text != null ? text : "", cellFont()));
+        c.setHorizontalAlignment(Element.ALIGN_LEFT);
+        return c;
+    }
+
+    /* =================================================
+       LISTADO + FILTROS + PAGINACIÓN
+    ================================================= */
     @GetMapping("/gestion-servicios")
-    public String vistaServicios(
-            @RequestParam(value = "categoria", required = false, defaultValue = "correos") String categoria,
-            @RequestParam(value = "area", required = false) String area,
-            Model model) {
+    public String gestionServicios(
+            @RequestParam(defaultValue = "resguardos") String categoria,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
 
         model.addAttribute("categoria", categoria);
+        model.addAttribute("tipo", tipo);
+        model.addAttribute("q", q);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
 
-        // Lista de áreas desde BD
-        List<String> areas = repo.obtenerAreas();
-        model.addAttribute("areas", areas);
+        switch (categoria) {
 
-        // Si seleccionó un área, decodificarla (POR ESTO TRONABA)
-        if (area != null && !area.isEmpty()) {
+            case "resguardos" -> {
+                Page<VwResguardo> p =
+                        (tipo != null || q != null)
+                                ? vwResguardoRepository.filtrar(tipo, q, pageable)
+                                : vwResguardoRepository.findAll(pageable);
 
-            String areaDecodificada = URLDecoder.decode(area, StandardCharsets.UTF_8);
+                model.addAttribute("resguardos", p.getContent());
+                model.addAttribute("totalPages", p.getTotalPages());
+            }
 
-            List<DirectorioCorreo> datos =
-                    repo.findByAreaOrderByNombreCompletoAsc(areaDecodificada);
+            case "correos" -> {
+                Page<Correo> p =
+                        (q != null)
+                                ? correoRepository.filtrar(q, pageable)
+                                : correoRepository.findAll(pageable);
 
-            model.addAttribute("datos", datos);
-            model.addAttribute("areaSeleccionada", areaDecodificada);
+                model.addAttribute("correos", p.getContent());
+                model.addAttribute("totalPages", p.getTotalPages());
+            }
+
+            case "licencias" -> {
+                Page<Licencia> p =
+                        (q != null)
+                                ? licenciaRepository.filtrar(q, pageable)
+                                : licenciaRepository.findAll(pageable);
+
+                model.addAttribute("licencias", p.getContent());
+                model.addAttribute("totalPages", p.getTotalPages());
+            }
+
+            case "extenciones" -> {
+                Page<Extencion> p =
+                        (q != null)
+                                ? extencionRepository.filtrar(q, pageable)
+                                : extencionRepository.findAll(pageable);
+
+                model.addAttribute("extenciones", p.getContent());
+                model.addAttribute("totalPages", p.getTotalPages());
+            }
+
+            case "inventarios" -> {
+                Page<InventarioBien> p =
+                        (q != null)
+                                ? inventarioBienRepository.filtrar(q, pageable)
+                                : inventarioBienRepository.findAll(pageable);
+
+                model.addAttribute("inventarios", p.getContent());
+                model.addAttribute("totalPages", p.getTotalPages());
+            }
         }
 
         return "admin_gservicios";
     }
 
+    /* =================================================
+       OBTENER (MODAL EDITAR)
+    ================================================= */
+    @GetMapping("/obtener/{categoria}/{id}")
+    @ResponseBody
+    public Object obtener(@PathVariable String categoria, @PathVariable String id) {
 
-    // ============================================
-    //   ACTUALIZAR (EDICIÓN INLINE)
-    // ============================================
-    @PostMapping("/correos/actualizar")
-    public String actualizarCorreo(
-            @RequestParam Long id,
-            @RequestParam String nombreCompleto,
-            @RequestParam String correo,
-            @RequestParam String extension,
-            @RequestParam String puesto,
-            @RequestParam String area
+        return switch (categoria) {
+            case "correos" -> correoRepository.findById(Long.valueOf(id)).orElse(null);
+            case "licencias" -> licenciaRepository.findById(Long.valueOf(id)).orElse(null);
+            case "extenciones" -> extencionRepository.findById(Long.valueOf(id)).orElse(null);
+            case "inventarios" -> inventarioBienRepository.findByInventario(id);
+            default -> null;
+        };
+    }
+
+    /* =================================================
+       GUARDAR
+    ================================================= */
+    @PostMapping("/guardar")
+    public String guardar(
+            @RequestParam String categoria,
+            @RequestParam(required = false) Long id,
+            HttpServletRequest request
     ) {
 
-        DirectorioCorreo d = repo.findById(id).orElse(null);
+        if ("correos".equals(categoria)) {
+            Correo c = (id != null)
+                    ? correoRepository.findById(id).orElse(new Correo())
+                    : new Correo();
 
-        if (d != null) {
-            d.setNombreCompleto(nombreCompleto);
-            d.setCorreo(correo);
-            d.setExtension(extension);
-            d.setPuesto(puesto);
-            d.setArea(area);
-            repo.save(d);
+            c.setUsuario(request.getParameter("usuario"));
+            c.setCorreo(request.getParameter("correo"));
+            c.setTipoLicencia(request.getParameter("tipoLicencia"));
+            c.setArea(request.getParameter("area"));
+            correoRepository.save(c);
         }
 
-        String areaEncoded = java.net.URLEncoder.encode(area, StandardCharsets.UTF_8);
+        if ("licencias".equals(categoria)) {
+            Licencia l = (id != null)
+                    ? licenciaRepository.findById(id).orElse(new Licencia())
+                    : new Licencia();
 
-        return "redirect:/admin/gestion-servicios?categoria=correos&area=" + areaEncoded;
+            l.setUsuario(request.getParameter("usuario"));
+            l.setArea(request.getParameter("area"));
+            l.setTotalLicencias(Integer.valueOf(request.getParameter("totalLicencias")));
+            licenciaRepository.save(l);
+        }
+
+        if ("extenciones".equals(categoria)) {
+            Extencion e = (id != null)
+                    ? extencionRepository.findById(id).orElse(new Extencion())
+                    : new Extencion();
+
+            e.setNombre(request.getParameter("nombre"));
+            e.setDepartamento(request.getParameter("departamento"));
+            e.setCorreo(request.getParameter("correo"));
+            extencionRepository.save(e);
+        }
+
+        if ("inventarios".equals(categoria)) {
+            String inv = request.getParameter("inventario");
+            InventarioBien i = inventarioBienRepository.findByInventario(inv);
+
+            if (i == null) {
+                i = new InventarioBien();
+                i.setInventario(inv);
+            }
+
+            i.setNic(request.getParameter("nic"));
+            i.setDescripcionBien(request.getParameter("descripcionBien"));
+
+            String val = request.getParameter("valor");
+            if (val != null && !val.isBlank()) {
+                i.setValor(new BigDecimal(val));
+            }
+
+            i.setMarca(request.getParameter("marca"));
+            i.setModelo(request.getParameter("modelo"));
+            i.setSerie(request.getParameter("serie"));
+            i.setClaveDependencia(request.getParameter("claveDependencia"));
+            i.setNombreDependencia(request.getParameter("nombreDependencia"));
+            i.setResguardatario(request.getParameter("resguardatario"));
+            i.setNombreInmueble(request.getParameter("nombreInmueble"));
+            i.setProveedor(request.getParameter("proveedor"));
+            i.setEstadoUso(request.getParameter("estadoUso"));
+            i.setSalMinUma(request.getParameter("salMinUma"));
+            i.setTipoPropiedad(request.getParameter("tipoPropiedad"));
+            i.setFormaAdquisicion(request.getParameter("formaAdquisicion"));
+            i.setTipoDocumento(request.getParameter("tipoDocumento"));
+            i.setCaracteristicas(request.getParameter("caracteristicas"));
+            i.setMaterial(request.getParameter("material"));
+            i.setColor(request.getParameter("color"));
+            i.setTipoAsignacion(request.getParameter("tipoAsignacion"));
+            i.setPlacas(request.getParameter("placas"));
+            i.setActivoGenerico(request.getParameter("activoGenerico"));
+            i.setGrupoActivo(request.getParameter("grupoActivo"));
+            i.setActivoEspecifico(request.getParameter("activoEspecifico"));
+
+            DateTimeFormatter fIso = DateTimeFormatter.ISO_DATE;
+
+            if (!request.getParameter("fechaAdquisicion").isBlank())
+                i.setFechaAdquisicion(LocalDate.parse(request.getParameter("fechaAdquisicion"), fIso));
+            if (!request.getParameter("fechaAsignacion").isBlank())
+                i.setFechaAsignacion(LocalDate.parse(request.getParameter("fechaAsignacion"), fIso));
+            if (!request.getParameter("fechaFirmaResg").isBlank())
+                i.setFechaFirmaResg(LocalDate.parse(request.getParameter("fechaFirmaResg"), fIso));
+
+            inventarioBienRepository.save(i);
+        }
+
+        return "redirect:/admin/gestion-servicios?categoria=" + categoria;
     }
 
-    // ============================================
-    //   ELIMINAR REGISTRO
-    // ============================================
-    @PostMapping("/correos/eliminar/{id}")
-    public String eliminarCorreo(@PathVariable Long id) {
+    /* =================================================
+       ELIMINAR
+    ================================================= */
+    @PostMapping("/eliminar")
+    @ResponseBody
+    public void eliminar(@RequestParam String categoria, @RequestParam String id) {
 
-        DirectorioCorreo d = repo.findById(id).orElse(null);
-        String area = (d != null) ? d.getArea() : "";
-
-        repo.deleteById(id);
-
-        String areaEncoded = java.net.URLEncoder.encode(area, StandardCharsets.UTF_8);
-
-        return "redirect:/admin/gestion-servicios?categoria=correos&area=" + areaEncoded;
+        switch (categoria) {
+            case "correos" -> correoRepository.deleteById(Long.valueOf(id));
+            case "licencias" -> licenciaRepository.deleteById(Long.valueOf(id));
+            case "extenciones" -> extencionRepository.deleteById(Long.valueOf(id));
+            case "inventarios" -> inventarioBienRepository.deleteByInventario(id);
+        }
     }
 
-    @GetMapping("/correos/exportar-todo")
-    public void exportarPDFCompleto(HttpServletResponse response) throws Exception {
+    /* =================================================
+       DESCARGAR PDF (COMPLETO)
+    ================================================= */
+    @GetMapping("/descargar-pdf")
+    public void descargarPdf(
+            @RequestParam String categoria,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String q,
+            HttpServletResponse response
+    ) throws Exception {
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=directorio_correos.pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=" + categoria + ".pdf");
 
-        Document doc = new Document(PageSize.LETTER);
+        Document doc = new Document(PageSize.A4.rotate());
         PdfWriter.getInstance(doc, response.getOutputStream());
         doc.open();
 
-        // ====== TÍTULO PRINCIPAL ======
-        Font tituloFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
-        Paragraph titulo = new Paragraph("DIRECTORIO DE CORREOS", tituloFont);
+        Paragraph titulo = new Paragraph(
+                categoria.toUpperCase() + " - MESA DE AYUDA",
+                tituloFont()
+        );
         titulo.setAlignment(Element.ALIGN_CENTER);
         titulo.setSpacingAfter(15);
         doc.add(titulo);
 
-        // Lista completa ordenada
-        List<DirectorioCorreo> lista = repo.findAllByOrderByAreaAscNombreCompletoAsc();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        String areaActual = "";
+        /* ================= RESGUARDOS ================= */
+        if ("resguardos".equals(categoria)) {
 
-        // ====== RECORRER TODAS LAS ÁREAS ======
-        for (DirectorioCorreo d : lista) {
+            List<VwResguardo> lista =
+                    (tipo != null || q != null)
+                            ? vwResguardoRepository.filtrar(tipo, q)
+                            : vwResguardoRepository.findAll();
 
-            // Detecta el cambio de área
-            if (!d.getArea().equals(areaActual)) {
-                areaActual = d.getArea();
+            PdfPTable table = new PdfPTable(10);
+            table.setWidthPercentage(100);
 
-                // ===== TÍTULO DEL ÁREA =====
-                Font areaFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
-                Paragraph areaTitulo = new Paragraph("\n" + areaActual, areaFont);
-                areaTitulo.setSpacingBefore(10);
-                areaTitulo.setSpacingAfter(8);
-                doc.add(areaTitulo);
+            String[] headers = {"No","Tipo","Usuario","Usuario Final","Dirección","Área","Perfil","Modelo","Serie","Status"};
+            for (String h : headers) table.addCell(headerCell(h));
 
-                // ===== TABLA DE ENCABEZADO =====
-                PdfPTable header = new PdfPTable(4);
-                header.setWidthPercentage(100);
-                header.setWidths(new float[]{25, 30, 15, 30});
-
-                Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11);
-
-                String[] cols = {"NOMBRE", "CORREO", "EXTENSIÓN", "PUESTO"};
-                for (String c : cols) {
-                    PdfPCell cell = new PdfPCell(new Phrase(c, headFont));
-                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    cell.setBackgroundColor(new BaseColor(180, 20, 70)); // Vino GEM
-                    cell.setPadding(6);
-                    header.addCell(cell);
-                }
-
-                doc.add(header);
+            for (VwResguardo r : lista) {
+                table.addCell(cell(r.getNo().toString()));
+                table.addCell(cell(r.getTipoEquipo()));
+                table.addCell(cell(r.getUsuario()));
+                table.addCell(cell(r.getUsuarioFinal()));
+                table.addCell(cell(r.getDireccion()));
+                table.addCell(cell(r.getArea()));
+                table.addCell(cell(r.getPerfilEquipo()));
+                table.addCell(cell(r.getModelo()));
+                table.addCell(cell(r.getSerieCpu()));
+                table.addCell(cell(r.getStatus()));
             }
+            doc.add(table);
+        }
 
-            // ===== TABLA DE DATOS =====
-            PdfPTable tabla = new PdfPTable(4);
-            tabla.setWidthPercentage(100);
-            tabla.setWidths(new float[]{25, 30, 15, 30});
+        /* ================= CORREOS ================= */
+        if ("correos".equals(categoria)) {
 
-            tabla.addCell(new PdfPCell(new Phrase(d.getNombreCompleto())));
-            tabla.addCell(new PdfPCell(new Phrase(d.getCorreo())));
-            tabla.addCell(new PdfPCell(new Phrase(d.getExtension())));
-            tabla.addCell(new PdfPCell(new Phrase(d.getPuesto())));
+            List<Correo> lista =
+                    (q != null)
+                            ? correoRepository.filtrar(q)
+                            : correoRepository.findAll();
 
-            doc.add(tabla);
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(80);
+
+            String[] headers = {"Usuario", "Correo", "Licencia", "Área"};
+            for (String h : headers) table.addCell(headerCell(h));
+
+            for (Correo c : lista) {
+                table.addCell(cell(c.getUsuario()));
+                table.addCell(cell(c.getCorreo()));
+                table.addCell(cell(c.getTipoLicencia()));
+                table.addCell(cell(c.getArea()));
+            }
+            doc.add(table);
+        }
+
+        /* ================= LICENCIAS ================= */
+        if ("licencias".equals(categoria)) {
+
+            List<Licencia> lista =
+                    (q != null)
+                            ? licenciaRepository.filtrar(q)
+                            : licenciaRepository.findAll();
+
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(60);
+
+            String[] headers = {"Usuario", "Área", "Total Licencias"};
+            for (String h : headers) table.addCell(headerCell(h));
+
+            for (Licencia l : lista) {
+                table.addCell(cell(l.getUsuario()));
+                table.addCell(cell(l.getArea()));
+                table.addCell(cell(String.valueOf(l.getTotalLicencias())));
+            }
+            doc.add(table);
+        }
+
+        /* ================= EXTENCIONES ================= */
+        if ("extenciones".equals(categoria)) {
+
+            List<Extencion> lista =
+                    (q != null)
+                            ? extencionRepository.filtrar(q)
+                            : extencionRepository.findAll();
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(70);
+
+            String[] headers = {"Extensión", "Nombre", "Departamento", "Correo"};
+            for (String h : headers) table.addCell(headerCell(h));
+
+            for (Extencion e : lista) {
+                table.addCell(cell(String.valueOf(e.getId())));
+                table.addCell(cell(e.getNombre()));
+                table.addCell(cell(e.getDepartamento()));
+                table.addCell(cell(e.getCorreo()));
+            }
+            doc.add(table);
+        }
+
+        /* ================= INVENTARIOS ================= */
+        if ("inventarios".equals(categoria)) {
+
+            for (InventarioBien i : inventarioBienRepository.findAll()) {
+
+                Paragraph t = new Paragraph(
+                        "INVENTARIO: " + i.getInventario(),
+                        tituloFont()
+                );
+                t.setSpacingBefore(10);
+                t.setSpacingAfter(10);
+                doc.add(t);
+
+                PdfPTable ficha = new PdfPTable(4);
+                ficha.setWidthPercentage(100);
+                ficha.setWidths(new float[]{20, 30, 20, 30});
+
+                ficha.addCell(headerCell("NIC"));
+                ficha.addCell(cell(i.getNic()));
+                ficha.addCell(headerCell("Descripción"));
+                ficha.addCell(cell(i.getDescripcionBien()));
+
+                ficha.addCell(headerCell("Marca"));
+                ficha.addCell(cell(i.getMarca()));
+                ficha.addCell(headerCell("Modelo"));
+                ficha.addCell(cell(i.getModelo()));
+
+                ficha.addCell(headerCell("Serie"));
+                ficha.addCell(cell(i.getSerie()));
+                ficha.addCell(headerCell("Valor"));
+                ficha.addCell(cell(i.getValor() != null ? "$ " + i.getValor() : ""));
+
+                ficha.addCell(headerCell("Dependencia"));
+                ficha.addCell(cell(i.getNombreDependencia()));
+                ficha.addCell(headerCell("Clave Dependencia"));
+                ficha.addCell(cell(i.getClaveDependencia()));
+
+                ficha.addCell(headerCell("Resguardatario"));
+                ficha.addCell(cell(i.getResguardatario()));
+                ficha.addCell(headerCell("Inmueble"));
+                ficha.addCell(cell(i.getNombreInmueble()));
+
+                ficha.addCell(headerCell("Fecha Adquisición"));
+                ficha.addCell(cell(i.getFechaAdquisicion() != null ? i.getFechaAdquisicion().format(f) : ""));
+                ficha.addCell(headerCell("Forma Adquisición"));
+                ficha.addCell(cell(i.getFormaAdquisicion()));
+
+                ficha.addCell(headerCell("Tipo Documento"));
+                ficha.addCell(cell(i.getTipoDocumento()));
+                ficha.addCell(headerCell("UMA"));
+                ficha.addCell(cell(i.getSalMinUma()));
+
+                ficha.addCell(headerCell("Material"));
+                ficha.addCell(cell(i.getMaterial()));
+                ficha.addCell(headerCell("Color"));
+                ficha.addCell(cell(i.getColor()));
+
+                ficha.addCell(headerCell("Características"));
+                ficha.addCell(cell(i.getCaracteristicas()));
+                ficha.addCell(headerCell("Estado Uso"));
+                ficha.addCell(cell(i.getEstadoUso()));
+
+                ficha.addCell(headerCell("Tipo Asignación"));
+                ficha.addCell(cell(i.getTipoAsignacion()));
+                ficha.addCell(headerCell("Placas"));
+                ficha.addCell(cell(i.getPlacas()));
+
+                ficha.addCell(headerCell("Activo Genérico"));
+                ficha.addCell(cell(i.getActivoGenerico()));
+                ficha.addCell(headerCell("Grupo Activo"));
+                ficha.addCell(cell(i.getGrupoActivo()));
+
+                ficha.addCell(headerCell("Activo Específico"));
+                ficha.addCell(cell(i.getActivoEspecifico()));
+                ficha.addCell(new PdfPCell());
+                ficha.addCell(new PdfPCell());
+
+                doc.add(ficha);
+                doc.newPage();
+            }
         }
 
         doc.close();
     }
-
-
 }

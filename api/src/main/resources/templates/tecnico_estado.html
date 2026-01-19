@@ -4,48 +4,102 @@
     <meta charset="UTF-8">
     <title>Estado del Ticket</title>
     <link rel="stylesheet" th:href="@{/css/tecnico_estado.css}">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<h2>Estado de mis Tickets</h2>
+<!-- ▬▬▬▬▬▬▬ TOP HEADER ▬▬▬▬▬▬▬ -->
+<header class="header">
+    <div class="logos">
+        <img th:src="@{/img/logo_gobierno.png}" alt="Gobierno">
 
-<div class="estado-container">
+    </div>
 
-    <table class="estado-tabla">
-        <thead>
-        <tr>
-            <th>Folio</th>
-            <th>Solicitante</th>
-            <th>Área</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-        </tr>
-        </thead>
+    <a th:href="@{/logout}" class="btn-salir">Cerrar sesión</a>
+</header>
 
-        <tbody>
-        <tr th:each="t : ${tickets}">
-            <td th:text="${t.idTicket}"></td>
-            <td th:text="${t.preSolicitud.nombre}"></td>
-            <td th:text="${t.preSolicitud.departamento.nombreDepartamento}"></td>
-            <td th:text="${#dates.format(t.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+<!-- ▬▬▬▬▬▬▬ CONTENEDOR PRINCIPAL ▬▬▬▬▬▬▬ -->
+<div class="layout">
 
-            <td>
-    <span th:switch="${t.idEstado}">
-        <span th:case="3">Asumido</span>
-        <span th:case="4">Pendiente</span>
-        <span th:case="5">Finalizado</span>
-        <span th:case="*">Desconocido</span>
-    </span>
-            </td>
+    <!-- ▬▬▬▬▬ MENÚ LATERAL ▬▬▬▬▬ -->
+    <aside class="sidebar">
+        <div class="user-card">
+            <img th:src="@{/img/logo_usuario.png}" alt="Tecnico">
+            <h2 th:text="${nombreTecnico}">USUARIO</h2>
+        </div>
 
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <nav class="side-nav">
+            <a class="active">Estado del ticket</a>
 
+
+            <a th:href="@{'/tecnico/menu?idTecnico=' + ${idTecnico}}" class="volver-menu">
+                Volver
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ▬▬▬▬▬ CONTENIDO PRINCIPAL ▬▬▬▬▬ -->
+    <main class="content">
+
+        <!-- BUSCADOR -->
+        <div class="search-box">
+            <input type="text" id="buscarInput" placeholder="Buscar..." onkeyup="filtrarTabla()">
+        </div>
+
+        <!-- TABLA -->
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th>Folio</th>
+                <th>Nombre</th>
+                <th>Área</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+
+            <tbody id="tablaTickets">
+            <tr th:each="t : ${tickets}">
+                <td th:text="${t.idTicket}"></td>
+                <td th:text="${t.preSolicitud.nombre}"></td>
+                <td th:text="${t.preSolicitud.departamento.nombreDepartamento}"></td>
+                <td th:text="${t.descripcion}"></td>
+                <td th:text="${#dates.format(t.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+
+                <td>
+                    <span th:switch="${t.idEstado}">
+                        <span th:case="3" class="estado proceso">En proceso</span>
+                        <span th:case="4" class="estado pendiente">Pendiente</span>
+                        <span th:case="5" class="estado finalizado">Finalizado</span>
+                        <span th:case="*" class="estado desconocido">Desconocido</span>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </main>
 </div>
 
-<a th:href="@{'/tecnico/menu?idTecnico=' + ${idTecnico}}" class="btn-volver">⬅ Volver</a>
+<script>
+    // Filtro simple
+    function filtrarTabla() {
+        const filtro = document.getElementById("buscarInput").value.toLowerCase();
+        const filas = document.querySelectorAll("#tablaTickets tr");
 
+        filas.forEach(fila => {
+            const texto = fila.innerText.toLowerCase();
+            fila.style.display = texto.includes(filtro) ? "" : "none";
+        });
+    }
+</script>
+
+
+<footer>
+    <p> ©2025 - Subdirección de desarrollo Tecnológico</p>
+</footer>
 </body>
 </html>

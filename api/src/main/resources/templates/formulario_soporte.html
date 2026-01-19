@@ -2,23 +2,43 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title th:text="'Soporte ' + ${tipo.nombre}">Soporte Técnico</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/formulario.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<header>
-  <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+  </div>
 </header>
 
-<main>
+<!-- CONTENIDO -->
+<main class="app-content">
+
   <div class="formulario-container">
-    <h1 th:text="'SOPORTE ' + ${tipo.nombre}">SOPORTE TÉCNICO</h1>
+
+    <h1 th:text="'Soporte ' + ${tipo.nombre}">SOPORTE TÉCNICO</h1>
     <h2>BIENVENIDO</h2>
 
-    <p><strong>Nombre:</strong> <span th:text="${pre.nombre}">Servidor Público</span></p>
-    <p><strong>Departamento / Área:</strong> <span th:text="${pre.departamento.nombreDepartamento}">Área perteneciente</span></p>
+    <p>
+      <strong>Nombre:</strong>
+      <span th:text="${pre.nombre}">Servidor Público</span>
+    </p>
+
+    <p>
+      <strong>Departamento / Área:</strong>
+      <span th:text="${pre.departamento.nombreDepartamento}">
+                Área perteneciente
+            </span>
+    </p>
 
     <form th:action="@{/soporte/guardar_ticket}"
           method="post"
@@ -29,21 +49,34 @@
       <input type="hidden" name="idTipo" th:value="${tipo.idTipo}">
 
       <label for="descripcion">Descripción del problema:</label>
-      <textarea id="descripcion" name="descripcion"
-                placeholder="Describe brevemente el problema..." required></textarea>
+      <textarea id="descripcion"
+                name="descripcion"
+                placeholder="Describe brevemente el problema..."
+                required></textarea>
 
-      <!-- INPUT DE IMAGEN -->
+      <!-- ARCHIVO -->
       <label>Adjuntar evidencia (opcional):</label>
       <input type="file" name="archivo" accept="image/*">
 
-      <button type="submit" class="btn-solicitar">Solicitar soporte</button>
-      <a href="/soporte/categorias" class="btn-cancelar">Cancelar</a>
+      <!-- ACCIONES -->
+      <div class="acciones-form">
+        <button type="submit" class="btn-solicitar">
+          Solicitar soporte
+        </button>
+
+        <a href="/" class="btn-regresar">
+          cancelar
+        </a>
+      </div>
+
     </form>
 
   </div>
+
 </main>
 
-<footer>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
   <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 

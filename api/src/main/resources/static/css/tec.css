@@ -13,41 +13,16 @@ body {
     background: #fafafa;
 }
 
-/* HEADER */
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: white;
-}
-
-.header-container img {
-    height: 60px;
-}
-
-.btn-logout {
-    background: var(--dorado);
-    padding: 8px 20px;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.gold-line {
-    height: 5px;
-    background: var(--dorado);
-}
-
 /* LAYOUT */
 .layout {
     display: flex;
     padding: 30px;
     gap: 25px;
+    flex: 1;
 }
 
 /* SIDEBAR */
+/* ===== SIDEBAR ===== */
 .sidebar {
     width: 260px;
     background: #dcdcdc;
@@ -56,26 +31,68 @@ body {
     text-align: center;
 }
 
+/* Usuario */
 .user-card img {
     width: 80px;
+    margin-bottom: 8px;
 }
 
 .username {
-    margin-top: 8px;
     font-weight: bold;
+    color: var(--vino);
+    margin-bottom: 30px;
 }
 
+/* ===== MENÚ ===== */
 .sidebar ul {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
+    margin: 0;
 }
 
-.sidebar li {
-    padding: 20px 0;
-    border-bottom: 2px solid #bfbfbf;
-    color: #555;
+.sidebar ul li {
+    margin-bottom: 18px;
 }
+
+/* Links generales */
+.sidebar ul li a {
+    display: block;
+    padding: 14px 10px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #bfbfbf;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.sidebar ul li a:hover {
+    color: var(--vino);
+    background: rgba(0,0,0,0.05);
+}
+
+/* Activo (Estado del ticket) */
+.sidebar ul li a.activo {
+    color: var(--vino);
+    border-bottom: 3px solid var(--vino);
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.sidebar ul li.volver {
+    margin-top: 45px;
+}
+
+.sidebar ul li.volver a {
+    border-bottom: none;
+    color: var(--vino);
+    font-weight: bold;
+}
+
+.sidebar ul li.volver a:hover {
+    background: none;
+    text-decoration: underline;
+}
+
 
 /* CONTENT */
 .content {
@@ -135,8 +152,20 @@ body {
 /* FOOTER */
 .footer {
     text-align: center;
-    padding: 12px;
+    padding: 14px;
     margin-top: 40px;
-    background: var(--vino);
-    color: white;
+    background: white;
+    color: #333;
+    font-size: 14px;
+    border-top: 3px solid var(--dorado);
+}
+
+/* ESTRUCTURA PARA FOOTER ABAJO */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }

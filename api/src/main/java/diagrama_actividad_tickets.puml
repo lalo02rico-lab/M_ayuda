@@ -9,26 +9,45 @@ skinparam activity {
 }
 
 start
-:Servidor Público entra al módulo "Solicitud de Soporte";
-:Llena formulario (nombre, descripción, departamento);
-:Presiona "Guardar Datos";
-:Sistema genera Ticket con estado "Pendiente";
-:Ticket se envía al Administrador;
 
-if (Administrador disponible?) then (Sí)
-  :Administrador inicia sesión;
-  :Consulta tickets pendientes;
+:Servidor Público accede al módulo\n"Solicitud de Soporte";
+:Completa formulario de solicitud;
+:Envía solicitud;
+
+:Sistema genera ticket en PDF;
+:Sistema registra ticket;
+:Estado inicial = "Pendiente";
+
+
+:Ticket aparece en el dashboard del Administrador;
+
+if (Administrador revisa ticket?) then (Sí)
+  :Administrador analiza la solicitud;
   :Asigna técnico responsable;
-  :Cambia estado a "En proceso";
-  :Ticket aparece en el menú del Técnico;
-  :Técnico inicia sesión;
-  :Visualiza ticket asignado;
-  :Atiende solicitud / agrega comentarios;
-  :Actualiza estado del ticket a "Resuelto";
-  :Cierra ticket;
-  :Administrador verifica cierre;
+  :Estado cambia a "Asignado";
+
+  :Ticket aparece en bandeja del Técnico;
+  :Técnico consulta tickets asignados;
+  :Técnico visualiza detalle del ticket;
+  :Técnico asume el ticket;
+  :Estado cambia a "En proceso";
+
+  :Técnico atiende la solicitud;
+
+
+  if (Servicio completado?) then (Sí)
+    :Técnico finaliza atención;
+    :Estado cambia a "Finalizado";
+    :Servidor Público firma\ncumplimiento del servicio;
+    :Administrador valida el cumplimiento del ticket en el dashboard;
+    :Ticket se registra en\nbitácora histórica;
+  else (No)
+    :Administrador reasigna\na otro técnico;
+    :Estado permanece "Asignado";
+  endif
+
 else (No)
-  :Ticket permanece en espera;
+  :Ticket permanece\ncon estado "Pendiente";
 endif
 
 stop

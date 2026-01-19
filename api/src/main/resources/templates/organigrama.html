@@ -2,50 +2,59 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organigrama - Mesa de Ayuda</title>
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/organigrama.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
-<!-- HEADER REUTILIZADO -->
-<header>
+
+<!-- HEADER GLOBAL -->
+<header class="app-header">
   <div class="header-container">
     <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-    <nav>
+
+    <nav class="main-nav">
       <ul>
         <li><a href="/">Inicio</a></li>
         <li><a href="/organigrama" class="activo">Organigrama</a></li>
         <li><a href="/directorio">Directorio</a></li>
-        <li><a href="#">Manuales</a></li>
-        <li><a href="#">Preguntas</a></li>
-        <a href="/soporte/solicitud" class="btn-solicitud">Solicitud de Soporte</a>
-
-        <li><a href="#" class="btn-acceso">Acceso</a></li>
+        <li><a href="/manuales">Manuales</a></li>
+        <li><a href="/preguntas">Preguntas</a></li>
+        <li><a href="/soporte/solicitud" class="link-special">Solicitud de Soporte</a></li>
+        <li><a href="/login" class="btn-primary">Acceso</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
-<!-- TITULO -->
-<section class="hero">
-  <h1>Organigrama</h1>
-</section>
+<!-- CONTENIDO -->
+<main class="app-content">
 
-<!-- CONTENIDO ORGANIGRAMA -->
-<main class="organigrama">
-  <img src="/img/organigrama.png" alt="Organigrama institucional">
+  <section class="hero">
+    <h1>Organigrama</h1>
+  </section>
+
+  <section class="organigrama">
+    <img src="/img/organigrama.png" alt="Organigrama institucional">
+  </section>
+
+  <div class="descargar">
+    <a href="/docs/organigrama.pdf" download>
+      <img src="/img/logo_descarga.jpg" alt="PDF" class="pdf-icon">
+      Descargar organigrama
+    </a>
+  </div>
+
 </main>
-<div class="descargar">
-  <a href="/docs/organigrama.pdf" download>
-    <img src="/img/logo_descarga.jpg" alt="PDF" class="pdf-icon">
-    Descargar organigrama
-  </a>
-</div>
 
-
-<!-- FOOTER -->
-<footer>
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
+
 </body>
 </html>

@@ -1,56 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Panel del Técnico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Técnico - Mesa de Ayuda</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+
+
+  <!-- CSS ESPECÍFICO -->
   <link rel="stylesheet" th:href="@{/css/tecnico.css}">
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="header">
+<!-- ================= HEADER ================= -->
+<header class="app-header">
   <div class="header-container">
-    <img th:src="@{/img/logo_gobierno.png}" alt="Gobierno">
-    <nav class="menu">
-      <a href="#">Directorio</a>
-      <a href="#">Manuales</a>
-      <a href="/logout" class="btn-logout">Cerrar sesión</a>
+    <img th:src="@{/img/logo_gobierno.png}" alt="Gobierno del Estado de México">
+
+    <nav class="main-nav">
+      <ul>
+
+        <li><a href="/logout" class="btn-primary">Cerrar sesión</a></li>
+      </ul>
     </nav>
   </div>
 </header>
 
-<!-- LÍNEA DORADA -->
-<div class="gold-line"></div>
+<!-- ================= CONTENIDO ================= -->
+<main class="admin-layout">
 
-<main class="layout">
-
-  <!-- SIDEBAR -->
+  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
-    <div class="user-card">
-      <img th:src="@{/img/logo_usuario.png}" alt="Tecnico">
-      <h2 th:text="${nombreTecnico}">USUARIO</h2>
+    <div class="user-box">
+      <img th:src="@{/img/logo_usuario.png}" class="user-icon" alt="Técnico">
+
+      <span class="user-role"
+            th:text="${nombreTecnico}">
+                TÉCNICO
+            </span>
     </div>
 
-    <ul>
-      <li>
-        <a th:href="@{'/tecnico/estado?idTecnico=' + ${idTecnico}}">
-          Estado del ticket
-        </a>
-      </li>
+    <nav class="menu">
+      <a th:href="@{'/tecnico/estado?idTecnico=' + ${idTecnico}}">
+        Estado del ticket
+      </a>
 
-      <li><a href="#">Historial</a></li>
-      <li><a href="#">Manual del técnico</a></li>
-    </ul>
+
+      <a href="#">Manual del técnico</a>
+    </nav>
   </aside>
 
-  <!-- CONTENIDO -->
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
   <section class="content">
     <div class="content-box">
 
       <h1>¡Bienvenido!</h1>
 
-      <!-- CONTENEDOR DE ICONOS -->
+      <!-- ICONOS -->
       <div class="icon-grid">
         <img src="/img/icono1.png" alt="">
         <img src="/img/icono2.png" alt="">
@@ -70,8 +80,9 @@
 
 </main>
 
-<footer>
-  <p>©2025 - Subdirección de desarrollo Tecnológico</p>
+<!-- ================= FOOTER ================= -->
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 
 </body>

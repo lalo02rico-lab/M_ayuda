@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tickets Asignados - Mesa de Ayuda</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+
+  <link rel="stylesheet" href="/css/responsive.css">
+
+</head>
+
+<body>
+
+<header class="app-header">
+  <div class="header-container">
+    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+    <a href="/login" class="btn-logout">Cerrar sesión</a>
+  </div>
+</header>
+
+
+<main class="layout admin-tickets">
+
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <img src="/img/logo_usuario.png" class="icono-usuario">
+    <h3>ADMINISTRADOR</h3>
+
+    <ul class="menu">
+      <li><a href="/admin/dashboard">Dashboard</a></li>
+      <li><a href="/admin/tickets">Nuevos tickets</a></li>
+      <li><a href="/admin/tickets/asignados">Asignados</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <section class="panel-principal">
+    <h1>Tickets Asignados</h1>
+
+    <table class="tabla-ultimos" style="width: 100%; margin-top: 25px;">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Solicitante</th>
+        <th>Categoría</th>
+        <th>Técnico actual</th>
+        <th>Reasignar a</th>
+        <th>Acción</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr th:each="t : ${tickets}">
+        <td th:text="${t.idTicket}"></td>
+        <td th:text="${t.preSolicitud.nombre}"></td>
+        <td th:text="${t.tipoSolicitud.nombre}"></td>
+        <td th:text="${t.tecnico != null ? t.tecnico.nombreUsuario : 'Sin técnico'}"></td>
+
+        <td>
+          <form th:action="@{/admin/reasignar}" method="post">
+            <input type="hidden" name="idTicket" th:value="${t.idTicket}">
+            <select name="idTecnico" required>
+              <option value="">Seleccione técnico</option>
+              <option th:each="tec : ${tecnicos}"
+                      th:value="${tec.idUsuario}"
+                      th:text="${tec.nombreUsuario}">
+              </option>
+            </select>
+        </td>
+
+        <td>
+          <button type="submit" class="btn-revisar">Reasignar</button>
+          </form>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
+</footer>
+
+
+</body>
+</html>

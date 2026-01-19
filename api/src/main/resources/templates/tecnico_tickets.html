@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <title>Tickets asignados</title>
     <link rel="stylesheet" th:href="@{/css/tec.css}">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
 </head>
 
 <body>
 
 <!-- HEADER (solo cerrar sesión como en la imagen) -->
-<header class="header">
+<header class="app-header">
     <div class="header-container">
-        <img th:src="@{/img/logo_gobierno.png}" alt="Logo">
-        <nav class="menu">
-            <a href="/logout" class="btn-logout">Cerrar sesión</a>
+        <img th:src="@{/img/logo_gobierno.png}" alt="Gobierno del Estado de México">
+
+        <nav class="main-nav">
+            <ul>
+                <li>
+                    <a href="/logout" class="btn-primary">Cerrar sesión</a>
+                </li>
+            </ul>
         </nav>
     </div>
-    <div class="gold-line"></div>
 </header>
+
 
 <!-- LAYOUT -->
 <main class="layout">
@@ -25,16 +33,29 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="user-card">
-            <img th:src="@{/img/logo_usuario.png}">
+            <img th:src="@{/img/logo_usuario.png}" alt="Técnico">
             <p class="username">TÉCNICO</p>
         </div>
 
         <ul>
-            <li>Estado del ticket</li>
-            <li>Manuales</li>
-            <li>Historial</li>
+            <!-- Estado del ticket (FUNCIONAL) -->
+            <li>
+                <a class="activo"
+                   th:href="@{'/tecnico/estado?idTecnico=' + ${idTecnico}}">
+                Estado del ticket
+            </a>
+            </li>
+
+            <!-- Botón volver -->
+            <li style="margin-top: 40px;">
+                <a th:href="@{'/tecnico/menu?idTecnico=' + ${idTecnico}}"
+                   style="font-weight: bold; color: var(--vino);">
+                    Volver
+                </a>
+            </li>
         </ul>
     </aside>
+
 
     <!-- CONTENIDO -->
     <section class="content">

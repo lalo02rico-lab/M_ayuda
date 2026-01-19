@@ -1,48 +1,113 @@
 @startuml
 ' =====================================================
-'  DIAGRAMA MVC – ESTRUCTURA DE CAPAS DEL SISTEMA
+'  DIAGRAMA MVC – ARQUITECTURA REAL DEL SISTEMA
+'  MESA DE AYUDA INSTITUCIONAL
 ' =====================================================
+
 skinparam backgroundColor #FFFFFF
 skinparam classBorderColor #B48954
 skinparam classBackgroundColor #F9F5F3
 skinparam arrowColor #7B1E3D
 
-package "Controller" #FFF5F1 {
-  class SoporteController {
-    +solicitarSoporte()
-    +guardarTicket()
-    +verTickets()
-  }
+' =========================
+' CONTROLLER
+' =========================
+package Controller {
+
+  class HomeController
+  class LoginController
+  class AdminController
+  class TecnicoController
+  class SoporteController
+  class DirectorioController
+  class AdminServiciosController
 }
 
-package "Repository" #F4ECE6 {
+' =========================
+' DTO
+' =========================
+package DTO {
+  class AuthRequest
+}
+
+' =========================
+' REPOSITORY
+' =========================
+package Repository {
+
   interface UsuarioRepository
-  interface RolRepository
   interface TicketRepository
-  interface CatDepartamentoRepository
   interface PreSolicitudRepository
+  interface CatDepartamentoRepository
+  interface CatEstadoTicketRepository
+  interface CatTipoSolicitudRepository
   interface DirectorioRepository
+  interface CorreoRepository
+  interface LicenciaRepository
+  interface ExtencionRepository
+  interface InventarioBienRepository
+  interface VwResguardoRepository
 }
 
-package "Model" #F9F5F3 {
+' =========================
+' MODEL / ENTITY
+' =========================
+package Model {
+
   class Usuario
   class Rol
   class Ticket
-  class CatDepartamento
   class PreSolicitud
+  class CatDepartamento
+  class CatEstadoTicket
+  class CatTipoSolicitud
   class Directorio
+  class Correo
+  class Licencia
+  class Extencion
+  class InventarioBien
+  class VwResguardo
 }
 
-SoporteController --> UsuarioRepository
-SoporteController --> TicketRepository
-SoporteController --> CatDepartamentoRepository
-SoporteController --> PreSolicitudRepository
-SoporteController --> DirectorioRepository
+' =========================
+' RELACIONES CONTROLLER → DTO / REPOSITORY
+' =========================
+LoginController --> AuthRequest
+LoginController --> UsuarioRepository
 
+HomeController --> UsuarioRepository
+AdminController --> UsuarioRepository
+
+SoporteController --> TicketRepository
+SoporteController --> PreSolicitudRepository
+SoporteController --> CatTipoSolicitudRepository
+SoporteController --> CatDepartamentoRepository
+
+TecnicoController --> TicketRepository
+TecnicoController --> CatEstadoTicketRepository
+
+DirectorioController --> DirectorioRepository
+
+AdminServiciosController --> CorreoRepository
+AdminServiciosController --> LicenciaRepository
+AdminServiciosController --> ExtencionRepository
+AdminServiciosController --> InventarioBienRepository
+AdminServiciosController --> VwResguardoRepository
+
+' =========================
+' RELACIONES REPOSITORY → ENTITY
+' =========================
 UsuarioRepository --> Usuario
-RolRepository --> Rol
 TicketRepository --> Ticket
-CatDepartamentoRepository --> CatDepartamento
 PreSolicitudRepository --> PreSolicitud
+CatDepartamentoRepository --> CatDepartamento
+CatEstadoTicketRepository --> CatEstadoTicket
+CatTipoSolicitudRepository --> CatTipoSolicitud
 DirectorioRepository --> Directorio
+CorreoRepository --> Correo
+LicenciaRepository --> Licencia
+ExtencionRepository --> Extencion
+InventarioBienRepository --> InventarioBien
+VwResguardoRepository --> VwResguardo
+
 @enduml

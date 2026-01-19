@@ -2,36 +2,63 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Solicitud de Soporte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Soporte - Mesa de Ayuda</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/soporte.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
 
-<header>
-    <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
-
+<!-- HEADER GLOBAL -->
+<header class="app-header">
+    <div class="header-container">
+        <img src="/img/logo_gobierno.png" alt="Gobierno del Estado de México">
+    </div>
 </header>
 
-<main>
-    <h1>Solicitud de Soporte Técnico</h1>
+<!-- CONTENIDO -->
+<main class="app-content">
 
-    <form th:action="@{/soporte/guardar_registro}" method="post" class="formulario">
+    <h1 class="titulo-seccion">Solicitud de Soporte Técnico</h1>
+
+    <form th:action="@{/soporte/guardar_registro}"
+          method="post"
+          class="formulario">
+
         <label for="nombre">Nombre del solicitante:</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre completo" required>
+        <input type="text" id="nombre" name="nombre"
+               placeholder="Escribe tu nombre completo" required>
 
         <label for="departamento">Área o Departamento:</label>
         <select id="departamento" name="departamento" required>
             <option value="">Seleccione...</option>
             <option th:each="d : ${departamentos}"
                     th:value="${d.idDepartamento}"
-                    th:text="${d.nombreDepartamento}"></option>
+                    th:text="${d.nombreDepartamento}">
+            </option>
         </select>
 
-        <button type="submit" class="btn-enviar">Guardar Datos</button>
+        <!-- ACCIONES -->
+        <div class="acciones-form">
+            <button type="submit" class="btn-enviar">
+                Guardar datos
+            </button>
+
+            <!-- 🔙 REGRESAR AL INDEX -->
+            <a href="/" class="btn-regresar">
+                Regresar a inicio
+            </a>
+        </div>
+
     </form>
+
 </main>
 
-<footer>
+<!-- FOOTER GLOBAL -->
+<footer class="app-footer">
     <p>©2025 - Subdirección de Desarrollo Tecnológico</p>
 </footer>
 

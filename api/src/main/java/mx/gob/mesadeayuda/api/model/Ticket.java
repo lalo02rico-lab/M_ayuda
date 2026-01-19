@@ -28,6 +28,10 @@ public class Ticket {
     @Column(name = "FECHA_HORA")
     private Timestamp fechaHora;
 
+    @Column(name = "FECHA_FIN")
+    private Timestamp fechaFin;
+
+
     @Column(name = "ID_ESTADO")
     private Long idEstado;
 
@@ -63,6 +67,15 @@ public class Ticket {
 
     public Timestamp getFechaHora() { return fechaHora; }
     public void setFechaHora(Timestamp fechaHora) { this.fechaHora = fechaHora; }
+
+    public Timestamp getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Timestamp fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
 
     public Long getIdEstado() { return idEstado; }
     public void setIdEstado(Long idEstado) { this.idEstado = idEstado; }

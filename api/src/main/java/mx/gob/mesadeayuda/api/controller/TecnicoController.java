@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+        import java.io.File;
 import java.util.List;
+
+import java.sql.Timestamp;
+
 
 @Controller
 @RequestMapping("/tecnico")
@@ -72,7 +75,7 @@ public class TecnicoController {
         return "redirect:/tecnico/estado?idTecnico=" + idTecnico;
     }
 
-    // ⭐⭐⭐ FINALIZAR (con eliminación de imagen temporal) ⭐⭐⭐
+    // FINALIZAR (con eliminación de imagen temporal)
     @PostMapping("/finalizar")
     public String finalizarTicket(@RequestParam("idTicket") Long idTicket,
                                   @RequestParam("idTecnico") Long idTecnico) {
@@ -81,27 +84,27 @@ public class TecnicoController {
 
         if (ticket != null) {
 
-            // 🔥 ELIMINAR ARCHIVO DE IMAGEN TEMPORAL
+            // ELIMINAR ARCHIVO DE IMAGEN TEMPORAL
             if (ticket.getRutaImagen() != null) {
 
                 File archivo = new File(ticket.getRutaImagen());
 
-                // Borrar archivo
                 if (archivo.exists()) archivo.delete();
 
-                // Borrar carpeta si queda vacía
                 File carpeta = archivo.getParentFile();
                 if (carpeta.exists() && carpeta.isDirectory()) carpeta.delete();
 
-                ticket.setRutaImagen(null);  // Limpiar referencia
+                ticket.setRutaImagen(null);
             }
 
             ticket.setIdEstado(5L); // FINALIZADO
+            ticket.setFechaFin(new Timestamp(System.currentTimeMillis())); // ✅ FECHA FIN
             ticketRepository.save(ticket);
         }
 
         return "redirect:/tecnico/estado?idTecnico=" + idTecnico;
     }
+
 
     // VISTA DE ESTADO
     @GetMapping("/estado")

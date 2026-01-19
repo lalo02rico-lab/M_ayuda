@@ -1,0 +1,182 @@
+/* =================================================
+   TABLET GENERAL
+================================================= */
+@media (max-width: 1024px) {
+
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .main-nav ul {
+        justify-content: center;
+        gap: 15px;
+    }
+}
+
+/* =================================================
+   CELULAR GENERAL
+================================================= */
+@media (max-width: 768px) {
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .card img {
+        width: 180px;
+    }
+}
+
+/* =================================================
+   CELULAR CHICO
+================================================= */
+@media (max-width: 480px) {
+
+    .header-container img {
+        height: 48px;
+    }
+
+    .app-content {
+        padding: 10px;
+    }
+}
+
+/* =================================================
+   LOGIN
+================================================= */
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .login-left {
+        height: 180px;
+    }
+
+    .login-left h2 {
+        font-size: 2rem;
+    }
+
+    .login-right {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-edomex {
+        width: 160px;
+        margin: 0 auto;
+    }
+
+    .login-right h1 {
+        text-align: center;
+    }
+}
+
+/* =================================================
+   DIRECTORIO / TABLAS GRANDES
+================================================= */
+@media (max-width: 768px) {
+
+    .tabla-container {
+        overflow-x: auto;
+    }
+}
+
+/* =================================================
+   MANUALES
+================================================= */
+@media (max-width: 1200px) {
+    .manuales-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .manuales-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .manuales-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =================================================
+   ADMIN – DASHBOARD / MENU ADMIN
+   🔥 GRID CORRECTO (NO FLEX)
+================================================= */
+@media (max-width: 1024px) {
+
+    .admin-layout {
+        grid-template-columns: 220px 1fr;
+    }
+
+    .grid-contenido {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        order: 1;
+        width: 100%;
+    }
+
+    .content {
+        order: 2;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .grid-contenido {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta-tickets {
+        position: static;
+        margin: 20px auto;
+    }
+}
+
+/* =================================================
+   VISTAS LEGACY (USAN .layout FLEX)
+   ⚠️ SOLO PARA .layout, NO admin-layout
+================================================= */
+@media (max-width: 900px) {
+
+    .layout {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .layout .sidebar {
+        width: 100%;
+    }
+
+    .layout .content {
+        width: 100%;
+    }
+}

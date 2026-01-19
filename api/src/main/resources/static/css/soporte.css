@@ -1,77 +1,76 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #fff;
-    border-bottom: 3px solid #B48954;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-}
-
-header img {
-    height: 65px;
-}
-
-h1 {
+/* TÍTULO */
+.titulo-seccion {
     text-align: center;
-    color: #6b1e3d;
-    margin-top: 40px;
+    color: var(--vino);
+    margin-top: 30px;
     font-size: 26px;
 }
 
+/* FORMULARIO */
 .formulario {
-    width: 40%;
+    width: 100%;
+    max-width: 500px;
     margin: 40px auto;
-    background-color: #fff;
-    border: 2px solid #7b1e3d;
-    border-radius: 12px;
+    background: #fff;
+    border: 2px solid var(--vino);
+    border-radius: 14px;
     padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 label {
     display: block;
     margin-top: 15px;
+    font-weight: 600;
     color: #333;
-    font-weight: bold;
 }
 
 input, select {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
+    margin-top: 6px;
     border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
+/* ACCIONES */
+.acciones-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+/* BOTÓN PRINCIPAL */
 .btn-enviar {
-    background-color: #7b1e3d;
-    color: white;
+    background: linear-gradient(135deg, var(--vino), #5e152e);
+    color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
     font-size: 16px;
+    font-weight: 600;
+    transition: 0.25s;
 }
 
 .btn-enviar:hover {
-    background-color: #5b152f;
+    background: linear-gradient(135deg, #5e152e, var(--vino));
 }
 
-  footer {
-   background: none;
-     border-top: 3px solid var(--dorado);
-     text-align: center;
-     padding: 10px;
-     color: #333;
-     font-size: 14px;
-  }
+/* BOTÓN SECUNDARIO */
+.btn-regresar {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--vino);
+    color: var(--vino);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
 
+.btn-regresar:hover {
+    background: var(--vino);
+    color: #fff;
+}
