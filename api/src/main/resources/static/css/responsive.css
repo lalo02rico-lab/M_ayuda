@@ -31,12 +31,11 @@
 
     .card {
         width: 100%;
-        max-width: 100px;
+        max-width: 320px;
     }
 
     .card img {
-        max-width: 100%;
-        height: auto;
+        width: 180px;
     }
 }
 
@@ -134,10 +133,10 @@
 }
 
 @media (max-width: 768px) {
-    .docs-list {
+
+    .admin-layout {
         grid-template-columns: 1fr;
     }
-}
 
     .sidebar {
         order: 1;
@@ -180,13 +179,4 @@
     .layout .content {
         width: 100%;
     }
-}
-
-    .docs-list {
-        grid-template-columns: 1fr;
-    }
-}
-.sidebar {
-    position: relative;
-    max-height: none;
 }
