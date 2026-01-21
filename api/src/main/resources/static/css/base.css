@@ -15,4 +15,11 @@ html, body {
     font-family: Arial, sans-serif;
     background: var(--gris);
     color: var(--texto);
+
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;   /* 👈 IMPORTANTE */
+    overflow-y: auto;
 }
+
+

@@ -67,13 +67,17 @@
 ========================= */
 .admin-layout {
     display: grid !important;
-    grid-template-columns: 260px 1fr; /* Sidebar fija y contenido flexible */
-    gap: 30px; /* Espacio entre columnas */
-    max-width: 1400px;
-    margin: 20px auto;
+    grid-template-columns: 260px 1fr;
+    gap: 30px;
+
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0;
     padding: 20px;
-    align-items: start; /* Alineación superior perfecta */
+
+    align-items: start;
 }
+
 
 /* IMPORTANTE: Quitamos cualquier comportamiento de bloque de la etiqueta section */
 
@@ -249,4 +253,47 @@ header a:hover,
 /* BOTÓN VOLVER (hereda estilo, solo ajuste leve) */
 .sidebar .menu a:last-child {
     margin-top: 18px;
+}
+
+/* =====================================================
+   FIX DEFINITIVO HEADER Y FOOTER FULL WIDTH
+   (NO TOCA EL RESTO DEL DISEÑO)
+===================================================== */
+
+/* Header y footer siempre ocupan TODO el ancho del viewport */
+.app-header,
+.app-footer {
+    width: 100%;
+    min-width: 100%;
+}
+
+/* El contenedor interno del header también debe estirarse */
+.header-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Evita que el contenido interno empuje visualmente el header */
+.app-header {
+    overflow: hidden;
+}
+
+/* Footer alineado y sin recorte */
+.app-footer {
+    box-sizing: border-box;
+}
+/* ===============================
+   WRAPPERS HEADER / FOOTER
+================================ */
+
+.header-inner,
+.footer-inner {
+    max-width: calc(100% - 40px);
+    margin: 0 auto;
+}
+
+/* Asegura ancho completo visual */
+.app-header,
+.app-footer {
+    width: 100%;
 }

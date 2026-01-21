@@ -5,8 +5,10 @@ import com.itextpdf.text.pdf.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import mx.gob.mesadeayuda.api.dto.ResguardoUpdateDTO;
 import mx.gob.mesadeayuda.api.model.*;
 import mx.gob.mesadeayuda.api.repository.*;
+import mx.gob.mesadeayuda.api.service.ResguardoCrudService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,9 @@ public class AdminServiciosController {
     private final LicenciaRepository licenciaRepository;
     private final ExtencionRepository extencionRepository;
     private final InventarioBienRepository inventarioBienRepository;
+
+    private final ResguardoCrudService resguardoCrudService;
+
 
     /* =================================================
        FUENTES PDF
@@ -55,6 +60,51 @@ public class AdminServiciosController {
         c.setHorizontalAlignment(Element.ALIGN_LEFT);
         return c;
     }
+
+    @PostMapping("/resguardos/actualizar")
+    public String actualizarResguardo(
+            @RequestParam String tipoEquipo,
+            @RequestParam Long id,
+            @RequestParam(required = false) String usuario,
+            @RequestParam(required = false) String usuarioFinal,
+            @RequestParam(required = false) String area,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String observaciones
+    ) {
+
+        // 🔥 NORMALIZACIÓN
+        tipoEquipo = tipoEquipo.trim();
+        if (tipoEquipo.startsWith(",")) {
+            tipoEquipo = tipoEquipo.substring(1);
+        }
+
+        ResguardoUpdateDTO d = new ResguardoUpdateDTO();
+        d.setTipoEquipo(tipoEquipo);
+        d.setId(id);
+        d.setUsuario(usuario);
+        d.setUsuarioFinal(usuarioFinal);
+        d.setArea(area);
+        d.setStatus(status);
+        d.setObservaciones(observaciones);
+
+        resguardoCrudService.actualizar(d);
+        return "redirect:/admin/gestion-servicios?categoria=resguardos";
+    }
+
+
+    @PostMapping("/resguardos/liberar")
+    @ResponseBody
+    public void liberarResguardo(@RequestParam String tipoEquipo, @RequestParam Long id) {
+
+        tipoEquipo = tipoEquipo.trim();
+        if (tipoEquipo.startsWith(",")) {
+            tipoEquipo = tipoEquipo.substring(1);
+        }
+
+        resguardoCrudService.liberar(tipoEquipo, id);
+    }
+
+
 
     /* =================================================
        LISTADO + FILTROS + PAGINACIÓN
@@ -183,15 +233,30 @@ public class AdminServiciosController {
         }
 
         if ("extenciones".equals(categoria)) {
-            Extencion e = (id != null)
-                    ? extencionRepository.findById(id).orElse(new Extencion())
-                    : new Extencion();
+
+            //  La extensión ES el ID (viene del input "extension")
+            String ext = request.getParameter("extension");
+
+            if (ext == null || ext.isBlank()) {
+                throw new IllegalArgumentException("La extensión es obligatoria");
+            }
+
+            Long extension = Long.valueOf(ext);
+
+            // Si existe → edita | si no → crea
+            Extencion e = extencionRepository.findById(extension)
+                    .orElse(new Extencion());
+
+            //  ASIGNAR ID ANTES DE GUARDAR (OBLIGATORIO)
+            e.setId(extension);
 
             e.setNombre(request.getParameter("nombre"));
             e.setDepartamento(request.getParameter("departamento"));
             e.setCorreo(request.getParameter("correo"));
+
             extencionRepository.save(e);
         }
+
 
         if ("inventarios".equals(categoria)) {
             String inv = request.getParameter("inventario");
@@ -258,9 +323,20 @@ public class AdminServiciosController {
             case "correos" -> correoRepository.deleteById(Long.valueOf(id));
             case "licencias" -> licenciaRepository.deleteById(Long.valueOf(id));
             case "extenciones" -> extencionRepository.deleteById(Long.valueOf(id));
-            case "inventarios" -> inventarioBienRepository.deleteByInventario(id);
+            case "inventarios" -> inventarioBienRepository.deleteById(Long.valueOf(id));
+
         }
     }
+
+    @PostMapping("/resguardos/agregar")
+    public String agregarResguardo(HttpServletRequest request) {
+
+        resguardoCrudService.agregar(request);
+
+        return "redirect:/admin/gestion-servicios?categoria=resguardos";
+    }
+
+
 
     /* =================================================
        DESCARGAR PDF (COMPLETO)
@@ -365,28 +441,34 @@ public class AdminServiciosController {
             doc.add(table);
         }
 
+
         /* ================= EXTENCIONES ================= */
         if ("extenciones".equals(categoria)) {
 
             List<Extencion> lista =
-                    (q != null)
+                    (q != null && !q.isBlank())
                             ? extencionRepository.filtrar(q)
                             : extencionRepository.findAll();
 
             PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(70);
+            table.setSpacingBefore(10f);
 
             String[] headers = {"Extensión", "Nombre", "Departamento", "Correo"};
-            for (String h : headers) table.addCell(headerCell(h));
+            for (String h : headers) {
+                table.addCell(headerCell(h));
+            }
 
             for (Extencion e : lista) {
-                table.addCell(cell(String.valueOf(e.getId())));
+                table.addCell(cell(e.getId() != null ? e.getId().toString() : ""));
                 table.addCell(cell(e.getNombre()));
                 table.addCell(cell(e.getDepartamento()));
                 table.addCell(cell(e.getCorreo()));
             }
+
             doc.add(table);
         }
+
 
         /* ================= INVENTARIOS ================= */
         if ("inventarios".equals(categoria)) {

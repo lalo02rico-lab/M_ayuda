@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,7 +32,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -281,6 +285,121 @@ public class AdminController {
 
         return "redirect:/admin/tickets/asignados";
     }
+
+
+
+    @Controller
+    @RequestMapping("/admin")
+    public class DocumentacionController {
+
+        private static final Path RUTA_DOCS = Paths.get("docs");
+
+
+        /* =====================================================
+           MÉTODO AUXILIAR
+        ===================================================== */
+        private void cargarPdfs(Model model) {
+            try {
+                if (Files.exists(RUTA_DOCS)) {
+                    List<String> pdfs = Files.list(RUTA_DOCS)
+                            .filter(p -> p.toString().toLowerCase().endsWith(".pdf"))
+                            .map(p -> p.getFileName().toString())
+                            .sorted()
+                            .toList();
+
+                    model.addAttribute("pdfs", pdfs);
+                } else {
+                    model.addAttribute("pdfs", List.of());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("pdfs", List.of());
+            }
+        }
+
+        /* =====================================================
+           LISTAR DOCUMENTOS
+        ===================================================== */
+        @GetMapping("/documentacion")
+        public String documentacion(Model model) {
+            cargarPdfs(model);
+            return "documentacion";
+        }
+
+        /* =====================================================
+           SUBIR PDF
+        ===================================================== */
+        @PostMapping("/documentacion/subir")
+        public String subirDocumento(@RequestParam("archivo") MultipartFile archivo,
+                                     Model model) {
+
+            if (archivo.isEmpty()) {
+                model.addAttribute("error", "El archivo está vacío");
+                cargarPdfs(model);
+                return "documentacion";
+            }
+
+            try {
+                Files.createDirectories(RUTA_DOCS);
+
+                String nombre = archivo.getOriginalFilename();
+                if (nombre == null || !nombre.toLowerCase().endsWith(".pdf")) {
+                    model.addAttribute("error", "Solo se permiten archivos PDF");
+                    cargarPdfs(model);
+                    return "documentacion";
+                }
+
+                Files.copy(
+                        archivo.getInputStream(),
+                        RUTA_DOCS.resolve(nombre),
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+
+                model.addAttribute("ok", "Documento subido correctamente");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("error", "Error al subir el documento");
+            }
+
+            cargarPdfs(model);
+            return "documentacion";
+        }
+
+        /* =====================================================
+           ELIMINAR PDF
+        ===================================================== */
+        @PostMapping("/documentacion/eliminar")
+        public String eliminarDocumento(@RequestParam String nombre,
+                                        Model model) {
+
+            try {
+                Files.deleteIfExists(RUTA_DOCS.resolve(nombre));
+                model.addAttribute("ok", "Documento eliminado correctamente");
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("error", "Error al eliminar documento");
+            }
+
+            cargarPdfs(model);
+            return "documentacion";
+        }
+    }
+    @GetMapping("/documentacion/ver/{nombre}")
+    public void verPdf(@PathVariable String nombre,
+                       HttpServletResponse response) throws IOException {
+
+        Path archivo = Paths.get("docs").resolve(nombre);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "inline; filename=\"" + nombre + "\"");
+
+        Files.copy(archivo, response.getOutputStream());
+        response.getOutputStream().flush();
+    }
+
+
 
     // ==========================
     // LÓGICA DEL DASHBOARD

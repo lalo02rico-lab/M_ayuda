@@ -349,7 +349,7 @@ public class SoporteController {
         // =============================
         // FIRMA
         // =============================
-        Paragraph firma = new Paragraph("______________________________\nFIRMA DEL SERVIDOR PÚBLICO", label);
+        Paragraph firma = new Paragraph("_____________________________________\nConfirmo que mi problema fue resuelto satisfactoriamente.", label);
         firma.setAlignment(Element.ALIGN_CENTER);
         pdf.add(firma);
 
