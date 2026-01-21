@@ -76,7 +76,6 @@
                 <!-- ================= ACCIONES ================= -->
                 <div class="acciones">
                     <button class="btn-agregar"
-                            th:if="${categoria!='resguardos'}"
                             th:data-categoria="${categoria}"
                             onclick="abrirModalAgregar(this)">
                         ➕ Agregar
@@ -99,11 +98,20 @@
                     <table th:if="${categoria=='resguardos'}">
                         <thead>
                         <tr>
-                            <th>No</th><th>Tipo</th><th>Usuario</th><th>Usuario final</th>
-                            <th>Dirección</th><th>Área</th><th>Perfil</th>
-                            <th>Modelo</th><th>Serie CPU</th><th>Status</th>
+                            <th>No</th>
+                            <th>Tipo</th>
+                            <th>Usuario</th>
+                            <th>Usuario final</th>
+                            <th>Dirección</th>
+                            <th>Área</th>
+                            <th>Perfil</th>
+                            <th>Modelo</th>
+                            <th>Serie CPU</th>
+                            <th>Status</th>
+                            <th>Acciones</th> <!-- 👈 NUEVA COLUMNA -->
                         </tr>
                         </thead>
+
                         <tbody>
                         <tr th:each="r : ${resguardos}">
                             <td th:text="${r.no}"></td>
@@ -116,9 +124,34 @@
                             <td th:text="${r.modelo}"></td>
                             <td th:text="${r.serieCpu}"></td>
                             <td th:text="${r.status}"></td>
+
+                            <!-- 👇 BOTONES -->
+                            <td>
+                                <!-- EDITAR -->
+                                <button
+                                        th:data-id="${r.id}"
+                                        th:data-tipo="${r.tipoEquipo}"
+                                        th:data-usuario="${r.usuario}"
+                                        th:data-usuariofinal="${r.usuarioFinal}"
+                                        th:data-area="${r.area}"
+                                        th:data-status="${r.status}"
+                                        th:data-obs="${r.observaciones}"
+                                        onclick="abrirModalResguardo(this)">
+                                    ✏️
+                                </button>
+
+                                <!-- LIBERAR -->
+                                <button
+                                        th:data-id="${r.id}"
+                                        th:data-tipo="${r.tipoEquipo}"
+                                        onclick="liberarResguardo(this)">
+                                    🔓
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
+
 
                     <!-- ================= CORREOS ================= -->
                     <table th:if="${categoria=='correos'}">
@@ -239,8 +272,14 @@
                             <td>
                                 <button th:data-id="${i.inventario}" data-categoria="inventarios"
                                         onclick="abrirModalEditar(this)">✏️</button>
-                                <button th:data-id="${i.inventario}" data-categoria="inventarios"
-                                        onclick="eliminarRegistro(this)">🗑️</button>
+                                <button type="button"
+                                        th:data-id="${i.idInventario}"
+                                        data-categoria="inventarios"
+                                        onclick="eliminarRegistro(this)">
+                                    🗑️
+                                </button>
+
+
                             </td>
                         </tr>
                         </tbody>
@@ -304,9 +343,29 @@
     <div class="modal-content">
         <h3 id="modalTitulo"></h3>
 
-        <form method="post" action="/admin/guardar">
+        <form method="post" action="/admin/guardar" id="formCrud">
+
+            <!-- ================= PASO 1 (SOLO RESGUARDOS) ================= -->
+            <div id="selectorResguardo" style="display:none; margin-bottom:15px;">
+                <label>Tipo de resguardo</label>
+                <select name="tipoEquipo"
+                        id="tipoResguardo"
+                        onchange="mostrarCamposResguardo(this.value)">
+
+                <option value="">-- Selecciona --</option>
+                    <option value="ESCRITORIO_BASICO">Escritorio básico</option>
+                    <option value="MOVIL_AVANZADO">Móvil avanzado</option>
+                    <option value="ESCRITORIO_AVANZADO">Escritorio avanzado</option>
+                    <option value="MOVIL_MEDIO">Móvil medio</option>
+                    <option value="PORTATIL_DONADO">Portátil donado</option>
+                </select>
+            </div>
+
+            <!-- ⚠️ Estos se controlan por JS -->
             <input type="hidden" name="categoria" id="categoria">
             <input type="hidden" name="id" id="registroId">
+
+            <!-- ================= CAMPOS DINÁMICOS ================= -->
             <div id="camposFormulario"></div>
 
             <button type="submit">Guardar</button>
@@ -315,153 +374,349 @@
     </div>
 </div>
 
+
+
 <script>
     function abrirModalAgregar(btn){
-        const c = btn.dataset.categoria;
-        document.getElementById('modalTitulo').innerText='Agregar';
-        document.getElementById('categoria').value=c;
-        document.getElementById('registroId').value='';
+     const c = btn.dataset.categoria;
+     const form = document.querySelector('#modalCrud form');
+
+     document.getElementById('modalTitulo').innerText = 'Agregar';
+     document.getElementById('categoria').value = c;
+     document.getElementById('registroId').value = '';
+     document.getElementById('registroId').disabled = true;
+
+     const selector = document.getElementById('selectorResguardo');
+     const tipoSel  = document.getElementById('tipoResguardo');
+
+
+     if (c === 'resguardos') {
+        // 🔥 SOLO RESGUARDOS
+        selector.style.display = 'block';
+        tipoSel.required = true;
+
+        form.action = '/admin/resguardos/agregar';
+        document.getElementById('camposFormulario').innerHTML = '';
+    } else {
+        // 🔁 TODAS LAS DEMÁS
+        selector.style.display = 'none';
+        tipoSel.required = false;
+        tipoSel.value = '';
+
+        form.action = '/admin/guardar';
         cargarCampos(c,{});
-        document.getElementById('modalCrud').classList.remove('hidden');
     }
 
-    function abrirModalEditar(btn){
-        const id = btn.dataset.id;
-        const c  = btn.dataset.categoria;
-
-        fetch(`/admin/obtener/${c}/${encodeURIComponent(id)}`)
-            .then(r=>r.json())
-            .then(d=>{
-                document.getElementById('modalTitulo').innerText='Editar';
-                document.getElementById('categoria').value=c;
-                document.getElementById('registroId').value=id;
-                cargarCampos(c,d);
-                document.getElementById('modalCrud').classList.remove('hidden');
-            });
-    }
-
-    function eliminarRegistro(btn){
-        if(!confirm('¿Eliminar registro?')) return;
-
-        fetch('/admin/eliminar',{
-            method:'POST',
-            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            body:`categoria=${btn.dataset.categoria}&id=${encodeURIComponent(btn.dataset.id)}`
-        }).then(()=>location.reload());
-    }
-
-    function cerrarModal(){
-        document.getElementById('modalCrud').classList.add('hidden');
-    }
-
-    function cargarCampos(c,d){
-        let h='';
-        if(c==='correos'){
-            h=`<input name="usuario" value="${d.usuario||''}">
-               <input name="correo" value="${d.correo||''}">
-               <input name="tipoLicencia" value="${d.tipoLicencia||''}">
-               <input name="area" value="${d.area||''}">`;
-        }
-        if(c==='licencias'){
-            h=`<input name="usuario" value="${d.usuario||''}">
-               <input name="area" value="${d.area||''}">
-               <input type="number" name="totalLicencias" value="${d.totalLicencias||0}">`;
-        }
-        if(c==='extenciones'){
-            h=`<input name="nombre" value="${d.nombre||''}">
-               <input name="departamento" value="${d.departamento||''}">
-               <input name="correo" value="${d.correo||''}">`;
-        }
-       if(c === 'inventarios'){
-    h = `
-    <label>Inventario</label>
-    <input name="inventario" value="${d.inventario||''}" readonly>
-
-    <label>NIC</label>
-    <input name="nic" value="${d.nic||''}">
-
-    <label>Descripción</label>
-    <input name="descripcionBien" value="${d.descripcionBien||''}">
-
-    <label>Valor</label>
-    <input name="valor" value="${d.valor||''}">
-
-    <label>Marca</label>
-    <input name="marca" value="${d.marca||''}">
-
-    <label>Modelo</label>
-    <input name="modelo" value="${d.modelo||''}">
-
-    <label>Serie</label>
-    <input name="serie" value="${d.serie||''}">
-
-    <label>Clave dependencia</label>
-    <input name="claveDependencia" value="${d.claveDependencia||''}">
-
-    <label>Dependencia</label>
-    <input name="nombreDependencia" value="${d.nombreDependencia||''}">
-
-    <label>Resguardatario</label>
-    <input name="resguardatario" value="${d.resguardatario||''}">
-
-    <label>Inmueble</label>
-    <input name="nombreInmueble" value="${d.nombreInmueble||''}">
-
-    <label>Proveedor</label>
-    <input name="proveedor" value="${d.proveedor||''}">
-
-    <label>Estado de uso</label>
-    <input name="estadoUso" value="${d.estadoUso||''}">
-
-    <label>Fecha adquisición</label>
-    <input type="date" name="fechaAdquisicion" value="${d.fechaAdquisicion||''}">
-
-    <label>Fecha asignación</label>
-    <input type="date" name="fechaAsignacion" value="${d.fechaAsignacion||''}">
-
-    <label>Fecha firma resguardo</label>
-    <input type="date" name="fechaFirmaResg" value="${d.fechaFirmaResg||''}">
-
-    <label>Salario mínimo UMA</label>
-    <input name="salMinUma" value="${d.salMinUma||''}">
-
-    <label>Tipo propiedad</label>
-    <input name="tipoPropiedad" value="${d.tipoPropiedad||''}">
-
-    <label>Forma adquisición</label>
-    <input name="formaAdquisicion" value="${d.formaAdquisicion||''}">
-
-    <label>Tipo documento</label>
-    <input name="tipoDocumento" value="${d.tipoDocumento||''}">
-
-    <label>Características</label>
-    <input name="caracteristicas" value="${d.caracteristicas||''}">
-
-    <label>Material</label>
-    <input name="material" value="${d.material||''}">
-
-    <label>Color</label>
-    <input name="color" value="${d.color||''}">
-
-    <label>Tipo asignación</label>
-    <input name="tipoAsignacion" value="${d.tipoAsignacion||''}">
-
-    <label>Placas</label>
-    <input name="placas" value="${d.placas||''}">
-
-    <label>Activo genérico</label>
-    <input name="activoGenerico" value="${d.activoGenerico||''}">
-
-    <label>Grupo activo</label>
-    <input name="grupoActivo" value="${d.grupoActivo||''}">
-
-    <label>Activo específico</label>
-    <input name="activoEspecifico" value="${d.activoEspecifico||''}">
-    `;
+    document.getElementById('modalCrud').classList.remove('hidden');
 }
-        document.getElementById('camposFormulario').innerHTML=h;
+
+
+     function abrirModalEditar(btn){
+         const id = btn.dataset.id;
+         const c  = btn.dataset.categoria;
+
+         fetch(`/admin/obtener/${c}/${encodeURIComponent(id)}`)
+             .then(r=>r.json())
+             .then(d=>{
+                 document.getElementById('modalTitulo').innerText='Editar';
+                 document.getElementById('categoria').value=c;
+
+                 const idInput = document.getElementById('registroId');
+                 idInput.disabled = false;
+                 idInput.value = id;
+
+                 const form = document.querySelector('#modalCrud form');
+                 form.action = '/admin/guardar';
+
+                document.getElementById('selectorResguardo').style.display = 'none';
+                cargarCampos(c,d);
+
+                document.getElementById('modalCrud').classList.remove('hidden');
+             });
+     }
+
+     function eliminarRegistro(btn){
+         if(!confirm('¿Eliminar registro?')) return;
+
+         fetch('/admin/eliminar',{
+             method:'POST',
+             headers:{'Content-Type':'application/x-www-form-urlencoded'},
+             body:`categoria=${btn.dataset.categoria}&id=${encodeURIComponent(btn.dataset.id)}`
+         }).then(()=>location.reload());
+     }
+
+     function cerrarModal(){
+         document.getElementById('modalCrud').classList.add('hidden');
+     }
+
+     function cargarCampos(c,d){
+         let h='';
+         if (c === 'correos') {
+     h = `
+         <input type="text"
+                name="usuario"
+                placeholder="Usuario"
+                value="${d.usuario || ''}"
+                required>
+
+         <input type="email"
+                name="correo"
+                placeholder="Correo institucional"
+                value="${d.correo || ''}"
+                required>
+
+         <input type="text"
+                name="tipoLicencia"
+                placeholder="Tipo de licencia"
+                value="${d.tipoLicencia || ''}">
+
+         <input type="text"
+                name="area"
+                placeholder="Área"
+                value="${d.area || ''}">
+     `;
+ }
+        if (c === 'licencias') {
+     h = `
+         <input type="text"
+                name="usuario"
+                placeholder="Usuario"
+                value="${d.usuario || ''}"
+                required>
+
+         <input type="text"
+                name="area"
+                placeholder="Área"
+                value="${d.area || ''}"
+                required>
+
+         <input type="number"
+                name="totalLicencias"
+                placeholder="Total de licencias"
+                value="${d.totalLicencias || ''}"
+                min="0"
+                required>
+     `;
+ }
+
+  if (c === 'extenciones') {
+     h = `
+         <input type="number"
+                name="extension"
+                placeholder="Extensión"
+                value="${d.id || ''}"
+                ${d.id ? 'readonly' : 'required'}>
+
+         <input type="text"
+                name="nombre"
+                placeholder="Nombre"
+                value="${d.nombre || ''}"
+                required>
+
+         <input type="text"
+                name="departamento"
+                placeholder="Departamento"
+                value="${d.departamento || ''}">
+
+         <input type="email"
+                name="correo"
+                placeholder="Correo"
+                value="${d.correo || ''}">
+     `;
+ }
+        if(c === 'inventarios'){
+     h = `
+     <label>Inventario</label>
+     <input name="inventario" value="${d.inventario||''}" readonly>
+
+     <label>NIC</label>
+     <input name="nic" value="${d.nic||''}">
+
+     <label>Descripción</label>
+     <input name="descripcionBien" value="${d.descripcionBien||''}">
+
+     <label>Valor</label>
+     <input name="valor" value="${d.valor||''}">
+
+     <label>Marca</label>
+     <input name="marca" value="${d.marca||''}">
+
+     <label>Modelo</label>
+     <input name="modelo" value="${d.modelo||''}">
+
+     <label>Serie</label>
+     <input name="serie" value="${d.serie||''}">
+
+     <label>Clave dependencia</label>
+     <input name="claveDependencia" value="${d.claveDependencia||''}">
+
+     <label>Dependencia</label>
+     <input name="nombreDependencia" value="${d.nombreDependencia||''}">
+
+     <label>Resguardatario</label>
+     <input name="resguardatario" value="${d.resguardatario||''}">
+
+     <label>Inmueble</label>
+     <input name="nombreInmueble" value="${d.nombreInmueble||''}">
+
+     <label>Proveedor</label>
+     <input name="proveedor" value="${d.proveedor||''}">
+
+     <label>Estado de uso</label>
+     <input name="estadoUso" value="${d.estadoUso||''}">
+
+     <label>Fecha adquisición</label>
+     <input type="date" name="fechaAdquisicion" value="${d.fechaAdquisicion||''}">
+
+     <label>Fecha asignación</label>
+     <input type="date" name="fechaAsignacion" value="${d.fechaAsignacion||''}">
+
+     <label>Fecha firma resguardo</label>
+     <input type="date" name="fechaFirmaResg" value="${d.fechaFirmaResg||''}">
+
+     <label>Salario mínimo UMA</label>
+     <input name="salMinUma" value="${d.salMinUma||''}">
+
+     <label>Tipo propiedad</label>
+     <input name="tipoPropiedad" value="${d.tipoPropiedad||''}">
+
+     <label>Forma adquisición</label>
+     <input name="formaAdquisicion" value="${d.formaAdquisicion||''}">
+
+     <label>Tipo documento</label>
+     <input name="tipoDocumento" value="${d.tipoDocumento||''}">
+
+     <label>Características</label>
+     <input name="caracteristicas" value="${d.caracteristicas||''}">
+
+     <label>Material</label>
+     <input name="material" value="${d.material||''}">
+
+     <label>Color</label>
+     <input name="color" value="${d.color||''}">
+
+     <label>Tipo asignación</label>
+     <input name="tipoAsignacion" value="${d.tipoAsignacion||''}">
+
+     <label>Placas</label>
+     <input name="placas" value="${d.placas||''}">
+
+     <label>Activo genérico</label>
+     <input name="activoGenerico" value="${d.activoGenerico||''}">
+
+     <label>Grupo activo</label>
+     <input name="grupoActivo" value="${d.grupoActivo||''}">
+
+     <label>Activo específico</label>
+     <input name="activoEspecifico" value="${d.activoEspecifico||''}">
+     `;
+ }
+         document.getElementById('camposFormulario').innerHTML=h;
+     }
+
+/* =====================================================
+   RESGUARDOS – PASO 1: MOSTRAR SELECTOR
+===================================================== */
+function mostrarSelectorTipoResguardo(){
+    document.getElementById('selectorResguardo').style.display = 'block';
+    document.getElementById('camposFormulario').innerHTML = '';
+}
+
+/* =====================================================
+   RESGUARDOS – PASO 2: CAMPOS SEGÚN TIPO
+===================================================== */
+function mostrarCamposResguardo(tipo){
+
+    let h = `
+        <input type="hidden" name="tipoEquipo" value="${tipo}">
+
+        <input name="no" placeholder="No. de resguardo" required>
+        <input name="usuario" placeholder="Usuario" required>
+        <input name="direccion" placeholder="Dirección">
+        <input name="area" placeholder="Área / Subdirección">
+        <input name="perfilEquipo" placeholder="Perfil del equipo">
+        <input name="modelo" placeholder="Modelo">
+        <input name="serieCpu" placeholder="Serie CPU">
+        <input name="status" placeholder="Status">
+        <input name="observaciones" placeholder="Observaciones">
+    `;
+
+    // 👉 SOLO ALGUNOS TIENEN USUARIO_FINAL
+    if (
+        tipo === 'MOVIL_AVANZADO' ||
+        tipo === 'ESCRITORIO_AVANZADO'
+    ) {
+        h += `
+            <input name="usuarioFinal" placeholder="Usuario final">
+        `;
     }
+
+    // 👉 SOLO ESCRITORIOS TIENEN MONITOR / UPS
+    if (
+        tipo === 'ESCRITORIO_BASICO' ||
+        tipo === 'ESCRITORIO_AVANZADO'
+    ) {
+        h += `
+            <input name="modeloMonitor" placeholder="Modelo monitor">
+            <input name="serieMonitor" placeholder="Serie monitor">
+            <input name="serieUps" placeholder="Serie UPS">
+            <input name="serieTeclado" placeholder="Serie teclado">
+            <input name="serieMouse" placeholder="Serie mouse">
+        `;
+    }
+
+    document.getElementById('camposFormulario').innerHTML = h;
+}
+
+/* =====================================================
+   RESGUARDOS – EDITAR
+===================================================== */
+function abrirModalResguardo(btn){
+    const form = document.querySelector('#modalCrud form');
+
+    document.getElementById('modalTitulo').innerText = 'Editar Resguardo';
+    form.action = '/admin/resguardos/actualizar';
+
+    document.getElementById('categoria').value = '';
+
+    const idInput = document.getElementById('registroId');
+    idInput.disabled = false;
+    idInput.value = btn.dataset.id;
+
+    document.getElementById('selectorResguardo').style.display = 'none';
+
+    document.getElementById('camposFormulario').innerHTML = `
+        <input type="hidden" name="tipoEquipo" value="${btn.dataset.tipo}">
+        <input type="hidden" name="id" value="${btn.dataset.id}">
+
+        <input name="usuario" placeholder="Usuario" value="${btn.dataset.usuario||''}">
+        <input name="usuarioFinal" placeholder="Usuario final" value="${btn.dataset.usuariofinal||''}">
+        <input name="area" placeholder="Área" value="${btn.dataset.area||''}">
+        <input name="status" placeholder="Status" value="${btn.dataset.status||''}">
+        <input name="observaciones" placeholder="Observaciones" value="${btn.dataset.obs||''}">
+    `;
+
+    document.getElementById('modalCrud').classList.remove('hidden');
+}
+
+/* =====================================================
+   RESGUARDOS – LIBERAR
+===================================================== */
+function liberarResguardo(btn){
+    if(!confirm('¿Liberar este resguardo?')) return;
+
+    fetch('/admin/resguardos/liberar', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `tipoEquipo=${encodeURIComponent(btn.dataset.tipo)}&id=${encodeURIComponent(btn.dataset.id)}`
+    }).then(() => location.reload());
+}
 </script>
+<footer class="app-footer">
+    <div class="footer-inner">
+        ©2025 - Subdirección de Desarrollo Tecnológico
+    </div>
+</footer>
 
 </body>
 </html>

@@ -246,7 +246,108 @@ button.btn-revisar {
     font-weight: 600;
 }
 
-/* 🔥 QUITA LOS PUNTOS EN admin_tickets */
+/* QUITA LOS PUNTOS EN admin_tickets */
 .sidebar .menu li {
     list-style: none;
+}
+/* ===============================
+   DOCUMENTACIÓN DEL SISTEMA
+================================ */
+
+/* CONTENEDOR GRID */
+.docs-list {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 🔥 2 columnas fijas */
+    gap: 14px;
+}
+
+/* TARJETA DOCUMENTO */
+.doc-row {
+    background: #ffffff;
+    border: 1.5px solid var(--dorado);
+    border-radius: 8px;
+
+    width: 10cm;   /* 🔥 ancho */
+    height: 1cm;  /* 🔥 alto */
+
+    padding: 0 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* NOMBRE DEL DOCUMENTO */
+.doc-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ACCIONES */
+.doc-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* BOTONES */
+.doc-actions .btn-primary,
+.doc-actions .btn-danger {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+/* BOTÓN ELIMINAR */
+.btn-danger {
+    background: #b02a37;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background: #8a1f2a;
+}
+
+////////////////////////boton de subir archivo//////////////////////////////////////////////////////////
+.btn-primary {
+    background: #b58a52; /* color normal */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+
+    width: 4cm;
+    height: 1cm;
+
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #9f7440; /* 🔥 MISMO HOVER */
+}
+input[type="file"]::file-selector-button {
+    background: #b58a52;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 1cm;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #9f7440;
 }
